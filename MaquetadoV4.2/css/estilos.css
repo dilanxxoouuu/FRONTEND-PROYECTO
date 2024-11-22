@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Montserrat Alternates', sans-serif;
+	
+}
+
+a {
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+  }
+  
+  a:hover {
+	text-decoration: none;
+  }
+  
+button {
+	text-decoration: none;
+}
+
+button:visited {
+	text-decoration: none;
+  }
+  
+button:hover {
+	text-decoration: none;
+  }
+
+.capa {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	background: rgba(56, 0, 102, 0.507);
+	z-index: -1;
+	top: 10%;
+	left: 0;
+}
+
+.capa2 {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	background: rgba(109, 2, 197, 0.226);
+	z-index: -1;
+	top: 60%;
+	left: 0;
+}
+
+
+
+.msj
+{
+	width: 100%;
+	height: auto;
+	background-color: rgba(0, 0, 0, 0.47);
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+	z-index: -2;
+}
+
+.zona_registro {
+	padding-top: 3%;
+}
+
+
+.zona_registrop {
+	padding-top: 5%;
+}
+
+.mensaje_inicio {
+	padding-top: 1%;
+}
+
+.zona_inicio {
+	padding-top: 45%;
+}
+
+.cardib {
+	width: 100%;
+	height: 100%;
+	background-color: rgb(255, 255, 255);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 30px 30px;
+	gap: 15px;
+	border-radius: 8px;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+}
+.cardib2 {
+	width: 100%;
+	height: fit-content;
+	background-color: rgb(255, 255, 255);
+	display: flex;
+	align-items: right;
+	justify-content: center;
+	padding: 30px 30px;
+	gap: 15px;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+}
+
+/*lo del mapa es: 800 x 600*/
+
+.zona_logo img {
+	width: 100%;
+}
+
+
+/*loader*/
+
+.hidden {
+	overflow: hidden;
+}
+
+.centrado {
+	height: 100vh;
+	background-color: #000000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 10;
+	width: 160px;
+	height: 100px;
+	margin-left: -80px;
+	margin-top: -50px;
+	border-radius: 5px;
+	background: #1e3f57;
+	animation: dot1_ 3s cubic-bezier(0.55, 0.3, 0.24, 0.99) infinite;
+}
+
+.loader:nth-child(2) {
+	z-index: 11;
+	width: 150px;
+	height: 90px;
+	margin-top: -45px;
+	margin-left: -75px;
+	border-radius: 3px;
+	background: #3c517d;
+	animation-name: dot2_;
+}
+
+.loader:nth-child(3) {
+	z-index: 12;
+	width: 40px;
+	height: 20px;
+	margin-top: 50px;
+	margin-left: -20px;
+	border-radius: 0 0 5px 5px;
+	background: #6bb2cd;
+	animation-name: dot3_;
+}
+
+@keyframes dot1_ {
+
+	3%,
+	97% {
+		width: 160px;
+		height: 100px;
+		margin-top: -50px;
+		margin-left: -80px;
+	}
+
+	30%,
+	36% {
+		width: 80px;
+		height: 120px;
+		margin-top: -60px;
+		margin-left: -40px;
+	}
+
+	63%,
+	69% {
+		width: 40px;
+		height: 80px;
+		margin-top: -40px;
+		margin-left: -20px;
+	}
+}
+
+@keyframes dot2_ {
+
+	3%,
+	97% {
+		height: 90px;
+		width: 150px;
+		margin-left: -75px;
+		margin-top: -45px;
+	}
+
+	30%,
+	36% {
+		width: 70px;
+		height: 96px;
+		margin-left: -35px;
+		margin-top: -48px;
+	}
+
+	63%,
+	69% {
+		width: 32px;
+		height: 60px;
+		margin-left: -16px;
+		margin-top: -30px;
+	}
+}
+
+@keyframes dot3_ {
+
+	3%,
+	97% {
+		height: 20px;
+		width: 40px;
+		margin-left: -20px;
+		margin-top: 50px;
+	}
+
+	30%,
+	36% {
+		width: 8px;
+		height: 8px;
+		margin-left: -5px;
+		margin-top: 49px;
+		border-radius: 8px;
+	}
+
+	63%,
+	69% {
+		width: 16px;
+		height: 4px;
+		margin-left: -8px;
+		margin-top: -37px;
+		border-radius: 10px;
+	}
+}
+
+/*fin loader*/
+
+.zona_cards_inicio {
+	margin-bottom: 20%;
+}
+
+
+/*Cosas pa el catalogo */
+.categoria-productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    padding: 10px;
+	justify-content: right;
+	
+  }
+
+  .producto {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .producto img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .producto h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .producto p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .producto form {
+    margin-top: 20px;
+  }
+
+  .producto button {
+    background-color: #000000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .producto button:hover {
+    background-color: #3f3f3fdf;
+  }
+
+
+@import "../node_modules/bootstrap/scss/functions";
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+
