@@ -1,0 +1,62 @@
+/* Register.css */
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+body {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.register-container {
+    max-width: 300px;
+    margin: 90px auto;
+    margin-bottom: 20px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.input-group input {
+    padding: 10px;
+    margin-top: 7px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.input-error {
+    border-color: red;
+}
+
+.error {
+    color: red;
+    font-size: 0.8rem;
+}
+
+.submit-button {
+    background-color: #919191;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #afafaf;
+}
