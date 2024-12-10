@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+/* Aplicar la tipografía a toda la aplicación */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+
+/* Animación de desvanecimiento para todo el body */
+body {
+  background-color: #d2d2d2;
+  background-image: url(assets/images/);
+  background-size: cover;
+  color: #333;
+  opacity: 0;
+  animation: fadeIn 1.5s ease-out forwards;
+  /* Desvanecimiento en la carga */
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animación de transición en los márgenes de los elementos */
+* {
+  transition: margin 0.5s ease, padding 0.5s ease;
+}
+
+/* Efecto de escala para botones (si existieran) */
+button {
+  background-color: #919191;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #afafaf;
+  transform: scale(1.1);
+  /* Efecto de rebote (escala) */
+}
+
+/* Animación de desvanecimiento para los textos de la página */
+h1,
+h2,
+h3,
+p {
+  opacity: 0;
+  animation: fadeIn 1.5s ease-out forwards;
+  /* Desvanecimiento para los títulos y párrafos */
+}
+
+h1 {
+  animation-delay: 0.5s;
+  /* Retraso para el título principal */
+}
+
+h2 {
+  animation-delay: 1s;
+  /* Retraso para el título secundario */
+}
+
+p {
+  animation-delay: 1.5s;
+  /* Retraso para los párrafos */
+}
+
+/* Transición de la página al desplazarse hacia abajo */
+section {
+  opacity: 0;
+  transform: translateY(20px);
+  /* Desplazamiento hacia abajo */
+  animation: slideIn 1s ease-out forwards;
+  /* Efecto de deslizamiento hacia arriba */
+}
+
+/* Animación de deslizamiento hacia arriba */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

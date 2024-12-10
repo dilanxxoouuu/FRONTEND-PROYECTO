@@ -1,0 +1,44 @@
+.dashboard {
+    margin: 90px auto;
+    padding-top: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    align-items: center;
+    justify-items: center;
+    padding-bottom: 30px;
+    background-color: #fff;
+    text-align: center; /* Centrado de texto en el contenedor */
+}
+
+.admin-buttons {
+    display: flex;
+    justify-content: center; /* Centrado de los botones en línea */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-btn {
+    padding: 10px 20px;
+    background-color: #a9a9a9; /* Gris */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none; /* Eliminar la subrayado en los enlaces */
+    display: inline-block; /* Asegura que los links se comporten como botones */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Añadido para un hover más suave */
+}
+
+.admin-btn:hover {
+    background-color: #452155; /* Morado brillante */
+    transform: scale(1.05); /* Efecto de aumento de tamaño al pasar el ratón */
+}
+
+.admin-btn svg {
+    margin-right: 10px;
+}
+
+.admin-btn:focus {
+    outline: none; /* Remueve el contorno en foco para mayor limpieza */
+}
