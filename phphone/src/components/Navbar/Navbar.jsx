@@ -1,79 +1,103 @@
 import React, { useState, useEffect } from 'react'; 
-import { FaHome, FaBox, FaSignInAlt, FaUserPlus, FaUserCog, FaSignOutAlt } from 'react-icons/fa'; // Importar los iconos
-import './Navbar.css'; // Asegúrate de que este archivo de estilos esté importado
+import { FaHome, FaBox, FaSignInAlt, FaUserPlus, FaUserCog, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import './Navbar.css';
 
-const Navbar = () => {
-    const [menuActive, setMenuActive] = useState(false); // Estado para el menú desplegable
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para saber si el usuario está logueado
-    const [user, setUser] = useState(null); // Información del usuario (puedes almacenarla si es necesario)
+const Navbar = ({ cart = [] }) => {
+    const [menuActive, setMenuActive] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+    const [showCart, setShowCart] = useState(false);
 
-    // Función para alternar el estado del menú
-    const toggleMenu = () => {
-        setMenuActive(!menuActive);
-    };
-
-    // Función para verificar si el usuario está logeado
+    const toggleMenu = () => setMenuActive(!menuActive);
     const checkLoginStatus = () => {
-        // Aquí se debería comprobar si el usuario está logueado, por ejemplo, usando localStorage, cookies o una API
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setUser(JSON.parse(storedUser)); // Suponiendo que el objeto usuario se guarda en localStorage
+            setUser(JSON.parse(storedUser));
             setIsLoggedIn(true);
         } else {
             setIsLoggedIn(false);
         }
     };
-
-    // Función para cerrar sesión
     const handleLogout = () => {
-        localStorage.removeItem('user'); // Limpiar los datos del usuario en el almacenamiento local
-        setIsLoggedIn(false); // Actualizar el estado
-        setUser(null); // Limpiar la información del usuario
-        window.location.href = '/'; // Redirigir al home
+        localStorage.removeItem('user');
+        setIsLoggedIn(false);
+        setUser(null);
+        window.location.href = '/';
     };
+    const toggleCartView = () => setShowCart(!showCart);
 
-    // Efecto para verificar el estado de inicio de sesión al cargar el componente
     useEffect(() => {
         checkLoginStatus();
     }, []);
 
+    const cartItemCount = Array.isArray(cart) ? cart.length : 0;
+
+    const renderCartItems = () => {
+        if (!Array.isArray(cart) || cart.length === 0) {
+            return <p>El carrito está vacío.</p>;
+        }
+        return (
+            <ul>
+                {cart.map((product) => (
+                    <li key={product.id}>
+                        <span>{product.name}</span> - ${product.price}
+                    </li>
+                ))}
+            </ul>
+        );
+    };
+
     return (
         <div className="Navbar-container">
-            {/* Logo */}
             <div className="navbar">
                 <div className="navbar-logo">
                     <h1>PHPHONE</h1>
                 </div>
-
-                {/* Botón de menú hamburguesa */}
                 <button className="navbar-toggle" onClick={toggleMenu}>
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-
-                {/* Enlaces de la barra de navegación */}
                 <ul className={`navbar-links ${menuActive ? 'active' : ''}`}>
-                    <li><a href="/"><FaHome size={24} /></a></li> {/* Icono de Inicio */}
-                    <li><a href="/products"><FaBox size={24} /></a></li> {/* Icono de Productos */}
-                    
+                    <li><a href="/"><FaHome size={24} /></a></li>
+                    <li><a href="/products"><FaBox size={24} /></a></li>
+                    <li className="cart-icon" onClick={toggleCartView}>
+                        <FaShoppingCart size={24} />
+                        {cartItemCount > 0 && <span className="cart-badge">{cartItemCount}</span>}
+                    </li>
                     {!isLoggedIn ? (
                         <>
-                            {/* Si el usuario no está logueado */}
-                            <li><a href="/login"><FaSignInAlt size={24} /></a></li> {/* Icono de Iniciar sesión */}
-                            <li><a href="/register"><FaUserPlus size={24} /></a></li> {/* Icono de Registrarme */}
+                            <li><a href="/login"><FaSignInAlt size={24} /></a></li>
+                            <li><a href="/register"><FaUserPlus size={24} /></a></li>
                         </>
                     ) : (
                         <>
-                            {/* Si el usuario está logueado */}
-                            <li><a href="/profile"><FaUserCog size={24} /></a></li> {/* Icono de Configurar Perfil */}
-                            <li><a href="#" onClick={handleLogout}><FaSignOutAlt size={24} /></a></li> {/* Icono de Cerrar sesión */}
+                            <li><a href="/profile"><FaUserCog size={24} /></a></li>
+                            <li><a href="#" onClick={handleLogout}><FaSignOutAlt size={24} /></a></li>
                         </>
                     )}
                 </ul>
             </div>
+            {showCart && (
+                <div className="cart-details">
+                    <h3>Carrito de Compras</h3>
+                    {renderCartItems()}
+                    <p><strong>Total: ${cart.reduce((sum, item) => sum + item.price, 0)}</strong></p>
+                </div>
+            )}
         </div>
     );
+};
+
+Navbar.propTypes = {
+    cart: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            price: PropTypes.number.isRequired,
+        })
+    ),
 };
 
 export default Navbar;

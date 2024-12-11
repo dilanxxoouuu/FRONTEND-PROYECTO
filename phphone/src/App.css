@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+:root {
+  --blanco: #ffffff;
+  --turquesa: #1abc9c;  /* Color turquesa */
+  --gris-claro: #f7f7f7;
+  --gris: #ccc;
+  --gris-oscuro: #333;
+}
 
 /* Aplicar la tipografía a toda la aplicación */
 * {
@@ -99,3 +106,101 @@ section {
     transform: translateY(0);
   }
 }
+
+
+
+  /* ===================== Media Queries ===================== */
+  
+  /* Pantallas pequeñas (móviles) */
+  @media (max-width: 768px) {
+    .welcome-section {
+      height: 400px;
+      padding: 20px;
+    }
+  
+    .welcome-text h1 {
+      font-size: 2rem;
+    }
+  
+    .welcome-text p {
+      font-size: 1.2rem;
+    }
+  
+    .product-cards-container,
+    .accessory-cards-container {
+      justify-content: center;
+      gap: 10px;
+    }
+  
+    .product-card,
+    .accessory-card {
+      width: 200px; /* Hacemos las tarjetas un poco más pequeñas */
+      margin-bottom: 20px;
+    }
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1rem;
+    }
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Pantallas medianas (tabletas) */
+  @media (max-width: 1024px) {
+    .welcome-section {
+      height: 450px;
+      padding: 20px;
+    }
+  
+    .welcome-text h1 {
+      font-size: 2.5rem;
+    }
+  
+    .welcome-text p {
+      font-size: 1.4rem;
+    }
+  
+    .product-cards-container,
+    .accessory-cards-container {
+      justify-content: center;
+      gap: 15px;
+    }
+  
+    .product-card,
+    .accessory-card {
+      width: 220px; /* Tarjetas más pequeñas en pantallas de tabletas */
+    }
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1.1rem;
+    }
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Pantallas grandes (escritorio) */
+  @media (min-width: 1025px) {
+    .product-card,
+    .accessory-card {
+      width: 250px; /* Tamaño estándar de las tarjetas */
+    }
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1.2rem;
+    }
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 1rem;
+    }
+  }
+  

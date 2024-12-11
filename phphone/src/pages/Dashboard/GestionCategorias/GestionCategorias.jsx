@@ -16,11 +16,15 @@ const GestionCategorias = () => {
     };
 
     // Obtener categorías desde la API
-    useEffect(() => {
+    const fetchCategories = () => {
         axios
             .get("http://127.0.0.1:5000/categorias", { headers: getAuthHeaders() })
             .then((response) => setCategorias(response.data))
             .catch((error) => console.error("Error al obtener las categorías:", error));
+    };
+
+    useEffect(() => {
+        fetchCategories(); // Cargar las categorías al inicio
     }, []);
 
     // Manejar la creación de una nueva categoría
@@ -71,7 +75,7 @@ const GestionCategorias = () => {
     // Eliminar una categoría
     const handleDeleteCategory = (id) => {
         axios
-            .delete(`http://127.0.0.1:5000/categorias/${id}`, { headers: getAuthHeaders() })
+            .delete(`http://127.0.0.1:5000/categoria/${id}`, { headers: getAuthHeaders() })
             .then(() => {
                 setCategorias(categorias.filter(category => category.id_categoria !== id));
             })
@@ -85,6 +89,11 @@ const GestionCategorias = () => {
             {/* Botón para regresar al Dashboard */}
             <button className="back-btn" onClick={() => navigate("/dashboard")}>
                 Regresar al Dashboard
+            </button>
+
+            {/* Botón para refrescar categorías */}
+            <button className="refresh-btn" onClick={fetchCategories}>
+                Refrescar Categorías
             </button>
 
             <form onSubmit={editCategory ? handleEditCategory : handleAddCategory} className="category-form">

@@ -15,186 +15,200 @@ body {
     background-color: #f2f2f2; /* Fondo suave para evitar un blanco puro */
     color: #333;
 }
-
-.home-container {
-    margin: 0;
-    padding-top: 45px;
-    background-color: #f7f7f7;
-    background-image: url(../../assets/images/Blancos.jpg);
-    background-size: cover;
-    background-position: center;
-    /* Fondo gris muy claro */
-    transition: background 0.5s ease; /* Transición suave para cambios en el fondo */
-}
-
-/* Asegúrate de que el contenedor tenga un margen superior cuando la navbar esté activa en pantallas pequeñas */
-.home-container.menu-active {
-    margin-top: 120px;
-    /* Ajusta este valor dependiendo de la altura de la navbar */
-}
-
-/* Contenido de la página */
-.home-content {
-    padding: 40px;
+/* Definimos los colores principales */
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+  }
+  
+  .home-container {
+    margin: 70px auto;
+    padding: 20px;
+    background-color: var(--gris-claro); /* Fondo gris claro */
+  }
+  
+  .welcome-section {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco translúcido para crear una capa encima del fondo */
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra más intensa para crear profundidad */
-}
-
-.home-title h2 {
-    color: #333;
+    color: var(--blanco);
+    background-color: var(--turquesa); /* Fondo turquesa */
+  }
+  
+  .welcome-text h1 {
     font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-text p {
+    font-size: 1.5rem;
+  }
+  
+  .product-cards-container,
+  .accessory-cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  
+  .product-card,
+  .accessory-card {
+    width: 250px;
+    border: 1px solid var(--gris); /* Borde gris claro */
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: var(--blanco); /* Fondo blanco para las tarjetas */
+  }
+  
+  .product-card h3,
+  .accessory-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: var(--gris-oscuro); /* Títulos en gris oscuro */
+  }
+  
+  .product-card p,
+  .accessory-card p {
+    font-size: 1rem;
     margin-bottom: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.home-title p {
-    color: #555;
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-.home-image img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-top: 5px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Sombra más intensa para la imagen */
-}
-
-/* Sección de productos */
-.products-section {
-    margin-top: 50px;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada para la sección */
-}
-
-.products-section h3 {
-    color: #333;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.products-section p {
-    color: #777;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-/* Botón de exploración */
-.explore-button {
-    background-color: #919191;
-    color: white;
-    padding: 12px 20px;
-    font-size: 1.1rem;
+    color: var(--gris-oscuro); /* Texto en gris oscuro */
+  }
+  
+  button {
+    background-color: var(--turquesa); /* Botón turquesa */
+    color: var(--blanco);
+    padding: 10px;
     border: none;
-    border-radius: 8px; /* Bordes más redondeados */
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.explore-button:hover {
-    background-color: #afafaf;
-    transform: translateY(-3px); /* Movimiento sutil para interacción */
-}
-
-.explore-button:active {
-    transform: translateY(1px); /* Efecto de presión al hacer clic */
-}
-
-/* Sección de imagen */
-.home-image {
-    margin-top: 50px;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Sombra intensa */
-}
-
-/* Estilo para la sección de bienvenida */
-.home-title {
-    background-color: #fff;
-    padding: 40px 0;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Sombra más profunda */
-}
-
-.home-title h2 {
-    color: #333;
-    font-size: 2.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.home-title p {
-    color: #777;
+  }
+  
+  button:hover {
+    background-color: #16a085; /* Turquesa oscuro al pasar el cursor */
+  }
+  
+  .product-parallax,
+  .accessory-parallax {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .product-parallax h3,
+  .accessory-parallax h3 {
     font-size: 1.2rem;
     margin-top: 10px;
-    line-height: 1.6;
-}
-
-/* Grid responsive */
-.container {
-    display: grid;
-    border-radius: 25px;
-    padding-top: 55px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin: 20px;
-    overflow-x: auto;
-    transition: transform 0.3s ease; /* Transición suave en la rejilla */
-}
-
-.container:hover {
-    transform: scale(1.02); /* Efecto de zoom cuando el ratón pasa sobre la rejilla */
-}
-
-.container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-/* Medias query para pantallas pequeñas */
-@media (max-width: 768px) {
-
-    /* Ajuste del contenedor en pantallas pequeñas */
-    .home-container.menu-active {
-        padding-top: 120px;
+    color: var(--gris-oscuro); /* Títulos en gris oscuro */
+  }
+  
+  .product-parallax p,
+  .accessory-parallax p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--gris-oscuro); /* Texto en gris oscuro */
+  }
+  
+  /* ===================== Media Queries ===================== */
+  
+  /* Pantallas pequeñas (móviles) */
+  @media (max-width: 768px) {
+    .welcome-section {
+      height: 400px;
+      padding: 20px;
     }
-
-    /* Ajustes en la tipografía y márgenes para pantallas pequeñas */
-    .home-title h2 {
-        font-size: 2.2rem;
+  
+    .welcome-text h1 {
+      font-size: 2rem;
     }
-
-    .home-title p {
-        font-size: 1rem;
+  
+    .welcome-text p {
+      font-size: 1.2rem;
     }
-
-    .products-section h3 {
-        font-size: 2rem;
+  
+    .product-cards-container,
+    .accessory-cards-container {
+      justify-content: center;
+      gap: 10px;
     }
-
-    .products-section p {
-        font-size: 1rem;
+  
+    .product-card,
+    .accessory-card {
+      width: 200px; /* Hacemos las tarjetas un poco más pequeñas */
+      margin-bottom: 20px;
     }
-
-    .explore-button {
-        padding: 10px 18px;
-        font-size: 1rem;
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1rem;
     }
-}
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Pantallas medianas (tabletas) */
+  @media (max-width: 1024px) {
+    .welcome-section {
+      height: 450px;
+      padding: 20px;
+    }
+  
+    .welcome-text h1 {
+      font-size: 2.5rem;
+    }
+  
+    .welcome-text p {
+      font-size: 1.4rem;
+    }
+  
+    .product-cards-container,
+    .accessory-cards-container {
+      justify-content: center;
+      gap: 15px;
+    }
+  
+    .product-card,
+    .accessory-card {
+      width: 220px; /* Tarjetas más pequeñas en pantallas de tabletas */
+    }
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1.1rem;
+    }
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 1rem;
+    }
+  }
+  
+  /* Pantallas grandes (escritorio) */
+  @media (min-width: 1025px) {
+    .product-card,
+    .accessory-card {
+      width: 250px; /* Tamaño estándar de las tarjetas */
+    }
+  
+    .product-card h3,
+    .accessory-card h3 {
+      font-size: 1.2rem;
+    }
+  
+    .product-card p,
+    .accessory-card p {
+      font-size: 1rem;
+    }
+  }
+  

@@ -1,0 +1,105 @@
+
+/* Definimos las variables de color */
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+  }
+  
+/* Estilos generales del contenedor de productos y carrito */
+.container {
+    display: flex;
+    justify-content: space-around;
+    margin: 90px auto;
+  }
+  
+  .product-list {
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .product-list div {
+    border: 1px solid var(--gris);
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--blanco);
+    text-align: center;
+  }
+  
+  .product-list div h3 {
+    color: var(--gris-oscuro);
+  }
+  
+  .product-list div p {
+    color: var(--gris);
+  }
+  
+  .product-list button {
+    background-color: var(--turquesa);
+    color: var(--blanco);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .product-list button:hover {
+    background-color: #16a085;  /* Un tono más oscuro de turquesa */
+  }
+  
+  /* Estilo del carrito de compras */
+  .cart {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid var(--gris);
+    border-radius: 8px;
+    background-color: var(--blanco);
+  }
+  
+  .cart h2 {
+    color: var(--gris-oscuro);
+  }
+  
+  .cart ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cart ul li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .cart ul li button {
+    color: red;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .cart ul li button:hover {
+    text-decoration: underline;
+  }
+  
+  .cart p {
+    font-weight: bold;
+    color: var(--gris-oscuro);
+  }
+  
+  .cart button {
+    padding: 10px;
+    background-color: var(--turquesa);
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cart button:hover {
+    background-color: #16a085;  /* Un tono más oscuro de turquesa */
+  }

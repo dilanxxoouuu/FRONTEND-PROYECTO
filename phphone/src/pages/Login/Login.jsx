@@ -58,10 +58,7 @@ const Login = () => {
               navigate("/Dashboard");
               break;
             case 2: // Suponiendo que rol 2 es 'usuario'
-              navigate("/Products");
-              break;
-            case 3: // Suponiendo que rol 3 es 'vendedor'
-              navigate("/vendedor/panel");
+              navigate("/ShoppingCart");
               break;
             default:
               navigate("/");

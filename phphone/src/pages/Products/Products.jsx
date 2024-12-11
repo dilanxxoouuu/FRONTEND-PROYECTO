@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Products.css";
 
-const Products = () => {
+const Products = ({ addToCart }) => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 8; // Número de productos por página
@@ -10,7 +10,18 @@ const Products = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get("https://api.escuelajs.co/api/v1/products");
+                const token = localStorage.getItem("token"); // Obtén el token de tu almacenamiento local
+                
+                if (!token) {
+                    console.error("Token no disponible");
+                    return;
+                }
+
+                const response = await axios.get("http://localhost:5000/productos", {
+                    headers: { Authorization: `Bearer ${token}` }, // Agregar el token JWT en el encabezado
+                });
+
+                console.log("Productos cargados:", response.data);  // Verifica los productos
                 setProducts(response.data);
             } catch (error) {
                 console.error("Error al obtener los productos:", error);
@@ -38,10 +49,30 @@ const Products = () => {
 
             <div className="products-grid">
                 {currentProducts.map((product) => (
-                    <div key={product.id} className="product-card">
-                        <img src={product.images[0]} alt={product.title} className="product-image" />
-                        <h2 className="product-title">{product.title}</h2>
-                        <p className="product-price">${product.price.toFixed(2)}</p>
+                    <div key={product.id_producto} className="product-card">
+                        <img 
+                            src={`http://localhost:5000/static/uploads/${product.producto_foto}`} 
+                            alt={product.producto_nombre} 
+                            className="product-image" 
+                        />
+
+                        <h2 className="product-title">{product.producto_nombre}</h2>
+
+                        <p className="product-description">{product.descripcion}</p>
+                        
+                        <p className="product-price">
+                            ${product.producto_precio !== undefined && product.producto_precio !== null
+                                ? (product.producto_precio).toFixed(2) // Asumiendo que el precio se guarda en centavos, convertir a formato decimal
+                                : "0.00"}
+                        </p>
+                        <button 
+                            onClick={() => {
+                                console.log('Producto agregado:', product); 
+                                addToCart(product); 
+                            }}
+                        >
+                            Agregar al Carrito
+                        </button>
                     </div>
                 ))}
             </div>

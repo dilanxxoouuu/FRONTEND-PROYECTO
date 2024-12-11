@@ -9,6 +9,7 @@ import Products from "../pages/Products/Products";
 import GestionUsuarios from "../pages/Dashboard/GestionUsuarios/GestionUsuarios";
 import GestionProductos from "../pages/Dashboard/GestionProductos/GestionProductos";
 import GestionCategorias from "../pages/Dashboard/GestionCategorias/GestionCategorias";
+import ShoppingCart from "../pages/ShoppingCart/ShoppingCart";
 
 const AppRoutes = () => {
     return (
@@ -19,9 +20,10 @@ const AppRoutes = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/GestionUsuarios" element={<GestionUsuarios />} />
-            <Route path="/GestionProductos" element={<GestionProductos />} />
-            <Route path="/GestionCategorias" element={<GestionCategorias />} />
+            <Route path="/gestionUsuarios" element={<GestionUsuarios />} />
+            <Route path="/gestionProductos" element={<GestionProductos />} />
+            <Route path="/gestionCategorias" element={<GestionCategorias />} />
+            <Route path="/shoppingCart" element={<ShoppingCart />} />
         </Routes>
     );
 };

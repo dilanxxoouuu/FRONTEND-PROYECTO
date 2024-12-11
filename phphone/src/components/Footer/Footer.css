@@ -1,7 +1,17 @@
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191; /* Color de hover */
+    --gris-oscuro-claro: #aaa; /* Gris más claro para texto */
+}
+
 /* Estilos generales del footer */
 .footer {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--gris-oscuro);
+    color: var(--blanco);
     padding: 40px 0;
     text-align: center;
     font-size: 13px;
@@ -20,12 +30,13 @@
     margin: 0;
     font-size: 20px;
     font-weight: bold;
+    color: var(--blanco);
 }
 
 .footer-logo p {
     margin-top: 6px;
     font-size: 14px;
-    color: #aaa;
+    color: var(--gris-oscuro-claro);
 }
 
 .footer-links ul,
@@ -44,7 +55,7 @@
 
 .footer-links a,
 .footer-socials a {
-    color: #fff;
+    color: var(--blanco);
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -52,14 +63,13 @@
 
 .footer-links a:hover,
 .footer-socials a:hover {
-    color: #919191;
-    /* Color de hover elegante */
+    color: var(--gris-intermedio); /* Usando la variable de hover */
 }
 
 .footer-bottom {
     margin-top: 20px;
     font-size: 12px;
-    color: #aaa;
+    color: var(--gris-oscuro-claro);
 }
 
 .footer-bottom p {

@@ -1,15 +1,29 @@
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191; /* Color de hover */
+    --gris-oscuro-claro: #aaa; /* Gris más claro para texto */
+    --morado-brillante: #452155; /* Morado brillante */
+    --gris-medio: #a9a9a9; /* Gris medio para los botones */
+}
+
+/* Estilos generales del dashboard */
 .dashboard {
     margin: 90px auto;
     padding-top: 25px;
     padding-left: 25px;
     padding-right: 25px;
+    padding-bottom: 30px;
     align-items: center;
     justify-items: center;
-    padding-bottom: 30px;
-    background-color: #fff;
+    background-color: var(--blanco); /* Fondo blanco */
     text-align: center; /* Centrado de texto en el contenedor */
 }
 
+/* Contenedor de los botones del administrador */
 .admin-buttons {
     display: flex;
     justify-content: center; /* Centrado de los botones en línea */
@@ -17,10 +31,11 @@
     margin-bottom: 20px;
 }
 
+/* Estilos para los botones */
 .admin-btn {
     padding: 10px 20px;
-    background-color: #a9a9a9; /* Gris */
-    color: white;
+    background-color: var(--gris-medio); /* Gris medio para los botones */
+    color: var(--blanco); /* Texto blanco */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -31,7 +46,7 @@
 }
 
 .admin-btn:hover {
-    background-color: #452155; /* Morado brillante */
+    background-color: var(--morado-brillante); /* Usamos el morado brillante para el hover */
     transform: scale(1.05); /* Efecto de aumento de tamaño al pasar el ratón */
 }
 

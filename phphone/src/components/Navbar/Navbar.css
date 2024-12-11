@@ -1,145 +1,97 @@
-/* Estilos generales */
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+  }
 
-/* Aplicar la tipografía a toda la aplicación */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat Alternates', sans-serif;
-}
 
-body {
-    background-color: #ffffff;
-    color: #333;
-}
-
-/* Barra de navegación */
-.navbar {
+/* Navbar CSS */
+.Navbar-container {
+    position: relative;
+  }
+  
+  .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background-color: #333;
-    color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1; /* Asegurarse de que la navbar esté encima del contenido */
-}
-
-/* Logo */
-.navbar-logo h1 {
+    background-color: var(--turquesa);
+    padding: 10px 20px;
+    color: var(--blanco);
+  }
+  
+  .navbar-logo h1 {
     margin: 0;
-    font-size: 1.5rem; /* Aumentar el tamaño del logo */
-    color: #fff;
-    font-weight: 600;
-}
-
-/* Enlaces de la barra de navegación */
-.navbar-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
-.navbar-links li {
-    margin-left: 20px;
-}
-
-.navbar-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1rem;
-    padding: 8px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.navbar-links a:hover {
-    background-color: #9c9c9c;
-    color: #333;
-}
-
-.navbar-links a svg {
-    margin-right: 8px; /* Separar el icono del texto */
-    font-size: 1.5rem; /* Ajustar el tamaño del icono */
-}
-
-/* Estilos para el botón del menú de hamburguesa */
-.navbar-toggle {
+    color: var(--blanco);
+  }
+  
+  .navbar-toggle {
     display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    border: none;
     cursor: pointer;
-    z-index: 10;
-}
-
-.navbar-toggle span {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    border-radius: 5px;
-}
-
-/* Medias query para pantallas pequeñas */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 15px 20px; /* Reducir el padding en pantallas pequeñas */
-    }
-
-    .navbar-logo h1 {
-        font-size: 1.2rem; /* Ajustar el tamaño del logo para pantallas pequeñas */
-    }
-
-    /* Centramos los enlaces dentro del contenedor */
-    .navbar-links {
-        display: none;
-        width: 100%; /* Asegurarnos de que ocupe todo el ancho */
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        background-color: #333;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        padding: 20px 0;
-        justify-content: center; /* Centramos el contenido de la lista */
-    }
-
-    /* Activamos la visualización de los enlaces cuando el menú está abierto */
-    .navbar-links.active {
-        display: flex;
-    }
-
-    /* Estilos de los elementos de la lista (li) */
-    .navbar-links li {
-        margin: 10px 0; /* Aumentamos el margen para mejor separación */
-        width: 100%; /* Aseguramos que cada enlace ocupe todo el ancho */
-    }
-
-    .navbar-links a {
-        font-size: 1.2rem;
-        padding: 12px 20px;
-    }
-
-    /* Mostrar el botón del menú */
-    .navbar-toggle {
-        display: flex;
-    }
-
-    /* Ajustar el contenido de la página */
-    .content {
-        margin-top: 120px; /* Asegúrate de que el contenido se mueva hacia abajo cuando la navbar esté activa */
-    }
-}
+  }
+  
+  .navbar-links {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .navbar-links li {
+    margin: 0 10px;
+  }
+  
+  .navbar-links a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .cart-icon {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+  }
+  
+  .cart-details {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: var(--blanco);
+    border: 1px solid var(--gris);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+  }
+  
+  .cart-details h3 {
+    margin-top: 0;
+  }
+  
+  .cart-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cart-details ul li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .cart-details p {
+    font-weight: bold;
+  }
+  

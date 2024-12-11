@@ -1,9 +1,19 @@
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191; /* Color de hover */
+    --gris-oscuro-claro: #aaa; /* Gris más claro para texto */
+}
+
 /* Estilos generales para la sección de contacto */
 .contact-container {
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--gris-claro); /* Usamos el gris claro */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -11,12 +21,12 @@
 h2 {
     text-align: center;
     font-size: 2rem;
-    color: #333;
+    color: var(--gris-oscuro); /* Usamos gris oscuro para los encabezados */
 }
 
 p {
     text-align: center;
-    color: #666;
+    color: var(--gris); /* Usamos un gris intermedio para los textos */
     margin-bottom: 20px;
 }
 
@@ -33,7 +43,7 @@ p {
 .form-group label {
     font-size: 1rem;
     font-weight: bold;
-    color: #333;
+    color: var(--gris-oscuro); /* Gris oscuro para las etiquetas */
     margin-bottom: 5px;
 }
 
@@ -41,17 +51,16 @@ p {
 .form-group textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--gris); /* Borde con gris intermedio */
     border-radius: 5px;
     font-size: 1rem;
-    color: #333;
-    background-color: #fff;
+    color: var(--gris-oscuro); /* Color de texto gris oscuro */
+    background-color: var(--blanco); /* Fondo blanco */
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #919191;
-    /* Color del borde al hacer focus */
+    border-color: var(--gris-intermedio); /* Borde con gris intermedio cuando se hace focus */
     outline: none;
 }
 
@@ -63,8 +72,8 @@ p {
 .submit-button {
     padding: 12px 20px;
     font-size: 1rem;
-    background-color: #919191;
-    color: #fff;
+    background-color: var(--gris-intermedio); /* Usamos el gris intermedio */
+    color: var(--blanco); /* Texto blanco */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -74,7 +83,7 @@ p {
 }
 
 .submit-button:hover {
-    background-color: #afafaf;
+    background-color: #afafaf; /* Gris más oscuro para el hover */
 }
 
 /* Estilos para dispositivos móviles */
