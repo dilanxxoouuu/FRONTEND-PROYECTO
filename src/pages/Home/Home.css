@@ -1,0 +1,290 @@
+/* Estilos generales */
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+
+body {
+  background-color: var(--gris-claro);
+  color: var(--gris-oscuro);
+  opacity: 0;
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Variables de color */
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #f2f2f2;
+  --gris: #ccc;
+  --gris-oscuro: #333;
+  --negro: #000000;
+  --gris-medio: #808080;
+}
+
+/* Contenedor principal */
+.home-container {
+  margin: 30px auto;
+  padding: 20px;
+  background-color: var(--gris-claro);
+}
+
+/* Sección de bienvenida */
+.welcome-section {
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: var(--blanco);
+  background-color: var(--gris-medio);
+  opacity: 0;
+  animation: slideIn 1s ease-out forwards;
+  border-radius: 35px;
+  background-size: cover;
+  /* Asegura que la imagen se ajuste */
+  background-position: center;
+  /* Centra la imagen */
+}
+
+/* Animación de deslizamiento */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-text h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  color: var(--blanco);
+}
+
+.welcome-text p {
+  font-size: 2.5rem;
+}
+
+/* ===================== Sección de productos a bajo precio ===================== */
+.productos-bajo-precio-container {
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.productos-bajo-precio-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--gris-oscuro);
+}
+
+.product-cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* Tarjetas de productos más pequeñas */
+.product-card {
+  width: 140px;  /* Reducción más significativa del ancho de la tarjeta */
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--blanco);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px; /* Espacio debajo de la tarjeta */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);  /* Menos movimiento al hacer hover */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.product-parallax {
+  padding: 20px;  /* Reducir el padding en la imagen */
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Información de los productos */
+.product-info {
+  color: var(--gris-oscuro);
+  padding: 5px;  /* Reducimos aún más el padding */
+}
+
+.product-info h3 {
+  font-size: 1rem;  /* Mantener el tamaño pequeño */
+  margin: 5px 0;
+}
+
+.product-info p {
+  font-size: 0.9rem;  /* Reducir más el tamaño del precio */
+  margin: 5px 0 10px 0;  /* Menor margen entre el precio y el nombre */
+}
+
+/* Ajuste del precio */
+.product-info p:last-of-type {
+  font-weight: bold;  /* Resaltar el precio */
+  color: var(--gris-claro);
+  margin-top: 5px; /* Reducir el espacio entre el precio y la descripción */
+}
+
+
+.login-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+  font-weight: bold;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+}
+
+
+button {
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--gris-medio);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================== Media Queries ===================== */
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .welcome-section {
+    height: 400px;
+    padding: 20px;
+  }
+
+  .welcome-text h1 {
+    font-size: 2rem;
+  }
+
+  .welcome-text p {
+    font-size: 1.2rem;
+  }
+
+  .product-cards-container {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .product-card {
+    width: 200px;
+    /* Hacemos las tarjetas un poco más pequeñas */
+    margin-bottom: 20px;
+  }
+
+  .product-card h3 {
+    font-size: 1rem;
+  }
+
+  .product-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Pantallas medianas (tabletas) */
+@media (max-width: 1024px) {
+  .welcome-section {
+    height: 450px;
+    padding: 20px;
+  }
+
+  .welcome-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .welcome-text p {
+    font-size: 1.4rem;
+  }
+
+  .product-cards-container {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .product-card {
+    width: 220px;
+    /* Tarjetas más pequeñas en pantallas de tabletas */
+  }
+
+  .product-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .product-card p {
+    font-size: 1rem;
+  }
+}
+
+/* Pantallas grandes (escritorio) */
+@media (min-width: 1025px) {
+
+  .product-card {
+    width: 250px;
+    /* Tamaño estándar de las tarjetas */
+  }
+
+  .product-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .product-card p {
+    font-size: 1rem;
+  }
+}

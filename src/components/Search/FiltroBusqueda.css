@@ -1,0 +1,99 @@
+/* Variables de color */
+:root {
+    --blanco: #ffffff;
+    --gris-claro: #f2f2f2;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --negro: #000000;
+    --gris-medio: #808080;
+  }
+
+/* Estilos para el botón que abre el filtro */
+.open-filter-btn {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.open-filter-btn:hover {
+    background-color: #555;
+}
+
+/* Estilos para el panel lateral (sidebar) */
+.filter-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 20px;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Estilos para el contenido del filtro */
+.filter-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item {
+    margin-bottom: 15px;
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filter-item input,
+.filter-item select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.filter-item input[type="checkbox"] {
+    width: auto;
+}
+
+.apply-filters-button {
+    background-color: var(--gris-medio);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.apply-filters-button:hover {
+    background-color: var(--gris-oscuro);
+}
+
+/* Botón para cerrar el filtro */
+.close-filter-btn {
+    background-color: var(--gris);
+    color: #333;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close-filter-btn:hover {
+    background-color: var(--gris-medio);
+    color: var(--negro);
+}

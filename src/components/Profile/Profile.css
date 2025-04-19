@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191; /* Color de hover */
+    --gris-oscuro-claro: #aaa; /* Gris más claro para texto */
+    --morado-brillante: #452155; /* Morado brillante */
+    --gris-medio: #a9a9a9; /* Gris medio para los botones */
+    --azul: #007bff; /* Azul para botones */
+    --azul-oscuro: #0056b3; /* Azul oscuro para hover */
+    --amarillo: #ffc107; /* Amarillo para editar */
+    --amarillo-oscuro: #e0a800; /* Amarillo oscuro para hover */
+    --rojo: #dc3545; /* Rojo para eliminar */
+    --rojo-oscuro: #b02a37; /* Rojo oscuro para hover */
+    --gris-oscuro-boton: #6c757d; /* Gris para el botón de atrás */
+    --gris-oscuro-boton-hover: #565e64; /* Gris oscuro para hover */
+}
+
+/* Estilos generales del perfil */
+.perfil-container {
+    max-width: 800px;
+    margin: 90px auto;
+    padding: 30px;
+    text-align: center;
+    background-color: var(--blanco);
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+.perfil-container h2 {
+    color: var(--gris-oscuro);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Detalles del usuario */
+.perfil-detalles {
+    font-size: 1.1rem;
+    color: var(--gris-oscuro);
+    line-height: 1.6;
+    text-align: left;
+    padding: 10px 20px;
+    border-left: 4px solid var(--gris-oscuro);
+    background-color: var(--gris-claro);
+    border-radius: 5px;
+}
+
+.perfil-detalles p {
+    margin-bottom: 10px;
+}
+
+.perfil-detalles strong {
+    color: var(--gris-oscuro);
+}
+
+/* Estilos de los campos de entrada */
+.perfil-container input[type="text"],
+.perfil-container input[type="email"],
+.perfil-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid var(--gris); /* Borde gris */
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--gris-claro);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-container input[type="text"]:focus,
+.perfil-container input[type="email"]:focus,
+.perfil-container input[type="password"]:focus {
+    border-color: var(--azul); /* Azul al hacer foco */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Botón de guardar cambios */
+.perfil-container button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: var(--azul); /* Azul para los botones */
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-container button:hover {
+    background-color: var(--azul-oscuro); /* Azul oscuro al pasar el ratón */
+    transform: scale(1.05); /* Efecto de hinchazón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de cancelar */
+.cancel-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: var(--gris-oscuro-boton); /* Gris para el botón de cancelar */
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: var(--gris-oscuro-boton-hover); /* Gris oscuro en hover */
+    transform: scale(1.05);
+}
+
+/* Estilos para hacer la interfaz responsive */
+@media (max-width: 768px) {
+    .perfil-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .perfil-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .perfil-detalles {
+        font-size: 1rem;
+    }
+
+    .perfil-container input[type="text"],
+    .perfil-container input[type="email"],
+    .perfil-container input[type="password"] {
+        font-size: 1rem;
+    }
+}
+
+.edit-btn {
+    background-color: var(--amarillo);
+}
+.edit-btn:hover {
+    background-color: var(--amarillo-oscuro);
+}
+
+.save-btn {
+    background-color: var(--turquesa);
+}
+.save-btn:hover {
+    background-color: #17a689;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: var(--gris-oscuro);
+}
+

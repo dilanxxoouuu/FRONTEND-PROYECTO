@@ -1,0 +1,150 @@
+/* Definir los colores */
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #f2f2f2;
+  /* Color gris-claro */
+  --gris: #ccc;
+  --gris-oscuro: #333;
+  --gris-medio: #808080;
+  --negro: #000000;
+  /* Color negro */
+}
+
+
+
+/* Navbar CSS */
+.Navbar-container {
+  position: relative;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--negro);
+  /* Fondo negro */
+  padding: 10px 20px;
+  color: var(--blanco);
+  text-decoration-style: none;
+  /* Texto blanco */
+}
+
+.navbar-logo h1 {
+  margin: 0;
+  color: var(--blanco);
+  /* Logo en blanco */
+}
+
+.navbar-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.navbar-links li {
+  margin: 0 10px;
+}
+
+.navbar-links a {
+  color: var(--blanco);
+  /* Texto de los enlaces en blanco */
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  /* Transición suave para el hover */
+}
+
+.navbar-links a:hover {
+  color: var(--gris-medio);
+  /* Cambiar el color a gris medio en el hover */
+}
+
+/* Icono del carrito */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  color: var(--blanco);
+  /* Icono del carrito en blanco */
+  transition: color 0.3s ease;
+  z-index: 10;
+  /* Añadir un z-index para asegurarnos de que el icono está por encima de otros elementos */
+}
+
+.cart-icon:hover {
+  color: var(--gris-medio);
+  /* Cambiar el color a gris medio en el hover */
+}
+
+/* Badge del carrito */
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 12px;
+  z-index: 20;
+  /* Asegura que el badge se muestre sobre otros elementos */
+}
+
+/* Detalles del carrito */
+.cart-details {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: var(--blanco);
+  /* Fondo blanco para los detalles */
+  border: 1px solid var(--gris);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  z-index: 100;
+  /* Un valor de z-index alto para asegurarse de que los detalles del carrito estén sobre otros componentes */
+}
+
+.cart-details h3 {
+  margin-top: 0;
+}
+
+.cart-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-details ul li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.cart-details p {
+  font-weight: bold;
+}
+
+
+.go-to-cart-button {
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.go-to-cart-button:hover {
+  background-color: var(--gris-medio);
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

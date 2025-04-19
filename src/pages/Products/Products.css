@@ -1,0 +1,252 @@
+/* Products.css */
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #ddd;
+  --gris-medio: #f9f9f9;
+  --gris-oscuro: #333;
+  --gris-dark: #555;
+  --rojo: #d32f2f;
+  --naranja: #ff9800;
+  --azul: #007bff;
+  --azul-hover: #0069d9;
+}
+
+.products-container {
+  max-width: 1600px;
+  margin: 90px auto;
+  padding: 20px;
+  text-align: center;
+  background-color: var(--blanco);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+}
+
+.products-title {
+  color: var(--gris-oscuro);
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.category-filter {
+  margin-bottom: 20px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 productos por fila en pantallas grandes */
+  gap: 20px;
+  padding-top: 2%;
+}
+
+.product-card {
+  background-color: var(--blanco);
+  border: 1px solid var(--gris-claro);
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  min-height: 500px;
+  max-height: 560px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.product-title {
+  font-size: 1.3rem;
+  color: var(--gris-dark);
+  margin: 10px 0;
+  text-align: center;
+  min-height: 40px;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: var(--gris-oscuro);
+  text-align: center;
+  margin-bottom: 10px;
+  height: auto;
+  min-height: 60px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Muestra hasta 3 líneas */
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  color: var(--rojo);
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.product-stock {
+  font-size: 0.95rem;
+  color: var(--gris-dark);
+  text-align: center;
+  margin-bottom: 15px;
+  min-height: 24px;
+}
+
+.product-footer {
+  margin-top: auto;
+  text-align: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+}
+
+.add-to-cart-button {
+  background-color: var(--gris-medio);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  margin-top: auto;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.add-to-cart-button:hover {
+  background-color: var(--gris-dark);
+}
+
+.add-to-cart-button:disabled {
+  background-color: var(--gris-claro);
+  cursor: not-allowed;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.pagination-button {
+  background-color: #f1f1f1;
+  border: 1px solid var(--gris-claro);
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-button:hover {
+  background-color: var(--gris-dark);
+  color: black;
+}
+
+.pagination-button.active {
+  background-color: var(--gris-claro);
+  color: black;
+  border-color: var(--gris-oscuro);
+}
+
+/* 🔁 Responsive */
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 productos por fila en pantallas medianas */
+  }
+
+  .product-description {
+    -webkit-line-clamp: 4;
+  }
+
+  .product-image {
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 productos por fila en pantallas pequeñas */
+  }
+
+  .product-card {
+    min-height: 480px;
+    max-height: 540px;
+  }
+
+  .product-title {
+    font-size: 1.2rem;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-container {
+    padding: 10px;
+  }
+
+  .product-card {
+    padding: 10px;
+    min-height: 450px;
+    max-height: 500px;
+  }
+
+  .add-to-cart-button {
+    padding: 8px 10px;
+  }
+}
+
+/* Cambiaremos el estilo de la clase Toastify */
+.Toastify__toast-container {
+  position: absolute !important;
+  top: 20px;  /* Asegura que se mantenga visible en la parte superior */
+  right: 20px;  /* Asegura que se mantenga visible en la parte derecha */
+  z-index: 9999;  /* Se asegura que esté por encima de otros elementos */
+}
+
+/* Personalización de Toast */
+.Toastify__toast {
+  background-color: var(--azul);
+  color: white;
+  border-radius: 5px;
+}
+
+/* Si tienes un navbar con un z-index, asegúrate de que el Toast no lo tape */
+.Toastify__toast-container--top-right {
+  top: 120px;  /* Ajusta según la altura de tu navbar */
+  z-index: 999; /* Debería ser un z-index más bajo que el navbar */
+}
+
+/* Responsive paginación */
+@media (max-width: 768px) {
+  .pagination-button {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-button {
+    padding: 6px 10px;
+  }
+}

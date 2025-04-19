@@ -1,0 +1,119 @@
+/* Login.css */
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #ddd;
+  --gris-medio: #919191;
+  --gris-oscuro: #333;
+  --gris-oscuro-hover: #afafaf;
+  --rojo: #ff0000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+
+body {
+  background-color: var(--blanco);
+  background-image: url(../../assets/images/Blancos.jpg);
+  color: var(--gris-oscuro);
+}
+
+.login-container {
+  max-width: 300px;
+  margin: 120px auto;
+  padding: 20px;
+  background-color: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.input-group input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--gris-claro);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.input-error {
+  border-color: var(--rojo);
+}
+
+.error {
+  color: var(--rojo);
+  font-size: 0.8rem;
+}
+
+.submit-button {
+  background-color: var(--gris-medio);
+  color: var(--blanco);
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: var(--gris-oscuro-hover);
+}
+
+/* === NOTIFICACIÓN TOAST FLOTANTE === */
+.login-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4BB543;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 10000;
+  animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}

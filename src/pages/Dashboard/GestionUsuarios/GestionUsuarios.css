@@ -1,0 +1,134 @@
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;  /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191; /* Color de hover */
+    --gris-oscuro-claro: #aaa; /* Gris más claro para texto */
+    --morado-brillante: #452155; /* Morado brillante */
+    --gris-medio: #a9a9a9; /* Gris medio para los botones */
+    --azul: #007bff; /* Azul para botones */
+    --azul-oscuro: #0056b3; /* Azul oscuro para hover */
+    --amarillo: #ffc107; /* Amarillo para editar */
+    --amarillo-oscuro: #e0a800; /* Amarillo oscuro para hover */
+    --rojo: #dc3545; /* Rojo para eliminar */
+    --rojo-oscuro: #b02a37; /* Rojo oscuro para hover */
+    --gris-oscuro-boton: #6c757d; /* Gris para el botón de atrás */
+    --gris-oscuro-boton-hover: #565e64; /* Gris oscuro para hover */
+}
+
+/* Estilos generales de la gestión de usuarios */
+.gestion-usuario {
+    max-width: 800px;
+    margin: 90px auto;
+    padding: 20px;
+    text-align: center;
+    background-color: var(--blanco); /* Fondo blanco */
+    border-radius: 25px;
+}
+
+/* Títulos principales */
+h1 {
+    color: var(--gris-oscuro); /* Gris oscuro para el título */
+    margin-bottom: 20px;
+}
+
+/* Estilos del formulario de usuario */
+.user-form {
+    margin-bottom: 30px;
+}
+
+.user-form h2 {
+    color: var(--gris); /* Gris para subtítulos */
+    margin-bottom: 15px;
+}
+
+.user-form input {
+    margin: 5px;
+    padding: 10px;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--gris); /* Borde gris */
+    border-radius: 5px;
+}
+
+.user-form button {
+    padding: 10px 20px;
+    background-color: var(--azul); /* Azul para el botón */
+    color: var(--blanco); /* Texto blanco */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.user-form button:hover {
+    background-color: var(--azul-oscuro); /* Azul oscuro en hover */
+}
+
+/* Estilos para la lista de usuarios */
+.user-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Estilos de cada ítem de usuario */
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gris); /* Borde gris entre ítems */
+    padding: 10px 0;
+}
+
+.user-item p {
+    margin: 0;
+    color: var(--gris-oscuro); /* Gris oscuro para el texto */
+}
+
+/* Acciones de usuario (editar, eliminar) */
+.user-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: var(--amarillo); /* Amarillo para editar */
+    color: var(--blanco); /* Texto blanco */
+}
+
+.edit-btn:hover {
+    background-color: var(--amarillo-oscuro); /* Amarillo oscuro en hover */
+}
+
+.delete-btn {
+    background-color: var(--rojo); /* Rojo para eliminar */
+    color: var(--blanco); /* Texto blanco */
+}
+
+.delete-btn:hover {
+    background-color: var(--rojo-oscuro); /* Rojo oscuro en hover */
+}
+
+/* Botón de regreso */
+.back-btn {
+    padding: 10px 20px;
+    background-color: var(--gris-oscuro-boton); /* Gris oscuro para el botón de atrás */
+    color: var(--blanco); /* Texto blanco */
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: var(--gris-oscuro-boton-hover); /* Gris oscuro en hover */
+}

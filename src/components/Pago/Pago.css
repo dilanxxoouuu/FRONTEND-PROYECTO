@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+:root {
+    --blanco: #ffffff;
+    --gris-claro: #f7f7f7;
+    --gris: #a7a7a7;
+    --gris-oscuro: #555555;
+    --negro: #000000;
+    --gris-medio: #808080;
+    --azul: #007bff;
+    --verde: #28a745;
+    --rojo: #dc3545;
+}
+
+/* Aplicar la tipografía a toda la aplicación */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+/* Animación de desvanecimiento para todo el body */
+body {
+    background-color: var(--gris-claro);
+    background-size: cover;
+    color: var(--gris-oscuro);
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+    transition: background-color 0.5s ease;
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===================== Formulario de Pago y Envío ===================== */
+
+/* Estilo general del formulario */
+.checkout-form {
+    background-color: var(--blanco);
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    opacity: 0;
+    animation: slideIn 1s ease-out forwards;
+}
+
+/* Animación de deslizamiento */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Encabezado del formulario */
+.checkout-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--negro);
+    font-size: 2rem;
+}
+
+/* Estilo de los campos del formulario */
+.checkout-form textarea,
+.checkout-form select,
+.checkout-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--gris-oscuro);
+}
+
+.checkout-form textarea {
+    height: 120px;
+}
+
+.checkout-form input[type="text"],
+.checkout-form input[type="number"] {
+    padding: 10px;
+}
+
+/* Estilo del botón de confirmación */
+.checkout-form button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: var(--azul);
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkout-form button:hover {
+    background-color: var(--verde);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el título y los subtítulos */
+.checkout-form h3 {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: var(--gris-oscuro);
+}
+
+.checkout-form p {
+    font-size: 1rem;
+    color: var(--gris-medio);
+}
+
+/* ===================== Sección de Carrito y Resumen de Pago ===================== */
+
+/* Estilo de la caja del carrito */
+.cart-summary {
+    background-color: var(--blanco);
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+}
+
+.cart-summary h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--negro);
+}
+
+.cart-summary ul {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
+
+.cart-summary ul li {
+    padding: 10px;
+    border-bottom: 1px solid var(--gris-oscuro);
+    font-size: 1rem;
+    color: var(--gris-oscuro);
+}
+
+.cart-summary ul li span {
+    font-weight: bold;
+}
+
+.cart-summary p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gris-oscuro);
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.cart-summary .total {
+    font-size: 1.5rem;
+    color: var(--azul);
+}
+
+.cart-summary button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: var(--azul);
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cart-summary button:hover {
+    background-color: var(--verde);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================== Media Queries ===================== */
+
+/* Pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    .checkout-form {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .cart-summary {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .checkout-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .checkout-form textarea,
+    .checkout-form select,
+    .checkout-form input {
+        font-size: 0.9rem;
+    }
+
+    .cart-summary p {
+        font-size: 1rem;
+    }
+}
+
+/* Pantallas grandes (escritorio) */
+@media (min-width: 1025px) {
+    .checkout-form {
+        width: 60%;
+        padding: 30px;
+    }
+
+    .cart-summary {
+        width: 60%;
+        padding: 30px;
+    }
+
+    .checkout-form h2 {
+        font-size: 2rem;
+    }
+}

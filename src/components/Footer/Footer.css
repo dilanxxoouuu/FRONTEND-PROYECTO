@@ -1,0 +1,99 @@
+:root {
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;
+    /* Color turquesa */
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --gris-intermedio: #919191;
+    /* Color de hover */
+    --gris-oscuro-claro: #aaa;
+    /* Gris más claro para texto */
+}
+
+/* Estilos generales del footer */
+.footer {
+    background-color: var(--gris-oscuro);
+    color: var(--blanco);
+    padding: 40px 0;
+    text-align: center;
+    font-size: 13px;
+    border-radius: 35px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-logo h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--blanco);
+}
+
+.footer-logo p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--gris-oscuro-claro);
+}
+
+.footer-links ul,
+.footer-socials ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links li,
+.footer-socials li {
+    display: inline-block;
+}
+
+.footer-links a,
+.footer-socials a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-socials a:hover {
+    color: var(--gris-intermedio);
+    /* Usando la variable de hover */
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--gris-oscuro-claro);
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-logo {
+        margin-bottom: 20px;
+    }
+
+    .footer-links,
+    .footer-socials {
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,33 @@
+.product-detail {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-detail img {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px 0;
+}
+
+.product-detail h1 {
+    font-size: 2rem;
+}
+
+.product-detail p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.product-detail label {
+    margin-right: 10px;
+}
+
+.product-detail button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
