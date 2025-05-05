@@ -1,0 +1,207 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.gestion-productos {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Títulos */
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+/* Botones */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Estilo para los botones "Regresar al Dashboard" y "Refrescar Productos" */
+.back-btn, .refresh-btn {
+    background-color: #28a745;
+}
+
+.back-btn:hover, .refresh-btn:hover {
+    background-color: #218838;
+}
+
+/* Formulario */
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.product-form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.product-form input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Estilo para la lista de productos */
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+
+/* Estilo para cada card de producto */
+.product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%; /* Asegura que la card tenga un tamaño consistente */
+    width: 100%; /* Se ajusta al contenedor de grid */
+}
+
+
+/* Efecto hover de la card */
+.product-item:hover {
+    transform: scale(1.05);
+    background-color: #f7f7f7;
+}
+
+/* Contenedor de la información del producto */
+.product-item .product-info {
+    margin-bottom: 15px;
+    text-align: center; /* Centra el texto de la información */
+}
+
+/* Estilo para la imagen */
+.product-item img {
+    max-width: 80%; /* Limita el ancho máximo de la imagen para que no se desborde */
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo para los botones de cada card (Editar y Eliminar) */
+.edit-btn, .delete-btn {
+    background-color: #ffc107;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Centro de botones en cada card */
+.center-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Espaciado adicional */
+.center-btns button {
+    width: 48%;
+}
+
+/* Estilos para la validación de formulario */
+input:invalid {
+    border-color: red;
+}
+
+/* Mensajes de alerta */
+.alert {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+
+/* Para pantallas grandes */
+@media (min-width: 1200px) {
+    .product-list ul {
+        grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+    }
+}
+
+/* Para pantallas medianas */
+@media (max-width: 992px) {
+    .product-list ul {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    }
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .product-list ul {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .product-list ul {
+        grid-template-columns: 1fr; /* 1 columna */
+    }
+}

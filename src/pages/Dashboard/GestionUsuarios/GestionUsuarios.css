@@ -1,0 +1,254 @@
+:root { 
+    --blanco: #ffffff;
+    --turquesa: #1abc9c;
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --azul: #007bff;
+    --amarillo: #ffc107;
+    --rojo: #dc3545;
+    --gris-medio: #6c757d;
+    --azul-hover: #0069d9;
+    --amarillo-hover: #e0a800;
+    --rojo-hover: #c82333;
+}
+
+.gestion-usuarios {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--blanco);
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.back-btn, .refresh-btn {
+    padding: 0.7rem 1.5rem;
+    width: 200px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.back-btn {
+    background-color: var(--gris-medio);
+    color: var(--blanco);
+}
+
+.back-btn:hover {
+    background-color: var(--gris-oscuro);
+}
+
+.refresh-btn {
+    background-color: var(--turquesa);
+    color: var(--blanco);
+}
+
+.refresh-btn:hover {
+    background-color: #16a085;
+}
+
+.error-message {
+    color: var(--rojo);
+    background-color: #f8d7da;
+    padding: 0.8rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f5c6cb;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.user-form {
+    background-color: var(--gris-claro);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 500px;
+}
+
+.user-form h2 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.user-form input {
+    padding: 0.8rem;
+    width: 100%;
+    border: 1px solid var(--gris);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.submit-btn, .cancel-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.submit-btn {
+    background-color: var(--azul);
+    color: var(--blanco);
+}
+
+.submit-btn:hover {
+    background-color: var(--azul-hover);
+}
+
+.cancel-btn {
+    background-color: var(--gris);
+    color: var(--gris-oscuro);
+}
+
+.cancel-btn:hover {
+    background-color: #b3b3b3;
+}
+
+.users-list h2 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.users-list h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--turquesa);
+}
+
+.no-users {
+    color: var(--gris-medio);
+    font-style: italic;
+    padding: 2rem;
+}
+
+.users-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.user-card {
+    background-color: var(--blanco);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.user-header {
+    background-color: var(--turquesa);
+    color: var(--blanco);
+    padding: 0.8rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-id {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.superadmin-badge {
+    background-color: var(--amarillo);
+    color: var(--gris-oscuro);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.user-body {
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.user-body p {
+    margin: 0.5rem 0;
+    color: var(--gris-oscuro);
+}
+
+.user-footer {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    background-color: var(--gris-claro);
+    gap: 0.8rem;
+}
+
+.edit-btn, .delete-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background-color: var(--amarillo);
+    color: var(--gris-oscuro);
+}
+
+.edit-btn:hover {
+    background-color: var(--amarillo-hover);
+}
+
+.delete-btn {
+    background-color: var(--rojo);
+    color: var(--blanco);
+}
+
+.delete-btn:hover {
+    background-color: var(--rojo-hover);
+}
