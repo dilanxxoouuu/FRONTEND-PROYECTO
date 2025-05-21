@@ -1,0 +1,310 @@
+:root { 
+    --blanco: #ffffff;
+    --gris-claro: #f7f7f7;
+    --gris: #ccc;
+    --gris-oscuro: #333;
+    --azul: #007bff;
+    --amarillo: #ffc107;
+    --rojo: #dc3545;
+    --gris-medio: #6c757d;
+    --azul-hover: #0069d9;
+    --amarillo-hover: #e0a800;
+    --rojo-hover: #c82333;
+    --verde: #28a745;
+    --verde-hover: #218838;
+}
+
+.gestion-stock {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--blanco);
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.back-btn, .refresh-btn {
+    padding: 0.7rem 1.5rem;
+    width: 200px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.back-btn {
+    background-color: var(--gris-medio);
+    color: var(--blanco);
+}
+
+.back-btn:hover {
+    background-color: var(--gris-oscuro);
+}
+
+
+
+.refresh-btn:hover {
+    background-color: #16a085;
+}
+
+.refresh-btn:disabled {
+    background-color: var(--gris);
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: var(--rojo);
+    background-color: #f8d7da;
+    padding: 0.8rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f5c6cb;
+}
+
+.productos-container h2 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.productos-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--turquesa);
+}
+
+.no-products {
+    color: var(--gris-medio);
+    font-style: italic;
+    padding: 2rem;
+}
+
+.productos-table-container {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.productos-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--blanco);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.productos-table th {
+    background-color: var(--turquesa);
+    color: var(--blanco);
+    padding: 1rem;
+    text-align: left;
+}
+
+.productos-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gris-claro);
+    color: var(--gris-oscuro);
+}
+
+.productos-table tr:hover td {
+    background-color: rgba(26, 188, 156, 0.05);
+}
+
+.low-stock {
+    color: var(--rojo);
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.stock-control {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.stock-control input {
+    padding: 0.5rem;
+    border: 1px solid var(--gris);
+    border-radius: 5px;
+    width: 80px;
+}
+
+.stock-control select {
+    padding: 0.5rem;
+    border: 1px solid var(--gris);
+    border-radius: 5px;
+    background-color: var(--blanco);
+}
+
+.apply-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--verde);
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    background-color: var(--verde-hover);
+}
+
+.apply-btn:disabled {
+    background-color: var(--gris);
+    cursor: not-allowed;
+}
+
+.history-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--azul);
+    color: var(--blanco);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.history-btn:hover {
+    background-color: var(--azul-hover);
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-content h2 {
+    color: var(--gris-oscuro);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gris-oscuro);
+}
+
+.modal-close:hover {
+    color: var(--rojo);
+}
+
+.historial-table-container {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.historial-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.historial-table th {
+    background-color: var(--turquesa);
+    color: var(--blanco);
+    padding: 1rem;
+    text-align: left;
+}
+
+.historial-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gris-claro);
+    color: var(--gris-oscuro);
+}
+
+.historial-table tr:hover td {
+    background-color: rgba(26, 188, 156, 0.05);
+}
+
+.positive {
+    color: var(--verde);
+    font-weight: bold;
+}
+
+.negative {
+    color: var(--rojo);
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .stock-control {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .productos-table th, 
+    .productos-table td {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .back-btn, .refresh-btn {
+        width: 100%;
+    }
+    
+    .modal-content {
+        padding: 1rem;
+    }
+}

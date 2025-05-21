@@ -1,0 +1,134 @@
+:root {
+  /* Paleta Minimalista */
+  --blanco: #FFFFFF;
+  --gris-claro: #F5F5F5;
+  --gris-claro-alt: #E0E0E0;
+  --gris-oscuro: #333333;
+  --verde-esmeralda: #00C853;
+  --azul-brillante: #2962FF;
+  --azul-oscuro: #1A237E;
+  --gris-texto: #757575;
+}
+
+/* Estilos generales del dashboard */
+.dashboard {
+    margin: 80px auto;
+    padding: 30px;
+    background-color: var(--blanco);
+    text-align: center;
+    max-width: 1200px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard h1 {
+    color: var(--gris-oscuro);
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.dashboard p {
+    color: var(--gris-texto);
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+/* Contenedor de los botones del administrador */
+.admin-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+/* Estilos para los botones */
+.admin-btn {
+    padding: 15px 25px;
+    background-color: var(--azul-brillante);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-btn .btn-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.admin-btn:hover {
+    background-color: var(--azul-oscuro);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-btn:active {
+    transform: translateY(1px);
+}
+
+/* ---------------------------------------------
+   Media Queries
+--------------------------------------------- */
+
+/* Móviles (pantallas ≤ 600px) */
+@media (max-width: 600px) {
+  .dashboard {
+    margin: 60px 15px;
+    padding: 20px 15px;
+  }
+
+  .dashboard h1 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard p {
+    font-size: 1rem;
+  }
+
+  .admin-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .admin-btn {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+  }
+}
+
+/* Tabletas (601px – 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .dashboard {
+    margin: 70px 20px;
+    padding: 25px;
+  }
+
+  .admin-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-btn {
+    min-width: 180px;
+    padding: 14px 20px;
+  }
+}
+
+/* Escritorios grandes (≥ 1025px) */
+@media (min-width: 1025px) {
+  .admin-buttons {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

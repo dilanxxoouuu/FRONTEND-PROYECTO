@@ -1,0 +1,219 @@
+:root {
+  --blanco: #FFFFFF;
+  --gris-claro: #F5F5F5;
+  --gris-claro-alt: #E0E0E0;
+  --gris-oscuro: #333333;
+  --verde-esmeralda: #00C853;
+  --azul-brillante: #2962FF;
+  --amarillo-accion: #FFD600;
+  --rojo-error: #FF5252;
+}
+
+/* Estilos generales */
+.perfil-container {
+  max-width: 600px;
+  margin: 90px auto 40px;
+  padding: 30px;
+  background-color: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+
+/* Títulos */
+.perfil-container h2 {
+  color: var(--gris-oscuro);
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.perfil-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--azul-brillante);
+}
+
+/* Modo visualización */
+.perfil-detalles {
+  background-color: var(--gris-claro);
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 25px;
+  border-left: 4px solid var(--azul-brillante);
+}
+
+.perfil-detalles p {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: var(--blanco);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.perfil-detalles strong {
+  color: var(--gris-oscuro);
+  margin-right: 10px;
+}
+
+/* Formulario de edición */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Campos de formulario */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--gris-oscuro);
+}
+
+.perfil-container input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--gris-claro-alt);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--blanco);
+}
+
+.perfil-container input:focus {
+  border-color: var(--azul-brillante);
+  box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.1);
+  outline: none;
+}
+
+/* Contenedores de botones */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.button-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Botones */
+.perfil-container button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.edit-btn {
+  background-color: var(--azul-brillante);
+  color: var(--blanco);
+}
+
+.edit-btn:hover {
+  background-color: var(--gris-oscuro);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn {
+  background-color: var(--verde-esmeralda);
+  color: var(--blanco);
+}
+
+.save-btn:hover {
+  background-color: #00B34A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+  background-color: var(--gris-claro-alt);
+  color: var(--gris-oscuro);
+}
+
+.cancel-btn:hover {
+  background-color: var(--gris-claro);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Iconos */
+.perfil-container button svg {
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+/* Mensajes */
+.error {
+  color: var(--rojo-error);
+  text-align: center;
+  padding: 15px;
+  background-color: rgba(255, 82, 82, 0.1);
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-container {
+    margin: 70px 20px 30px;
+    padding: 20px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .perfil-container button {
+    width: 100%;
+  }
+  
+  .perfil-detalles p {
+    flex-direction: column;
+  }
+  
+  .perfil-detalles strong {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfil-container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .perfil-container input {
+    padding: 10px 12px;
+  }
+  
+  .perfil-container button {
+    padding: 10px 15px;
+    min-width: 150px;
+  }
+}

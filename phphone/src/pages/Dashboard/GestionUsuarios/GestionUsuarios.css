@@ -1,0 +1,297 @@
+/* Paleta de colores del navbar */
+:root {
+  --blanco: #FFFFFF;
+  --gris-claro: #F5F5F5;
+  --gris-claro-alt: #E0E0E0;
+  --gris-oscuro: #333333;
+  --verde-esmeralda: #00C853;
+  --azul-brillante: #2962FF;
+  --amarillo-accion: #FFD600;
+  --rojo-error: #FF5252;
+}
+
+/* Estilos generales */
+.gestion-usuarios {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  color: var(--gris-oscuro);
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background-color: var(--azul-brillante);
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.back-btn, 
+.refresh-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn {
+  background-color: var(--gris-claro-alt);
+  color: var(--gris-oscuro);
+}
+
+.back-btn:hover {
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+}
+
+.refresh-btn {
+  background-color: var(--azul-brillante);
+  color: var(--blanco);
+}
+
+.refresh-btn:hover {
+  background-color: var(--gris-oscuro);
+}
+
+/* Mensajes de error */
+.error-message {
+  color: var(--rojo-error);
+  background-color: rgba(255, 82, 82, 0.1);
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  text-align: center;
+  border-left: 4px solid var(--rojo-error);
+}
+
+/* Formulario */
+.form-container {
+  margin-bottom: 30px;
+}
+
+.user-form {
+  background-color: var(--gris-claro);
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 80%; /* Cambiado de 500px a 700px (o el valor que prefieras) */
+  margin: 0 auto;
+}
+
+.user-form h2 {
+  color: var(--gris-oscuro);
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.user-form input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--gris-claro-alt);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.user-form input:focus {
+  border-color: var(--azul-brillante);
+  box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.1);
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.submit-btn, 
+.cancel-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn {
+  background-color: var(--verde-esmeralda);
+  color: var(--blanco);
+}
+
+.submit-btn:hover {
+  background-color: #00B34A;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background-color: var(--gris-claro-alt);
+  color: var(--gris-oscuro);
+}
+
+.cancel-btn:hover {
+  background-color: var(--gris-claro);
+  transform: translateY(-2px);
+}
+
+/* Lista de usuarios */
+.users-list h2 {
+  color: var(--gris-oscuro);
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.no-users {
+  color: var(--gris-oscuro);
+  text-align: center;
+  padding: 30px;
+  opacity: 0.7;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Tarjetas de usuario */
+.user-card {
+  background-color: var(--blanco);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.user-header {
+  background-color: var(--azul-brillante);
+  color: var(--blanco);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-id {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.superadmin-badge {
+  background-color: var(--amarillo-accion);
+  color: var(--gris-oscuro);
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.user-body {
+  padding: 20px;
+}
+
+.user-body p {
+  margin: 10px 0;
+  color: var(--gris-oscuro);
+}
+
+.user-body strong {
+  color: var(--gris-oscuro);
+}
+
+.user-footer {
+  padding: 15px;
+  background-color: var(--gris-claro);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.edit-btn, 
+.delete-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background-color: var(--azul-brillante);
+  color: var(--blanco);
+}
+
+.edit-btn:hover {
+  background-color: var(--gris-oscuro);
+}
+
+.delete-btn {
+  background-color: var(--rojo-error);
+  color: var(--blanco);
+}
+
+.delete-btn:hover {
+  background-color: #E53935;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .back-btn, 
+  .refresh-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .users-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-form {
+    padding: 20px;
+  }
+}

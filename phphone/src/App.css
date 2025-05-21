@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Montserrat+Alternates|Poppins&display=swap');
+
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #f7f7f7;
+  --gris: #a7a7a7;
+  --gris-oscuro: #555555;
+  --negro: #000000;
+  --gris-medio: #808080;
+}
+
+/* Estructura base para mantener el footer abajo */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #bebebe, #e3e3e3, #bebebe);
+  color: var(--gris-oscuro);
+  font-family: 'Montserrat Alternates', sans-serif;
+  opacity: 0;
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* Aplicar la tipografía y reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: margin 0.5s ease, padding 0.5s ease;
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Animación de desvanecimiento para textos */
+h1, h2, h3, p {
+  opacity: 0;
+  animation: fadeInText 1.5s ease-out forwards;
+}
+
+h1 { animation-delay: 0.5s; }
+h2 { animation-delay: 1s; }
+p { animation-delay: 1.5s; }
+
+@keyframes fadeInText {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Estilos para secciones */
+section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 1s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+button:hover {
+  background-color: var(--gris);
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos específicos para el footer */
+footer {
+  flex-shrink: 0;
+  width: 100%;
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 40px 0 20px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px; /* Solo necesario si no usas navbar-spacer */
+}

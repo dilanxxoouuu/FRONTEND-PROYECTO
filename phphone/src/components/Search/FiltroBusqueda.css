@@ -1,0 +1,136 @@
+/* Paleta de colores del navbar */
+:root {
+  --blanco: #FFFFFF;
+  --gris-claro: #F5F5F5;
+  --gris-claro-alt: #E0E0E0;
+  --gris-oscuro: #333333;
+  --verde-esmeralda: #00C853;
+  --azul-brillante: #2962FF;
+  --amarillo-accion: #FFD600;
+}
+
+/* Estilos para el panel lateral de filtros */
+.filter-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: var(--blanco);
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 25px;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.filter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filter-content h3 {
+  color: var(--gris-oscuro);
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--gris-claro-alt);
+}
+
+/* Elementos del filtro */
+.filter-item {
+  margin-bottom: 15px;
+}
+
+.filter-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--gris-oscuro);
+}
+
+.filter-item input[type="text"],
+.filter-item input[type="number"],
+.filter-item select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--gris-claro-alt);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+  border-color: var(--azul-brillante);
+  box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.1);
+  outline: none;
+}
+
+.filter-item input[type="checkbox"] {
+  width: auto;
+  margin-left: 10px;
+  accent-color: var(--azul-brillante);
+}
+
+/* Botones */
+.apply-filters-button {
+  background-color: var(--azul-brillante);
+  color: var(--blanco);
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.apply-filters-button:hover {
+  background-color: var(--gris-oscuro);
+  transform: translateY(-2px);
+}
+
+.close-filter-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--gris-oscuro);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-filter-btn:hover {
+  background-color: var(--gris-claro-alt);
+  color: var(--azul-brillante);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .filter-sidebar {
+    width: 280px;
+    padding: 20px 15px;
+  }
+  
+  .filter-item input[type="text"],
+  .filter-item input[type="number"],
+  .filter-item select {
+    padding: 8px 10px;
+  }
+  
+  .apply-filters-button {
+    padding: 10px;
+  font-size: 0.9rem;
+  }
+}
