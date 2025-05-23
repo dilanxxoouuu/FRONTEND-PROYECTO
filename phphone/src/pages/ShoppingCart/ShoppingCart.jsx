@@ -340,26 +340,35 @@ const ShoppingCart = () => {
   };
 
   
-  const submitShippingInfo = async () => {
-    try {
-      const headers = getAuthHeaders();
-      const response = await axios.post('http://localhost:5000/envio', {
-        direccion: shippingDetails.direccion,
-        ciudad: shippingDetails.ciudad,
-        departamento: shippingDetails.departamento,
-        codigo_postal: shippingDetails.codigo_postal,
-        pais: shippingDetails.pais,
-        estado_envio: "En camino a tu hogar"
-      }, { headers });
-  
-      setShippingSubmitted(true);
-      alert("Datos de envío guardados con éxito");
-    } catch (err) {
-      console.error("Error al enviar datos de envío:", err);
-      alert("Error al guardar datos de envío");
+const submitShippingInfo = async () => {
+  try {
+    const headers = getAuthHeaders();
+    
+    // Primero obtenemos la factura más reciente del usuario
+    const facturaResponse = await axios.get('http://localhost:5000/factura/ultima', { headers });
+    const id_factura = facturaResponse.data.id_factura;
+
+    if (!id_factura) {
+      throw new Error("No se encontró una factura válida");
     }
-  };
-  
+
+    const response = await axios.post('http://localhost:5000/envio', {
+      direccion: shippingDetails.direccion,
+      ciudad: shippingDetails.ciudad,
+      departamento: shippingDetails.departamento,
+      codigo_postal: shippingDetails.codigo_postal,
+      pais: shippingDetails.pais,
+      estado_envio: "Empacando",
+      id_factura: id_factura  // Añadimos el id_factura requerido
+    }, { headers });
+
+    setShippingSubmitted(true);
+    alert("Datos de envío guardados con éxito");
+  } catch (err) {
+    console.error("Error al enviar datos de envío:", err);
+    alert("Error al guardar datos de envío: " + (err.response?.data?.error || err.message));
+  }
+};
   
 
   useEffect(() => {
@@ -378,7 +387,7 @@ const ShoppingCart = () => {
         </div>
         {cartItems.map((product) => (
           <div className="cart-item" key={product.id_producto}>
-            <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
+            <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} />
             <div className="cart-info">
               <h4>{product.producto_nombre}</h4>
               <p className="description">{product.descripcion}</p>
