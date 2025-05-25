@@ -7,6 +7,8 @@
   --azul-brillante: #2962FF;
   --amarillo-accion: #FFD600;
   --rojo-error: #FF5252;
+  --azul-prueba: #1c2f5e;
+  --azule-pp: #182852;
 }
 
 .gestion-productos {
@@ -199,7 +201,7 @@ h1::after {
 }
 
 .product-title {
-    color: var(--gris-oscuro);
+    color: var(--azule-pp);
     margin-bottom: 10px;
     font-size: 1.1rem;
 }
@@ -212,7 +214,7 @@ h1::after {
 }
 
 .product-price {
-    color: var(--verde-esmeralda);
+    color: var(--gris-oscuro);
     font-weight: bold;
     margin-bottom: 5px;
 }

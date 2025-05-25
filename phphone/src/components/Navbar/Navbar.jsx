@@ -16,6 +16,7 @@ const Navbar = ({ cart = [] }) => {
     const [showCart, setShowCart] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     const location = useLocation();
 
@@ -55,6 +56,25 @@ const Navbar = ({ cart = [] }) => {
     useEffect(() => {
         checkLoginStatus();
     }, [location]);
+
+    useEffect(() => {
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > lastScrollY && currentScrollY > 10) {
+        // Scroll hacia abajo: oculta el navbar
+        document.querySelector('.Navbar-container').classList.add('hidden');
+        } else {
+        // Scroll hacia arriba o en top: muestra el navbar
+        document.querySelector('.Navbar-container').classList.remove('hidden');
+        }
+        
+        setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
 
     const cartItemCount = Array.isArray(cart) ? cart.length : 0;
 

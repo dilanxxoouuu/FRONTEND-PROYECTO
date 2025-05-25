@@ -15,8 +15,6 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshInterval] = useState(10000); // 10 segundos para el refresh real
-  const [demoMode, setDemoMode] = useState(false); // Estado para controlar el modo demo
-  const [demoEstadoIndex, setDemoEstadoIndex] = useState(0); // Índice para el estado demo
 
   const getJWTToken = () => localStorage.getItem('token');
 
@@ -42,24 +40,6 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
     }
   };
 
-  // Efecto para el avance automático del estado (demo)
-  useEffect(() => {
-    if (!demoMode) return;
-
-    const demoInterval = setInterval(() => {
-      setDemoEstadoIndex(prev => {
-        const nextIndex = prev + 1;
-        if (nextIndex >= estados.length) {
-          clearInterval(demoInterval);
-          return prev;
-        }
-        return nextIndex;
-      });
-    }, 30000); // 30 segundos
-
-    return () => clearInterval(demoInterval);
-  }, [demoMode]);
-
   // Efecto para la carga real del estado
   useEffect(() => {
     // Carga inicial
@@ -72,19 +52,8 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
     return () => clearInterval(intervalId);
   }, [pedidoId, refreshInterval]);
 
-  // Función para alternar el modo demo
-  const toggleDemoMode = () => {
-    setDemoMode(!demoMode);
-    if (!demoMode) {
-      setDemoEstadoIndex(0);
-    }
-  };
-
-  // Obtener el estado actual (real o demo)
+  // Obtener el estado actual
   const getCurrentEstado = () => {
-    if (demoMode && estados[demoEstadoIndex]) {
-      return estados[demoEstadoIndex].nombre;
-    }
     return estadoActual;
   };
 
@@ -109,14 +78,16 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      onClick={onClose}
     >
       <motion.div 
         className="estado-pedido-modal"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <button className="close-modal-btn" onClick={onClose}>
+        <button className="modal-close" onClick={onClose}>
           <FaTimes />
         </button>
         
@@ -129,18 +100,13 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
               disabled={loading}
             >
               <FaSync className={loading ? 'spin' : ''} />
-            </button>
-            <button 
-              className={`demo-btn ${demoMode ? 'active' : ''}`}
-              onClick={toggleDemoMode}
-            >
-              Demo
+              {loading ? ' Actualizando...' : ' Actualizar'}
             </button>
           </div>
         </div>
         
         {loading ? (
-          <div className="loading-estado">Cargando estado del pedido...</div>
+          <div className="loading-details">Cargando estado del pedido...</div>
         ) : error ? (
           <div className="error-estado">{error}</div>
         ) : (
@@ -178,8 +144,7 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
             
             <div className="estado-actual">
               <h3>
-                Estado actual: <span style={{ color: '#4CAF50' }}>{getCurrentEstado()}</span>
-                {demoMode && <span style={{ color: '#FF9800', marginLeft: '10px' }}>(Modo Demo)</span>}
+                Estado actual: <span>{getCurrentEstado()}</span>
               </h3>
               <p>
                 {estados.find(e => e.nombre === getCurrentEstado())?.descripcion || 

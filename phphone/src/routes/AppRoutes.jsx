@@ -16,6 +16,7 @@ import GestionPagos from "../pages/Dashboard/GestionPagos/GestionPagos";
 import GestionFacturas from "../pages/Dashboard/Gestion Facturas/GestionFacturas";
 import GestionStock from "../pages/Dashboard/GestionStock/GestionStock";
 import ReportesProductos from "../pages/Dashboard/Reportes/Reportes";
+import AdminEnvios from "../pages/Dashboard/AdminEnvios/AdminEnvios";
 
 const AppRoutes = () => {
     return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
             <Route path="/GestionFacturas" element={<GestionFacturas />} />
             <Route path="/GestionStock" element={<GestionStock />} />
             <Route path="/Reportes" element={<ReportesProductos />} />
+            <Route path="/admin/envios" element={<AdminEnvios />} />
         </Routes>
     );
 };

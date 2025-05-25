@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import './ShoppingCart.css';
 
 const ShoppingCart = () => {
@@ -28,6 +29,7 @@ const ShoppingCart = () => {
     const token = localStorage.getItem("token");
     return token ? { Authorization: `Bearer ${token}` } : null;
   };
+
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
   
@@ -81,7 +83,7 @@ const ShoppingCart = () => {
         const nuevoProducto = {
           ...product,
           cantidad: 1,
-          producto_precio: product.producto_precio, // Asegúrate de que esté presente
+          producto_precio: product.producto_precio,
         };
   
         updatedCartItems = [...cartItems, nuevoProducto];
@@ -93,7 +95,6 @@ const ShoppingCart = () => {
       console.error("Error al agregar producto al carrito:", error.response ? error.response.data : error.message);
     }
   };
-  
 
   const fetchCart = async () => {
     try {
@@ -199,7 +200,6 @@ const ShoppingCart = () => {
     setShippingDetails(prev => ({ ...prev, [name]: value }));
   };
   
-
   const proceedToPayment = async () => {
     if (!validateForm()) return alert("Complete todos los campos del método de pago.");
     
@@ -238,7 +238,6 @@ const ShoppingCart = () => {
       setPaymentSuccess(true);
       setShowShippingForm(true);
       
-  
     } catch (err) {
       console.error('Error completo:', err);
       console.log('err.response:', err.response);
@@ -246,15 +245,11 @@ const ShoppingCart = () => {
       const msg = err.response?.data?.message || JSON.stringify(err.response?.data) || 'Error desconocido al procesar el pago.';
       alert(msg);
     }
-    
-    
-    
   };
-  
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
-    setUserDetails({}); // Resetear campos
+    setUserDetails({});
   };
 
   const closeModal = () => {
@@ -262,6 +257,14 @@ const ShoppingCart = () => {
     setUserDetails({});
     setPaymentSuccess(false);
     setPaymentMethod('');
+    setShippingSubmitted(false);
+    setShippingDetails({
+      direccion: '',
+      ciudad: '',
+      departamento: '',
+      codigo_postal: '',
+      pais: ''
+    });
   };
 
   const handlePaypalPayment = async () => {
@@ -280,13 +283,12 @@ const ShoppingCart = () => {
         confirmacion_id: userDetails.confirmacion_id
       }, { headers });
   
-      return { id_pago };  // ✔️ Siempre retorna
+      return { id_pago };
     } catch (err) {
       console.error('Error en pago PayPal', err);
-      return null;  // ❗️ Agregado para manejar el caso de error
+      return null;
     }
   };
-  
 
   const handleTransferPayment = async () => {
     try {
@@ -306,13 +308,12 @@ const ShoppingCart = () => {
         comprobante_url: userDetails.comprobante_url
       }, { headers });
   
-      return { id_pago };  // ✔️ Siempre retorna
+      return { id_pago };
     } catch (err) {
       console.error('Error en pago por transferencia', err);
-      return null;  // ❗️ Agregado para evitar retorno implícito de undefined
+      return null;
     }
   };
-  
 
   const handleCardPayment = async () => {
     try {
@@ -332,44 +333,41 @@ const ShoppingCart = () => {
         fecha_expiracion: userDetails.fecha_expiracion
       }, { headers });
   
-      return { id_pago };  // ✔️ Siempre retorna
+      return { id_pago };
     } catch (err) {
       console.error('Error en pago con tarjeta', err);
-      return null;  // ❗️ Evita retorno implícito de undefined
+      return null;
     }
   };
 
-  
-const submitShippingInfo = async () => {
-  try {
-    const headers = getAuthHeaders();
-    
-    // Primero obtenemos la factura más reciente del usuario
-    const facturaResponse = await axios.get('http://localhost:5000/factura/ultima', { headers });
-    const id_factura = facturaResponse.data.id_factura;
+  const submitShippingInfo = async () => {
+    try {
+      const headers = getAuthHeaders();
+      
+      const facturaResponse = await axios.get('http://localhost:5000/factura/ultima', { headers });
+      const id_factura = facturaResponse.data.id_factura;
 
-    if (!id_factura) {
-      throw new Error("No se encontró una factura válida");
+      if (!id_factura) {
+        throw new Error("No se encontró una factura válida");
+      }
+
+      const response = await axios.post('http://localhost:5000/envio', {
+        direccion: shippingDetails.direccion,
+        ciudad: shippingDetails.ciudad,
+        departamento: shippingDetails.departamento,
+        codigo_postal: shippingDetails.codigo_postal,
+        pais: shippingDetails.pais,
+        estado_envio: "Empacando",
+        id_factura: id_factura
+      }, { headers });
+
+      setShippingSubmitted(true);
+      alert("Datos de envío guardados con éxito");
+    } catch (err) {
+      console.error("Error al enviar datos de envío:", err);
+      alert("Error al guardar datos de envío: " + (err.response?.data?.error || err.message));
     }
-
-    const response = await axios.post('http://localhost:5000/envio', {
-      direccion: shippingDetails.direccion,
-      ciudad: shippingDetails.ciudad,
-      departamento: shippingDetails.departamento,
-      codigo_postal: shippingDetails.codigo_postal,
-      pais: shippingDetails.pais,
-      estado_envio: "Empacando",
-      id_factura: id_factura  // Añadimos el id_factura requerido
-    }, { headers });
-
-    setShippingSubmitted(true);
-    alert("Datos de envío guardados con éxito");
-  } catch (err) {
-    console.error("Error al enviar datos de envío:", err);
-    alert("Error al guardar datos de envío: " + (err.response?.data?.error || err.message));
-  }
-};
-  
+  };
 
   useEffect(() => {
     fetchCart();
@@ -387,7 +385,7 @@ const submitShippingInfo = async () => {
         </div>
         {cartItems.map((product) => (
           <div className="cart-item" key={product.id_producto}>
-            <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} />
+            <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
             <div className="cart-info">
               <h4>{product.producto_nombre}</h4>
               <p className="description">{product.descripcion}</p>
@@ -412,37 +410,57 @@ const submitShippingInfo = async () => {
         {recommendedProducts.length > 0 && (
           <div className="recommended-section">
             <h4>También te puede interesar</h4>
-            <div className="recommended-products">
-              {recommendedProducts.map((product) => (
-                <div className="recommended-card" key={product.id_producto}>
-                  <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
-                  <div className="recommended-info">
-                    <p>{product.producto_nombre}</p>
-                    <p>${new Intl.NumberFormat('es-CL').format(product.producto_precio)}</p>
+            <div className="recommended-products-container">
+              <div className="recommended-products">
+                {recommendedProducts.map((product) => (
+                  <div className="recommended-card" key={product.id_producto}>
+                    <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
+                    <div className="recommended-info">
+                      <p>{product.producto_nombre}</p>
+                      <p>${new Intl.NumberFormat('es-CL').format(product.producto_precio)}</p>
+                    </div>
+                    <button 
+                      className="btn-add-to-cart" 
+                      onClick={() => handleAddToCart(product)} 
+                      title="Agregar al carrito"
+                    >
+                      🛒
+                    </button>
                   </div>
-                  <button 
-                    className="btn-add-to-cart" 
-                    onClick={() => handleAddToCart(product)} 
-                    title="Agregar al carrito"
-                  >
-                    🛒
-                  </button>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
       </div>
 
-
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
+        <motion.div 
+          className="modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={closeModal}
+        >
+          <motion.div 
+            className="modal-content"
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="modal-close" onClick={closeModal}>
+              &times;
+            </button>
+            
             {!paymentSuccess ? (
               <div>
                 <h3>Método de Pago</h3>
-                <select value={paymentMethod} onChange={handlePaymentMethodChange}>
+                <select 
+                  value={paymentMethod} 
+                  onChange={handlePaymentMethodChange}
+                  className="modal-input"
+                >
                   <option value="">Seleccione método de pago</option>
                   <option value="tarjeta">Tarjeta</option>
                   <option value="transferencia">Transferencia</option>
@@ -451,97 +469,153 @@ const submitShippingInfo = async () => {
 
                 {paymentMethod === 'paypal' && (
                   <>
-                    <input name="email_paypal" placeholder="Correo PayPal" onChange={handleInputChange} />
-                    <input name="confirmacion_id" placeholder="ID de Confirmación" onChange={handleInputChange} />
+                    <input 
+                      name="email_paypal" 
+                      placeholder="Correo PayPal" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="confirmacion_id" 
+                      placeholder="ID de Confirmación" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
                   </>
                 )}
 
                 {paymentMethod === 'transferencia' && (
                   <>
-                    <input name="nombre_titular" placeholder="Nombre del Titular" onChange={handleInputChange} />
-                    <input name="banco_origen" placeholder="Banco de Origen" onChange={handleInputChange} />
-                    <input name="numero_cuenta" placeholder="Número de Cuenta" onChange={handleInputChange} />
-                    <input name="comprobante_url" placeholder="URL del Comprobante" onChange={handleInputChange} />
+                    <input 
+                      name="nombre_titular" 
+                      placeholder="Nombre del Titular" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="banco_origen" 
+                      placeholder="Banco de Origen" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="numero_cuenta" 
+                      placeholder="Número de Cuenta" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="comprobante_url" 
+                      placeholder="URL del Comprobante" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
                   </>
                 )}
 
                 {paymentMethod === 'tarjeta' && (
                   <>
-                    <input name="numero_tarjeta" placeholder="Número de Tarjeta" onChange={handleInputChange} />
-                    <input name="nombre_en_tarjeta" placeholder="Nombre en la Tarjeta" onChange={handleInputChange} />
-                    <input name="cvv" placeholder="CVV" onChange={handleInputChange} />
-                    <input name="fecha_expiracion" placeholder="Fecha de Expiración (MM/AA)" onChange={handleInputChange} />
+                    <input 
+                      name="numero_tarjeta" 
+                      placeholder="Número de Tarjeta" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="nombre_en_tarjeta" 
+                      placeholder="Nombre en la Tarjeta" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="cvv" 
+                      placeholder="CVV" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
+                    <input 
+                      name="fecha_expiracion" 
+                      placeholder="Fecha de Expiración (MM/AA)" 
+                      onChange={handleInputChange} 
+                      className="modal-input"
+                    />
                   </>
                 )}
-<button onClick={proceedToPayment} className='btn-pago'>Confirmar Pago</button>
+                <button onClick={proceedToPayment} className='btn-pago'>Confirmar Pago</button>
+              </div>
+            ) : (
+              !shippingSubmitted ? (
+                <div>
+                  <h3>¡Pago Realizado con Éxito!</h3>
+                  <h4>Ahora ingresa tus datos de envío</h4>
+
+                  <input
+                    name="direccion"
+                    placeholder="Dirección"
+                    value={shippingDetails.direccion}
+                    onChange={handleShippingChange}
+                    className="modal-input"
+                  />
+                  <input
+                    name="ciudad"
+                    placeholder="Ciudad"
+                    value={shippingDetails.ciudad}
+                    onChange={handleShippingChange}
+                    className="modal-input"
+                  />
+                  <input
+                    name="departamento"
+                    placeholder="Departamento"
+                    value={shippingDetails.departamento}
+                    onChange={handleShippingChange}
+                    className="modal-input"
+                  />
+                  <input
+                    name="codigo_postal"
+                    placeholder="Código Postal"
+                    value={shippingDetails.codigo_postal}
+                    onChange={handleShippingChange}
+                    className="modal-input"
+                  />
+                  <input
+                    name="pais"
+                    placeholder="País"
+                    value={shippingDetails.pais}
+                    onChange={handleShippingChange}
+                    className="modal-input"
+                  />
+
+                  <button
+                    className="btn-pago"
+                    onClick={() => {
+                      if (
+                        !shippingDetails.direccion ||
+                        !shippingDetails.ciudad ||
+                        !shippingDetails.departamento ||
+                        !shippingDetails.codigo_postal ||
+                        !shippingDetails.pais
+                      ) {
+                        return alert("Por favor completa todos los campos de envío.");
+                      }
+                      submitShippingInfo();
+                    }}
+                  >
+                    Enviar Datos de Envío
+                  </button>
+                </div>
+              ) : (
+                <div className="payment-success">
+                  <h3>¡Todo Listo!</h3>
+                  <p>Tu pedido está en camino 🚚</p>
+                  <button className="btn-pago" onClick={closeModal}>Cerrar</button>
+                </div>
+              )
+            )}
+          </motion.div>
+        </motion.div>
+      )}
     </div>
-  ) : (
-    !shippingSubmitted ? (
-      <div>
-        <h3>¡Pago Realizado con Éxito!</h3>
-        <h4>Ahora ingresa tus datos de envío</h4>
-
-        <input
-          name="direccion"
-          placeholder="Dirección"
-          value={shippingDetails.direccion}
-          onChange={handleShippingChange}
-        />
-        <input
-          name="ciudad"
-          placeholder="Ciudad"
-          value={shippingDetails.ciudad}
-          onChange={handleShippingChange}
-        />
-        <input
-          name="departamento"
-          placeholder="Departamento"
-          value={shippingDetails.departamento}
-          onChange={handleShippingChange}
-        />
-        <input
-          name="codigo_postal"
-          placeholder="Código Postal"
-          value={shippingDetails.codigo_postal}
-          onChange={handleShippingChange}
-        />
-        <input
-          name="pais"
-          placeholder="País"
-          value={shippingDetails.pais}
-          onChange={handleShippingChange}
-        />
-
-        <button
-          onClick={() => {
-            if (
-              !shippingDetails.direccion ||
-              !shippingDetails.ciudad ||
-              !shippingDetails.departamento ||
-              !shippingDetails.codigo_postal ||
-              !shippingDetails.pais
-            ) {
-              return alert("Por favor completa todos los campos de envío.");
-            }
-            submitShippingInfo();
-          }}
-        >
-          Enviar Datos de Envío
-        </button>
-      </div>
-    ) : (
-      <div>
-        <h3>¡Todo Listo!</h3>
-        <p>Tu pedido está en camino 🚚</p>
-        <button onClick={closeModal}>Cerrar</button>
-      </div>
-    )
-  )}
-</div>
-</div>
-)}
-</div>
-);
-}
+  );
+};
 
 export default ShoppingCart;

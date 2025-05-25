@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './GestionFacturas.css';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import './GestionFacturas.css';
 
 const GestionFacturas = () => {
     const [facturas, setFacturas] = useState([]);
     const [detallesFactura, setDetallesFactura] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -18,38 +20,47 @@ const GestionFacturas = () => {
         },
     });
 
-    // Obtener todas las facturas
+    // Función para formatear números con puntos de mil
+    const formatNumber = (number) => {
+        return new Intl.NumberFormat('es-ES').format(number);
+    };
+
     const obtenerFacturas = async () => {
+        setLoading(true);
         try {
             const response = await axiosInstance.get("/facturas");
             setFacturas(response.data);
         } catch (error) {
             console.error("Error al obtener las facturas:", error);
             alert("No se pudieron obtener las facturas.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Obtener detalles de una factura específica
     const obtenerDetallesFactura = async (id_factura) => {
-        try {
-            const response = await axiosInstance.get(`/detallefactura/${id_factura}`);
-            
-            setDetallesFactura((prev) => ({
-                ...prev,
-                [id_factura]: response.data,
-            }));
-    
-            setFacturaSeleccionada({
-                id_factura,
-                detalles: response.data,
-            });
-    
-            setModalVisible(true);
-        } catch (error) {
-            console.error("Error al obtener detalles de la factura:", error);
-            alert("No se pudieron obtener los detalles de la factura.");
-        }
-    };
+    setLoading(true);
+    try {
+        const response = await axiosInstance.get(`/detallefactura/${id_factura}`);
+        
+        setDetallesFactura((prev) => ({
+            ...prev,
+            [id_factura]: response.data,
+        }));
+
+        setFacturaSeleccionada({
+            id_factura,
+            detalles: response.data,
+        });
+
+        setModalVisible(true);
+    } catch (error) {
+        console.error("Error al obtener detalles de la factura:", error);
+        alert("No se pudieron obtener los detalles de la factura.");
+    } finally {
+        setLoading(false);
+    }
+};
     
     useEffect(() => {
         obtenerFacturas();
@@ -65,64 +76,121 @@ const GestionFacturas = () => {
             <h1>Gestión de Facturas</h1>
 
             <div className="action-buttons">
-                <button className="back-btn" onClick={() => navigate("/dashboard")}>
+                <button 
+                    className="back-btn" 
+                    onClick={() => navigate("/dashboard")}
+                    disabled={loading}
+                >
                     Regresar al Dashboard
                 </button>
-                <button className="refresh-btn" onClick={obtenerFacturas}>
-                    Refrescar Facturas
+                <button 
+                    className="refresh-btn" 
+                    onClick={obtenerFacturas}
+                    disabled={loading}
+                >
+                    {loading ? 'Cargando...' : 'Refrescar Facturas'}
                 </button>
             </div>
 
             <div className="facturas-list">
                 <h2>Listado de Facturas</h2>
-                {facturas.length === 0 ? (
+                {loading && facturas.length === 0 ? (
+                    <p className="loading-facturas">Cargando facturas...</p>
+                ) : facturas.length === 0 ? (
                     <p className="no-facturas">No se encontraron facturas</p>
                 ) : (
                     <div className="facturas-grid">
                         {facturas.map((factura) => (
-                            <div key={factura.id_factura} className="factura-card">
+                            <motion.div 
+                                key={factura.id_factura} 
+                                className="factura-card"
+                                whileHover={{ y: -5 }}
+                                transition={{ type: "spring", stiffness: 300 }}
+                            >
                                 <div className="factura-header">
                                     <span className="factura-id">Factura ID: {factura.id_factura}</span>
                                 </div>
                                 <div className="factura-body">
-                                    <p><strong>Total:</strong> ${factura.total}</p>
-                                    <p><strong>Fecha:</strong> {factura.factura_fecha}</p>
+                                    <p><strong>Total:</strong> ${formatNumber(factura.total)}</p>
+                                    <p><strong>Fecha:</strong> {new Date(factura.factura_fecha).toLocaleDateString()}</p>
                                 </div>
                                 <div className="factura-footer">
                                     <button
                                         className="details-btn"
                                         onClick={() => obtenerDetallesFactura(factura.id_factura)}
+                                        disabled={loading}
                                     >
-                                        Ver Detalles
+                                        {loading ? 'Cargando...' : 'Ver Detalles'}
                                     </button>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 )}
             </div>
 
-            {modalVisible && facturaSeleccionada && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
+            {modalVisible && (
+                <motion.div 
+                    className="modal-overlay"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={cerrarModal}
+                >
+                    <motion.div 
+                        className="modal-content"
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <button className="modal-close" onClick={cerrarModal}>×</button>
                         <h2>Detalles de la Factura</h2>
-                        <p><strong>ID Factura:</strong> {facturaSeleccionada.id_factura}</p>
-                        {facturaSeleccionada.detalles && facturaSeleccionada.detalles.length > 0 ? (
-                            facturaSeleccionada.detalles.map((detalle) => (
-                                <div key={detalle.id_detalle_factura} className="detalle-item">
-                                    <p><strong>ID Producto:</strong> {detalle.id_producto}</p>
-                                    <p><strong>Cantidad:</strong> {detalle.cantidad}</p>
-                                    <p><strong>Precio Unitario:</strong> ${detalle.precio_unitario}</p>
-                                    <p><strong>Monto Total:</strong> ${detalle.monto_total}</p>
-                                    <hr />
+                        {loading ? (
+                            <p className="loading-details">Cargando detalles...</p>
+                        ) : facturaSeleccionada ? (
+                            <>
+                                <div className="detalle-item">
+                                    <p><strong>ID Factura:</strong> {facturaSeleccionada.id_factura}</p>
                                 </div>
-                            ))
+                                {facturaSeleccionada.detalles && facturaSeleccionada.detalles.length > 0 ? (
+                                    <div className="detalles-container">
+                                        <table className="detalles-table">
+                                        <thead>
+                                            <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {facturaSeleccionada.detalles.map((detalle) => (
+                                            <tr key={detalle.id_detalle_factura}>
+                                                <td data-label="Producto">{detalle.producto_nombre}</td>
+                                                <td data-label="Cantidad">{detalle.cantidad}</td>
+                                                <td data-label="Precio Unitario">${formatNumber(detalle.precio_unitario)}</td>
+                                                <td data-label="Total">${formatNumber(detalle.monto_total)}</td>
+                                            </tr>
+                                            ))}
+                                        </tbody>
+                                        </table>
+                                        <div className="detalle-total">
+                                        <div className="detalle-total-inner">
+                                            <span>Total Factura:</span>
+                                            <span>${formatNumber(facturas.find(f => f.id_factura === facturaSeleccionada.id_factura)?.total || 0)}</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    ) : (
+                                    <p>No se encontraron detalles para esta factura.</p>
+                                    )}
+                            </>
                         ) : (
-                            <p>No se encontraron detalles para esta factura.</p>
+                            <p>No se pudo cargar la información de la factura.</p>
                         )}
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             )}
         </div>
     );

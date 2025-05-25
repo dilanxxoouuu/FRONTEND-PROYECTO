@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import './GestionStock.css';
 
 const GestionStock = () => {
@@ -40,6 +41,7 @@ const GestionStock = () => {
     const fetchProductos = async () => {
         try {
             setLoading(true);
+            setError(null);
             const response = await axiosInstance.get("/productos");
             setProductos(response.data);
         } catch (error) {
@@ -53,6 +55,7 @@ const GestionStock = () => {
     const fetchHistorial = async (id_producto) => {
         try {
             setLoading(true);
+            setError(null);
             const response = await axiosInstance.get(`/productos/${id_producto}/historial-stock`);
             setHistorial(response.data);
             setCurrentProduct(id_producto);
@@ -69,7 +72,7 @@ const GestionStock = () => {
         const ajuste = ajustes[id_producto];
         
         if (!ajuste.cantidad || isNaN(ajuste.cantidad)) {
-            alert("Por favor ingresa una cantidad válida");
+            setError("Por favor ingresa una cantidad válida");
             return;
         }
 
@@ -88,7 +91,6 @@ const GestionStock = () => {
             );
 
             if (response.status === 200 || response.status === 201) {
-                alert("Stock actualizado correctamente");
                 await fetchProductos();
                 
                 setAjustes(prev => ({
@@ -109,7 +111,6 @@ const GestionStock = () => {
                                error.response?.data?.error || 
                                "Error al ajustar stock";
             setError(errorMessage);
-            alert(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -131,23 +132,53 @@ const GestionStock = () => {
     }, []);
 
     return (
-        <div className="gestion-stock">
+        <motion.div 
+            className="gestion-stock"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <h1>Gestión de Stock</h1>
             
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+                <motion.div 
+                    className="error-message"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                >
+                    {error}
+                </motion.div>
+            )}
 
             <div className="action-buttons">
-                <button className="back-btn" onClick={() => navigate("/dashboard")}>
+                <motion.button 
+                    className="back-btn" 
+                    onClick={() => navigate("/dashboard")}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                >
                     Regresar al Dashboard
-                </button>
-                <button className="refresh-btn" onClick={fetchProductos} disabled={loading}>
+                </motion.button>
+                <motion.button 
+                    className="refresh-btn" 
+                    onClick={fetchProductos} 
+                    disabled={loading}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                >
                     {loading ? 'Cargando...' : 'Refrescar Productos'}
-                </button>
+                </motion.button>
             </div>
 
             <div className="productos-container">
                 <h2>Listado de Productos</h2>
-                {productos.length === 0 ? (
+                {loading && productos.length === 0 ? (
+                    <div className="loading-products">
+                        <div className="spinner"></div>
+                        <p>Cargando productos...</p>
+                    </div>
+                ) : productos.length === 0 ? (
                     <p className="no-products">No hay productos registrados</p>
                 ) : (
                     <div className="productos-table-container">
@@ -162,7 +193,12 @@ const GestionStock = () => {
                             </thead>
                             <tbody>
                                 {productos.map((producto) => (
-                                    <tr key={producto.id_producto}>
+                                    <motion.tr 
+                                        key={producto.id_producto}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
                                         <td>{producto.id_producto}</td>
                                         <td>{producto.producto_nombre}</td>
                                         <td className={producto.producto_stock <= 5 ? 'low-stock' : ''}>
@@ -176,31 +212,37 @@ const GestionStock = () => {
                                                     value={ajustes[producto.id_producto]?.cantidad || ''}
                                                     onChange={(e) => handleChange(producto.id_producto, e)}
                                                     placeholder="Cantidad"
+                                                    disabled={loading}
                                                 />
                                                 <select
                                                     name="motivo"
                                                     value={ajustes[producto.id_producto]?.motivo || 'reposicion'}
                                                     onChange={(e) => handleChange(producto.id_producto, e)}
+                                                    disabled={loading}
                                                 >
                                                     <option value="reposicion">Reposición</option>
                                                     <option value="compra">Compra</option>
                                                 </select>
-                                                <button 
+                                                <motion.button 
                                                     onClick={() => handleAjusteStock(producto.id_producto)}
                                                     disabled={loading}
                                                     className="apply-btn"
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
                                                 >
                                                     {loading ? 'Procesando...' : 'Aplicar'}
-                                                </button>
+                                                </motion.button>
                                             </div>
-                                            <button 
+                                            <motion.button 
                                                 className="history-btn"
                                                 onClick={() => fetchHistorial(producto.id_producto)}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
                                             >
                                                 Ver Historial
-                                            </button>
+                                            </motion.button>
                                         </td>
-                                    </tr>
+                                    </motion.tr>
                                 ))}
                             </tbody>
                         </table>
@@ -208,47 +250,83 @@ const GestionStock = () => {
                 )}
             </div>
 
-            {showHistorial && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2>Historial de Stock - Producto {currentProduct}</h2>
-                        <button 
-                            className="modal-close"
-                            onClick={() => setShowHistorial(false)}
+            <AnimatePresence>
+                {showHistorial && (
+                    <motion.div 
+                        className="modal-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowHistorial(false)}
+                    >
+                        <motion.div 
+                            className="modal-content"
+                            initial={{ y: 50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 50, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            ×
-                        </button>
-                        
-                        <div className="historial-table-container">
-                            <table className="historial-table">
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Stock Anterior</th>
-                                        <th>Ajuste</th>
-                                        <th>Nuevo Stock</th>
-                                        <th>Motivo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {historial.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{new Date(item.fecha_ajuste).toLocaleString()}</td>
-                                            <td>{item.stock_anterior}</td>
-                                            <td className={item.cantidad_ajuste > 0 ? 'positive' : 'negative'}>
-                                                {item.cantidad_ajuste > 0 ? '+' : ''}{item.cantidad_ajuste}
-                                            </td>
-                                            <td>{item.nuevo_stock}</td>
-                                            <td>{item.motivo}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
+                            <h2>
+                                Historial de Stock - Producto {currentProduct}
+                                {productos.find(p => p.id_producto === currentProduct)?.producto_nombre && 
+                                `: ${productos.find(p => p.id_producto === currentProduct).producto_nombre}`}
+                            </h2>
+                            <button 
+                                className="modal-close"
+                                onClick={() => setShowHistorial(false)}
+                            >
+                                ×
+                            </button>
+                            
+                            <div className="historial-table-container">
+                                {loading ? (
+                                    <div className="loading-historial">
+                                        <div className="spinner"></div>
+                                        <p>Cargando historial...</p>
+                                    </div>
+                                ) : historial.length === 0 ? (
+                                    <p className="no-historial">No hay registros de historial</p>
+                                ) : (
+                                    <table className="historial-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Stock Anterior</th>
+                                                <th>Ajuste</th>
+                                                <th>Nuevo Stock</th>
+                                                <th>Motivo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {historial.map((item, index) => (
+                                                <motion.tr 
+                                                    key={index}
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    transition={{ delay: index * 0.05 }}
+                                                >
+                                                    <td>{new Date(item.fecha_ajuste).toLocaleString()}</td>
+                                                    <td>{item.stock_anterior}</td>
+                                                    <td className={item.cantidad_ajuste > 0 ? 'positive' : 'negative'}>
+                                                        {item.cantidad_ajuste > 0 ? '+' : ''}{item.cantidad_ajuste}
+                                                    </td>
+                                                    <td>{item.nuevo_stock}</td>
+                                                    <td>
+                                                        <span className={`motivo-badge ${item.motivo}`}>
+                                                            {item.motivo}
+                                                        </span>
+                                                    </td>
+                                                </motion.tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 

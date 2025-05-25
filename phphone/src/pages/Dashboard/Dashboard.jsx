@@ -59,6 +59,11 @@ const Dashboard = () => {
                     <FaChartBar className="btn-icon" />
                     Reportes
                 </Link>
+                <Link to="/admin/envios" className="admin-btn">
+                    <FaChartBar className="btn-icon" />
+                    Administracion de Envios
+                </Link>
+                
             </div>
         </div>
     );

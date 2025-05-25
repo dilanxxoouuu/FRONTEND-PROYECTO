@@ -8,7 +8,7 @@
   --azul-brillante: #2962FF;
 }
 
-/* Navbar CSS */
+/* Estructura principal del Navbar */
 .Navbar-container {
   position: fixed;
   top: 0;
@@ -19,13 +19,17 @@
   background-color: var(--blanco);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid var(--gris-claro-alt);
+  will-change: transform;
+  transform: translateZ(0);
+  transition: transform 0.3s ease;
 }
 
-.navbar-spacer {
-  height: 80px; /* Ajusta según la altura de tu navbar */
-  width: 100%;
+/* Espaciador para el contenido principal */
+body {
+  padding-top: 80px;
 }
 
+/* Contenedor interno del Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -39,6 +43,7 @@
   box-sizing: border-box;
 }
 
+/* Logo y marca */
 .navbar-logo h1 {
   margin: 0;
   color: var(--gris-oscuro);
@@ -57,6 +62,7 @@
   color: var(--azul-brillante);
 }
 
+/* Botón de menú para móviles */
 .navbar-toggle {
   display: none;
   cursor: pointer;
@@ -74,6 +80,7 @@
   transition: all 0.3s ease;
 }
 
+/* Lista de enlaces */
 .navbar-links {
   display: flex;
   list-style: none;
@@ -86,6 +93,7 @@
   position: relative;
 }
 
+/* Estilos para iconos con etiqueta */
 .icon-with-label {
   display: flex;
   flex-direction: column;
@@ -113,6 +121,7 @@
   color: inherit;
 }
 
+/* Icono del carrito */
 .cart-icon {
   position: relative;
   cursor: pointer;
@@ -130,6 +139,7 @@
   font-weight: bold;
 }
 
+/* Detalles del carrito */
 .cart-details {
   position: fixed;
   top: 80px;
@@ -140,7 +150,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 320px;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .cart-details h3 {
@@ -148,12 +158,15 @@
   color: var(--gris-oscuro);
   border-bottom: 1px solid var(--gris-claro);
   padding-bottom: 10px;
+  text-align: center;
 }
 
 .cart-details ul {
   list-style: none;
   padding: 0;
   margin: 0 0 15px 0;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .cart-details ul li {
@@ -168,8 +181,10 @@
 .cart-details p {
   font-weight: bold;
   color: var(--gris-oscuro);
+  text-align: center;
 }
 
+/* Botón de ir al carrito */
 .go-to-cart-button {
   background-color: var(--azul-brillante);
   color: var(--blanco);
@@ -193,10 +208,40 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Estilos para el scroll */
+.cart-details ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-details ul::-webkit-scrollbar-track {
+  background: var(--gris-claro);
+}
+
+.cart-details ul::-webkit-scrollbar-thumb {
+  background: var(--azul-brillante);
+  border-radius: 3px;
+}
+
+/* Diseño Responsivo */
+@media (max-width: 1024px) {
   .navbar {
-    padding: 12px 20px;
+    padding: 15px 20px;
+  }
+  
+  .navbar-links {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+  
+  .navbar {
+    padding: 10px 15px;
+    height: auto;
+    min-height: 60px;
     flex-wrap: wrap;
   }
   
@@ -217,34 +262,33 @@
     display: none;
     flex-direction: column;
     width: 100%;
-    padding: 20px 0;
-    gap: 15px;
+    padding: 15px 0;
+    gap: 10px;
   }
   
   .navbar-links.active {
     display: flex;
-  }
-  
-  .navbar-links li {
-    margin: 5px 0;
+    padding-bottom: 15px;
   }
   
   .cart-details {
-    width: 280px;
+    top: 60px;
     right: 10px;
+    width: 280px;
   }
 }
 
 @media (max-width: 480px) {
-  .navbar {
-    padding: 10px 15px;
-  }
-  
   .navbar-logo h1 {
     font-size: 1.3rem;
   }
   
   .cart-details {
     width: 260px;
+    right: 5px;
+  }
+  
+  .icon-label {
+    font-size: 0.6rem;
   }
 }

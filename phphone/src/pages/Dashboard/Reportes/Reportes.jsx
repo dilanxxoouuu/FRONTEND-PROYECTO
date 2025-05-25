@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './Reportes.css';
 
 const Reportes = () => {
@@ -7,6 +9,7 @@ const Reportes = () => {
     const [periodo, setPeriodo] = useState('hoy');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
     const axiosInstance = axios.create({
@@ -26,13 +29,10 @@ const Reportes = () => {
         } catch (error) {
             console.error("Error completo:", error);
             if (error.response) {
-                // El servidor respondió con un código de estado fuera del rango 2xx
                 setError(error.response.data.message || 'Error al obtener el reporte');
             } else if (error.request) {
-                // La solicitud fue hecha pero no se recibió respuesta
                 setError('No se recibió respuesta del servidor');
             } else {
-                // Algo pasó al configurar la solicitud
                 setError('Error al configurar la solicitud');
             }
         } finally {
@@ -45,53 +45,76 @@ const Reportes = () => {
     }, [periodo]);
 
     return (
-        <div className="reportes-container">
-            <h1>Reporte de Productos Más Vendidos</h1>
+        <motion.div 
+            className="reportes-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
+            <div className="header-container">
+                <h1>Reporte de Productos Más Vendidos</h1>
+                <motion.button
+                    className="back-btn"
+                    onClick={() => navigate('/dashboard')}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                >
+                    Regresar al Dashboard
+                </motion.button>
+            </div>
             
             {error && (
-                <div className="error-message">
+                <motion.div 
+                    className="error-message"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
                     <p>Error: {error}</p>
-                    <button onClick={obtenerReporte}>Reintentar</button>
-                </div>
+                    <motion.button 
+                        onClick={obtenerReporte}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        Reintentar
+                    </motion.button>
+                </motion.div>
             )}
 
             <div className="filtros">
-                <button 
-                    className={`periodo-btn ${periodo === 'hoy' ? 'active' : ''}`}
-                    onClick={() => setPeriodo('hoy')}
-                    disabled={loading}
-                >
-                    Hoy
-                </button>
-                <button 
-                    className={`periodo-btn ${periodo === 'semana' ? 'active' : ''}`}
-                    onClick={() => setPeriodo('semana')}
-                    disabled={loading}
-                >
-                    Esta Semana
-                </button>
-                <button 
-                    className={`periodo-btn ${periodo === 'mes' ? 'active' : ''}`}
-                    onClick={() => setPeriodo('mes')}
-                    disabled={loading}
-                >
-                    Este Mes
-                </button>
-                <button 
-                    className={`periodo-btn ${periodo === 'año' ? 'active' : ''}`}
-                    onClick={() => setPeriodo('año')}
-                    disabled={loading}
-                >
-                    Este Año
-                </button>
+                {['hoy', 'semana', 'mes', 'año'].map((p) => (
+                    <motion.button
+                        key={p}
+                        className={`periodo-btn ${periodo === p ? 'active' : ''}`}
+                        onClick={() => setPeriodo(p)}
+                        disabled={loading}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        {p === 'hoy' && 'Hoy'}
+                        {p === 'semana' && 'Esta Semana'}
+                        {p === 'mes' && 'Este Mes'}
+                        {p === 'año' && 'Este Año'}
+                    </motion.button>
+                ))}
             </div>
 
             {loading ? (
-                <div className="loading-indicator">Cargando reporte...</div>
+                <motion.div 
+                    className="loading-indicator"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <div className="spinner"></div>
+                    <p>Cargando reporte...</p>
+                </motion.div>
             ) : (
                 <div className="tabla-reporte">
                     {reporte.length > 0 ? (
-                        <table>
+                        <motion.table
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
                             <thead>
                                 <tr>
                                     <th>Posición</th>
@@ -102,29 +125,42 @@ const Reportes = () => {
                             </thead>
                             <tbody>
                                 {reporte.map((item, index) => (
-                                    <tr key={item.id_producto}>
+                                    <motion.tr 
+                                        key={item.id_producto}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: index * 0.05 }}
+                                    >
                                         <td>{index + 1}</td>
                                         <td>{item.producto_nombre}</td>
                                         <td>{item.total_vendido}</td>
                                         <td>
                                             <div className="barra-container">
-                                                <div 
+                                                <motion.div 
                                                     className="barra-progreso"
-                                                    style={{ width: `${item.porcentaje}%` }}
-                                                ></div>
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${item.porcentaje}%` }}
+                                                    transition={{ duration: 1, delay: index * 0.1 }}
+                                                ></motion.div>
                                                 <span>{item.porcentaje}%</span>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </motion.tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </motion.table>
                     ) : (
-                        <p className="no-data">No hay datos disponibles para el período seleccionado</p>
+                        <motion.p 
+                            className="no-data"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            No hay datos disponibles para el período seleccionado
+                        </motion.p>
                     )}
                 </div>
             )}
-        </div>
+        </motion.div>
     );
 };
 

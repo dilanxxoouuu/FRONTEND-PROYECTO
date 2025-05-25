@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: linear-gradient(to right, #bebebe, #e3e3e3, #bebebe);
   color: var(--gris-oscuro);
-  font-family: 'Montserrat Alternates', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   opacity: 0;
   animation: fadeIn 1.5s ease-out forwards;
 }
