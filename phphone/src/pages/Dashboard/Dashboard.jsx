@@ -9,61 +9,77 @@ import {
   FaFileInvoiceDollar,
   FaWarehouse,
   FaChartBar,
-  FaClipboardList
+  FaTruck,
+  FaClipboardList,
+  FaCog
 } from "react-icons/fa";
 import "./Dashboard.css";
 
 const Dashboard = () => {
+    const adminModules = [
+        {
+            path: "/GestionUsuarios",
+            icon: <FaUsers className="btn-icon" />,
+            title: "Gestión de Usuarios"
+        },
+        {
+            path: "/GestionProductos",
+            icon: <FaBoxOpen className="btn-icon" />,
+            title: "Gestión de Productos"
+        },
+        {
+            path: "/GestionCategorias",
+            icon: <FaThLarge className="btn-icon" />,
+            title: "Gestión de Categorías"
+        },
+        {
+            path: "/GestionCarritos",
+            icon: <FaShoppingCart className="btn-icon" />,
+            title: "Gestión de Carritos"
+        },
+        {
+            path: "/GestionPagos",
+            icon: <FaMoneyBillWave className="btn-icon" />,
+            title: "Gestión de Pagos"
+        },
+        {
+            path: "/GestionFacturas",
+            icon: <FaFileInvoiceDollar className="btn-icon" />,
+            title: "Gestión de Facturas"
+        },
+        {
+            path: "/GestionStock",
+            icon: <FaWarehouse className="btn-icon" />,
+            title: "Gestión de Stock"
+        },
+        {
+            path: "/Reportes",
+            icon: <FaChartBar className="btn-icon" />,
+            title: "Reportes"
+        },
+        {
+            path: "/admin/envios",
+            icon: <FaTruck className="btn-icon" />,
+            title: "Administración de Envíos"
+        },
+    ];
+
     return (
         <div className="dashboard">
-            <h1>Módulo Administrativo</h1>
+            <h1><FaClipboardList style={{marginRight: '15px'}} />Módulo Administrativo</h1>
             <p>Bienvenido al módulo administrativo, aquí podrás gestionar todos los recursos de tu aplicación.</p>
             
             <div className="admin-buttons">
-                <Link to="/GestionUsuarios" className="admin-btn">
-                    <FaUsers className="btn-icon" />
-                    Gestión de Usuarios
-                </Link>
-                
-                <Link to="/GestionProductos" className="admin-btn">
-                    <FaBoxOpen className="btn-icon" />
-                    Gestión de Productos
-                </Link>
-                
-                <Link to="/GestionCategorias" className="admin-btn">
-                    <FaThLarge className="btn-icon" />
-                    Gestión de Categorías
-                </Link>
-                
-                <Link to="/GestionCarritos" className="admin-btn">
-                    <FaShoppingCart className="btn-icon" />
-                    Gestión de Carritos
-                </Link>
-                
-                <Link to="/GestionPagos" className="admin-btn">
-                    <FaMoneyBillWave className="btn-icon" />
-                    Gestión de Pagos
-                </Link>
-                
-                <Link to="/GestionFacturas" className="admin-btn">
-                    <FaFileInvoiceDollar className="btn-icon" />
-                    Gestión de Facturas
-                </Link>
-                
-                <Link to="/GestionStock" className="admin-btn">
-                    <FaWarehouse className="btn-icon" />
-                    Gestión de Stock
-                </Link>
-                
-                <Link to="/Reportes" className="admin-btn">
-                    <FaChartBar className="btn-icon" />
-                    Reportes
-                </Link>
-                <Link to="/admin/envios" className="admin-btn">
-                    <FaChartBar className="btn-icon" />
-                    Administracion de Envios
-                </Link>
-                
+                {adminModules.map((module, index) => (
+                    <Link 
+                        to={module.path} 
+                        key={index} 
+                        className="admin-btn"
+                    >
+                        {module.icon}
+                        {module.title}
+                    </Link>
+                ))}
             </div>
         </div>
     );

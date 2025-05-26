@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FiltroBusqueda from '../Search/FiltroBusqueda';
 import './Navbar.css';
 import { jwtDecode } from 'jwt-decode';
+import NotificationIcon from '../NotificacionStock/Notificacion';
 
 const Navbar = ({ cart = [] }) => {
     const [menuActive, setMenuActive] = useState(false);
@@ -106,6 +107,7 @@ const Navbar = ({ cart = [] }) => {
                             <h1>PHPHONE</h1>
                         </Link>
                     </div>
+                    
                     <button className="navbar-toggle" onClick={toggleMenu}>
                         <span></span>
                         <span></span>
@@ -138,6 +140,15 @@ const Navbar = ({ cart = [] }) => {
                                     <FaTachometerAlt size={20} />
                                     <span className="icon-label">Dashboard</span>
                                 </Link>
+                            </li> 
+                        )}
+
+                       {isAdmin && (
+                            <li className="icon-with-label">
+                                <div className="notification-wrapper">
+                                    <NotificationIcon />
+                                    <span className="icon-label">Stock</span>
+                                </div>
                             </li>
                         )}
 

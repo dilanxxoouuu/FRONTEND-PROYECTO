@@ -62,7 +62,7 @@ h1::after {
 
 .back-btn:hover {
     background-color: var(--gris-oscuro);
-    color: var(--blanco);
+    color: var(--gris-oscuro);
 }
 
 .refresh-btn {

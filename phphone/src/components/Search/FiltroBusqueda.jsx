@@ -77,74 +77,76 @@ const FiltroBusqueda = ({ showFilter, setShowFilter }) => {
     return (
         <>
             {showFilter && (
-                <div className="filter-sidebar" ref={filterRef}>
-                    <div className="filter-content">
-                        <button className="close-filter-btn" onClick={() => setShowFilter(false)}>
-                            X
-                        </button>
+                <div className="filter-overlay">
+                    <div className="filter-sidebar" ref={filterRef}>
+                        <div className="filter-content">
+                            <button className="close-filter-btn" onClick={() => setShowFilter(false)}>
+                                &times;
+                            </button>
 
-                        <h3>Filtrar Productos</h3>
+                            <h3>Filtrar Productos</h3>
 
-                        <div className="filter-item">
-                            <label htmlFor="searchTerm">Buscar por nombre:</label>
-                            <input
-                                type="text"
-                                id="searchTerm"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Nombre del producto"
-                            />
+                            <div className="filter-item">
+                                <label htmlFor="searchTerm">Buscar por nombre:</label>
+                                <input
+                                    type="text"
+                                    id="searchTerm"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Nombre del producto"
+                                />
+                            </div>
+
+                            <div className="filter-item">
+                                <label htmlFor="minPrice">Precio Mínimo:</label>
+                                <input
+                                    type="number"
+                                    id="minPrice"
+                                    value={minPrice}
+                                    onChange={(e) => setMinPrice(e.target.value)}
+                                    placeholder="Precio mínimo"
+                                />
+                            </div>
+
+                            <div className="filter-item">
+                                <label htmlFor="maxPrice">Precio Máximo:</label>
+                                <input
+                                    type="number"
+                                    id="maxPrice"
+                                    value={maxPrice}
+                                    onChange={(e) => setMaxPrice(e.target.value)}
+                                    placeholder="Precio máximo"
+                                />
+                            </div>
+
+                            <div className="filter-item">
+                                <label htmlFor="categoryId">Categoría:</label>
+                                <select
+                                    id="categoryId"
+                                    value={categoryId}
+                                    onChange={(e) => setCategoryId(e.target.value)}
+                                >
+                                    <option value="">Seleccionar Categoría</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="filter-item">
+                                <label htmlFor="inStock">Solo productos en stock:</label>
+                                <input
+                                    type="checkbox"
+                                    id="inStock"
+                                    checked={inStock}
+                                    onChange={(e) => setInStock(e.target.checked)}
+                                />
+                            </div>
+
+                            <button className="apply-filters-button" onClick={handleApplyFilters}>
+                                Aplicar Filtros
+                            </button>
                         </div>
-
-                        <div className="filter-item">
-                            <label htmlFor="minPrice">Precio Mínimo:</label>
-                            <input
-                                type="number"
-                                id="minPrice"
-                                value={minPrice}
-                                onChange={(e) => setMinPrice(e.target.value)}
-                                placeholder="Precio mínimo"
-                            />
-                        </div>
-
-                        <div className="filter-item">
-                            <label htmlFor="maxPrice">Precio Máximo:</label>
-                            <input
-                                type="number"
-                                id="maxPrice"
-                                value={maxPrice}
-                                onChange={(e) => setMaxPrice(e.target.value)}
-                                placeholder="Precio máximo"
-                            />
-                        </div>
-
-                        <div className="filter-item">
-                            <label htmlFor="categoryId">Categoría:</label>
-                            <select
-                                id="categoryId"
-                                value={categoryId}
-                                onChange={(e) => setCategoryId(e.target.value)}
-                            >
-                                <option value="">Seleccionar Categoría</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="filter-item">
-                            <label htmlFor="inStock">Solo productos en stock:</label>
-                            <input
-                                type="checkbox"
-                                id="inStock"
-                                checked={inStock}
-                                onChange={(e) => setInStock(e.target.checked)}
-                            />
-                        </div>
-
-                        <button className="apply-filters-button" onClick={handleApplyFilters}>
-                            Aplicar Filtros
-                        </button>
                     </div>
                 </div>
             )}

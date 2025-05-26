@@ -31,16 +31,13 @@ body {
 
 /* Contenedor interno del Navbar */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--blanco);
-  padding: 15px 30px;
-  color: var(--gris-oscuro);
-  max-width: 1400px;
-  margin: 0 auto;
-  height: 80px;
-  box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Logo y marca */
@@ -292,3 +289,45 @@ body {
     font-size: 0.6rem;
   }
 }
+
+/* Contenedor para la notificación de stock */
+.notification-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: -8px; /* Ajuste clave para mover hacia la izquierda */
+}
+
+
+/* Ajustes específicos para el icono de notificación */
+.notification-container {
+    position: relative;
+    margin: 0 auto;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajuste para el badge de notificación */
+.notification-badge {
+    top: -5px;
+    right: auto;
+    left: 50%;
+    margin-left: 6px;
+}
+
+/* Alineación vertical para el icono */
+.icon-with-label .notification-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-btn {
+    transform: translateX(-8px); /* Micro-ajuste de posición */
+}
+

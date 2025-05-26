@@ -23,53 +23,74 @@ const Register = () => {
             ...formData,
             [name]: value
         });
+        // Limpiar errores al escribir
+        if (errors[name]) {
+            setErrors({
+                ...errors,
+                [name]: ''
+            });
+        }
     };
 
-    // Validación
     const validateForm = (data) => {
-        const errors = {};
-        if (!data.nombre) errors.nombre = 'El nombre es obligatorio.';
-        if (!data.numerodoc) errors.numerodoc = 'El número de documento es obligatorio.';
-        else if (!/^\d+$/.test(data.numerodoc)) errors.numerodoc = 'El número de documento debe ser numérico.';
-        if (!data.correo) errors.correo = 'El correo electrónico es obligatorio.';
-        else if (!/\S+@\S+\.\S+/.test(data.correo)) errors.correo = 'Correo electrónico inválido.';
-        if (!data.contrasena) errors.contrasena = 'La contraseña es obligatoria.';
-        if (data.contrasena !== data.confirmContrasena) errors.confirmContrasena = 'Las contraseñas no coinciden.';
-        return errors;
+        const newErrors = {};
+        
+        // Validación Nombre (solo letras y espacios)
+        if (!data.nombre.trim()) {
+            newErrors.nombre = 'El nombre es obligatorio.';
+        } else if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(data.nombre)) {
+            newErrors.nombre = 'Solo se permiten letras y espacios.';
+        }
+
+        // Validación Número de documento (solo números, máximo 15)
+        if (!data.numerodoc.trim()) {
+            newErrors.numerodoc = 'El documento es obligatorio.';
+        } else if (!/^\d{1,15}$/.test(data.numerodoc)) {
+            newErrors.numerodoc = 'Máximo 15 dígitos numéricos.';
+        }
+
+        // Validación Correo (formato válido)
+        if (!data.correo.trim()) {
+            newErrors.correo = 'El correo es obligatorio.';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.correo)) {
+            newErrors.correo = 'Formato inválido (ejemplo@dominio.com).';
+        }
+
+        // Validación Contraseña (8-16 caracteres alfanuméricos)
+        if (!data.contrasena.trim()) {
+            newErrors.contrasena = 'La contraseña es obligatoria.';
+        } else if (!/^[A-Za-z0-9]{8,16}$/.test(data.contrasena)) {
+            newErrors.contrasena = '8-16 caracteres alfanuméricos.';
+        }
+
+        // Validación Confirmar Contraseña
+        if (data.contrasena !== data.confirmContrasena) {
+            newErrors.confirmContrasena = 'Las contraseñas no coinciden.';
+        }
+
+        return newErrors;
     };
 
-    // Envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm(formData);
+        setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             setRegisterError('');
-            setRegisterSuccess('');
 
             try {
-                const response = await axios.post('http://127.0.0.1:5000/signin', {
-                    nombre: formData.nombre,
-                    numerodoc: formData.numerodoc,
-                    correo: formData.correo,
-                    contrasena: formData.contrasena
-                });
-
+                const response = await axios.post('http://127.0.0.1:5000/signin', formData);
                 if (response.status === 201) {
-                    setRegisterSuccess(response.data.message);
-                    setTimeout(() => {
-                        navigate('/login');
-                    }, 2000);
+                    setRegisterSuccess('¡Registro exitoso! Redirigiendo...');
+                    setTimeout(() => navigate('/login'), 2000);
                 }
             } catch (error) {
-                const mensaje = error.response?.data?.message || 'Error inesperado al registrar la cuenta.';
-                setRegisterError(mensaje);
+                setRegisterError(error.response?.data?.message || 'Error al registrar. Intente nuevamente.');
             } finally {
                 setLoading(false);
             }
-        } else {
-            setErrors(validationErrors);
         }
     };
 
@@ -77,9 +98,10 @@ const Register = () => {
         <div className="register-wrapper">
             <div className="register-container">
                 <h2>Crear cuenta</h2>
+                
                 <form onSubmit={handleSubmit} className="register-form">
                     <div className="input-group">
-                        <label htmlFor="nombre">Nombre</label>
+                        <label htmlFor="nombre">Nombre completo</label>
                         <input
                             type="text"
                             id="nombre"
@@ -87,8 +109,9 @@ const Register = () => {
                             value={formData.nombre}
                             onChange={handleChange}
                             className={errors.nombre ? 'input-error' : ''}
+                            placeholder="Ej: Johan Gomez"
                         />
-                        {errors.nombre && <small className="error">{errors.nombre}</small>}
+                        {errors.nombre && <div className="field-error">{errors.nombre}</div>}
                     </div>
 
                     <div className="input-group">
@@ -100,8 +123,9 @@ const Register = () => {
                             value={formData.numerodoc}
                             onChange={handleChange}
                             className={errors.numerodoc ? 'input-error' : ''}
+                            placeholder="Ej: 1234567890"
                         />
-                        {errors.numerodoc && <small className="error">{errors.numerodoc}</small>}
+                        {errors.numerodoc && <div className="field-error">{errors.numerodoc}</div>}
                     </div>
 
                     <div className="input-group">
@@ -113,8 +137,9 @@ const Register = () => {
                             value={formData.correo}
                             onChange={handleChange}
                             className={errors.correo ? 'input-error' : ''}
+                            placeholder="Ej: usuario@dominio.com"
                         />
-                        {errors.correo && <small className="error">{errors.correo}</small>}
+                        {errors.correo && <div className="field-error">{errors.correo}</div>}
                     </div>
 
                     <div className="input-group">
@@ -126,8 +151,9 @@ const Register = () => {
                             value={formData.contrasena}
                             onChange={handleChange}
                             className={errors.contrasena ? 'input-error' : ''}
+                            placeholder="8-16 caracteres numéricos"
                         />
-                        {errors.contrasena && <small className="error">{errors.contrasena}</small>}
+                        {errors.contrasena && <div className="field-error">{errors.contrasena}</div>}
                     </div>
 
                     <div className="input-group">
@@ -139,31 +165,31 @@ const Register = () => {
                             value={formData.confirmContrasena}
                             onChange={handleChange}
                             className={errors.confirmContrasena ? 'input-error' : ''}
+                            placeholder="Repite tu contraseña"
                         />
-                        {errors.confirmContrasena && <small className="error">{errors.confirmContrasena}</small>}
+                        {errors.confirmContrasena && <div className="field-error">{errors.confirmContrasena}</div>}
                     </div>
 
-                    {registerSuccess && (
-                        <div className="success-message">
-                            <span className="success-icon">✓</span> {registerSuccess}
-                        </div>
-                    )}
-
-                    {registerError && (
-                        <div className="register-error">
-                            <span className="error-icon">!</span> {registerError}
-                        </div>
-                    )}
-
                     <button type="submit" className="submit-button" disabled={loading}>
-                        {loading ? 'Cargando...' : 'Registrarse'}
+                        {loading ? 'Registrando...' : 'Crear cuenta'}
                     </button>
+                {registerSuccess && (
+                    <div className="alert alert-success">
+                        <span className="alert-icon">✓</span> {registerSuccess}
+                    </div>
+                )}
+                {registerError && (
+                    <div className="alert alert-error">
+                        <span className="alert-icon">!</span> {registerError}
+                    </div>
+                )}
                 </form>
+
 
                 <p className="login-link">
                     ¿Ya tienes una cuenta?{' '}
                     <Link to="/login" className="link">
-                        Inicia sesión aquí
+                        Inicia sesión
                     </Link>
                 </p>
             </div>

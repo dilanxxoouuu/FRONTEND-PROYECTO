@@ -11,6 +11,7 @@
     --amarillo-hover: #e0a800;
     --rojo-hover: #c82333;
     --verde-hover: #218838;
+    --azul-brillante: #2962FF;
 }
 
 .gestion-carritos {
@@ -105,7 +106,7 @@ h1 {
 }
 
 .carrito-header {
-    background-color: var(--turquesa);
+    background-color: var(--azul-brillante);
     color: var(--blanco);
     padding: 0.8rem;
     display: flex;
@@ -126,7 +127,7 @@ h1 {
 }
 
 .status-badge.processed {
-    background-color: var(--verde);
+    background-color: var(--verde-esmeralda);
     color: var(--blanco);
 }
 

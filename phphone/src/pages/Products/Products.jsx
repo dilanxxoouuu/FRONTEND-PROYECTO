@@ -91,26 +91,6 @@ const Products = ({ addToCart }) => {
     const totalPages = Math.ceil(products.length / productsPerPage);
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-    const renderRatingStars = (rating) => {
-        const stars = [];
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-        
-        for (let i = 0; i < fullStars; i++) {
-            stars.push(<FaStar key={`full-${i}`} className="star full" />);
-        }
-        
-        if (hasHalfStar) {
-            stars.push(<FaStar key="half" className="star half" />);
-        }
-        
-        const emptyStars = 5 - stars.length;
-        for (let i = 0; i < emptyStars; i++) {
-            stars.push(<FaRegStar key={`empty-${i}`} className="star empty" />);
-        }
-        
-        return stars;
-    };
 
     const handleAddToCart = async (product) => {
         const token = localStorage.getItem("token");
@@ -196,7 +176,7 @@ const Products = ({ addToCart }) => {
                 {currentProducts.length > 0 ? (
                     currentProducts.map((product) => (
                         <div key={product.id_producto} className="product-card">
-                            {product.producto_stock <= 5 && product.producto_stock > 0 && (
+                            {product.producto_stock <= 10 && product.producto_stock > 0 && (
                                 <div className="product-badge">
                                     <IoMdFlash className="flash-icon" />
                                     <span>Últimas unidades!</span>

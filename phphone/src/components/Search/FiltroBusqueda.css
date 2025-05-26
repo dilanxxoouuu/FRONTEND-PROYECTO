@@ -1,4 +1,4 @@
-/* Paleta de colores del navbar */
+/* Paleta de colores */
 :root {
   --blanco: #FFFFFF;
   --gris-claro: #F5F5F5;
@@ -9,18 +9,29 @@
   --amarillo-accion: #FFD600;
 }
 
-/* Estilos para el panel lateral de filtros */
-.filter-sidebar {
+/* Overlay oscuro */
+.filter-overlay {
   position: fixed;
-  top: 0;
+  top: 80px; /* Ajusta según la altura de tu navbar */
+  left: 0;
   right: 0;
-  width: 300px;
-  height: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Panel de filtros */
+.filter-sidebar {
+  width: 350px;
+  height: calc(100vh - 80px); /* Resta la altura del navbar */
   background-color: var(--blanco);
   box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 25px;
   overflow-y: auto;
+  transform: translateX(0);
   transition: transform 0.3s ease;
 }
 
@@ -28,6 +39,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
 }
 
 .filter-content h3 {
@@ -98,7 +110,7 @@
   right: 15px;
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: var(--gris-oscuro);
   cursor: pointer;
   padding: 5px;
@@ -131,6 +143,6 @@
   
   .apply-filters-button {
     padding: 10px;
-  font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 }

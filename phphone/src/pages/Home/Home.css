@@ -162,6 +162,7 @@ h2 {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
+  overflow: hidden; /* Añadido */
 }
 
 .slider-arrow {
@@ -184,7 +185,7 @@ h2 {
 }
 
 .slider-arrow:hover {
-  background: var(--verde-esmeralda);
+  background: var(--azul-oscuro);
 }
 
 .left-arrow {
@@ -198,10 +199,11 @@ h2 {
 .product-cards-container {
   display: flex;
   gap: 20px;
-  overflow: hidden;
   width: 100%;
   padding: 20px 0;
   scroll-behavior: smooth;
+  justify-content: center; /* Añadido para centrar */
+  flex-wrap: nowrap; /* Asegura que no se envuelvan */
 }
 
 /* Toast de login */
@@ -279,4 +281,10 @@ h2 {
   .product-card {
     width: 160px;
   }
+}
+
+.cards-inner-container {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease; /* Para animación suave */
 }

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AdminEnvios.css'; // Cambiado a importación directa
+import './AdminEnvios.css';
+import { useNavigate } from 'react-router-dom';
 
 const AdminEnvios = () => {
   const [envios, setEnvios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedEnvio, setSelectedEnvio] = useState(null);
   const [nuevoEstado, setNuevoEstado] = useState('');
+  const navigate = useNavigate();
 
   const estadosDisponibles = [
     'Empacando',
@@ -15,6 +17,9 @@ const AdminEnvios = () => {
     'Tu Pedido Ya Ha Sido Entregado'
   ];
 
+  const handleBackToDashboard = () => {
+      navigate('/Dashboard');
+    };
   const getToken = () => localStorage.getItem('token');
 
   const cargarEnvios = async () => {
@@ -54,11 +59,20 @@ const AdminEnvios = () => {
   }, []);
 
   return (
-    <div className="admin-envios-container"> {/* Cambiado a className directo */}
-      <h1 className="admin-envios-title">Gestión de Envíos (Admin)</h1>
-
+    <div className="admin-envios-container">
+      <div className="admin-envios-header">
+        <button 
+          onClick={handleBackToDashboard}
+          className="admin-envios-back-button"
+        >
+          &larr; Regresar al Dashboard
+        </button>
+        <h1 className="admin-envios-title">Gestión de Envíos (Admin)</h1>
+      </div>
       {loading ? (
-        <p>Cargando...</p>
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+        </div>
       ) : (
         <table className="admin-envios-table">
           <thead>
@@ -76,10 +90,11 @@ const AdminEnvios = () => {
                 <td>{envio.id_envio}</td>
                 <td>{envio.nombre_usuario}</td>
                 <td>
-                  <span style={{ 
-                    color: envio.estado_actual === 'Tu Pedido Ya Ha Sido Entregado' ? 'green' : 
-                          envio.estado_actual === 'En Camino a Tu Hogar' ? 'blue' : 'orange'
-                  }}>
+                  <span className={`status-badge ${
+                    envio.estado_actual === 'Tu Pedido Ya Ha Sido Entregado' ? 'status-entregado' :
+                    envio.estado_actual === 'En Camino a Tu Hogar' ? 'status-en-camino' :
+                    envio.estado_actual === 'Validando' ? 'status-validando' : 'status-empacando'
+                  }`}>
                     {envio.estado_actual}
                   </span>
                 </td>

@@ -10,9 +10,11 @@ const ShoppingCart = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [paymentErrors, setPaymentErrors] = useState({});
+  const [paymentSuccess, setPaymentSuccess] = useState('');
+  const [paymentError, setPaymentError] = useState('');
   const [userDetails, setUserDetails] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [carritoId, setCarritoId] = useState(null);
   const [showShippingForm, setShowShippingForm] = useState(false);
@@ -24,12 +26,23 @@ const ShoppingCart = () => {
     pais: ''
   });  
   const [shippingSubmitted, setShippingSubmitted] = useState(false);
+  const [errors, setErrors] = useState({
+  direccion: '',
+  ciudad: '',
+  departamento: '',
+  codigo_postal: '',
+  pais: ''
+  });
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     return token ? { Authorization: `Bearer ${token}` } : null;
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
   
@@ -94,6 +107,63 @@ const ShoppingCart = () => {
     } catch (error) {
       console.error("Error al agregar producto al carrito:", error.response ? error.response.data : error.message);
     }
+  };
+
+  const validateShipping = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    if (!shippingDetails.direccion.trim()) {
+      newErrors.direccion = 'La dirección es obligatoria.';
+      isValid = false;
+    } else if (shippingDetails.direccion.length > 30) {
+      newErrors.direccion = 'Máximo 30 caracteres.';
+      isValid = false;
+    }
+
+    if (!shippingDetails.ciudad.trim()) {
+      newErrors.ciudad = 'La ciudad es obligatoria.';
+      isValid = false;
+    } else if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(shippingDetails.ciudad)) {
+      newErrors.ciudad = 'Solo se permiten letras y espacios.';
+      isValid = false;
+    } else if (shippingDetails.ciudad.length > 30) {
+      newErrors.ciudad = 'Máximo 30 caracteres.';
+      isValid = false;
+    }
+
+    if (!shippingDetails.departamento.trim()) {
+      newErrors.departamento = 'El departamento es obligatorio.';
+      isValid = false;
+    } else if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(shippingDetails.departamento)) {
+      newErrors.departamento = 'Solo se permiten letras y espacios.';
+      isValid = false;
+    } else if (shippingDetails.departamento.length > 30) {
+      newErrors.departamento = 'Máximo 30 caracteres.';
+      isValid = false;
+    }
+
+    if (!shippingDetails.codigo_postal.trim()) {
+      newErrors.codigo_postal = 'El código postal es obligatorio.';
+      isValid = false;
+    } else if (!/^\d{1,6}$/.test(shippingDetails.codigo_postal)) {
+      newErrors.codigo_postal = 'Solo números (máx. 6 dígitos).';
+      isValid = false;
+    }
+
+    if (!shippingDetails.pais.trim()) {
+      newErrors.pais = 'El país es obligatorio.';
+      isValid = false;
+    } else if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(shippingDetails.pais)) {
+      newErrors.pais = 'Solo se permiten letras y espacios.';
+      isValid = false;
+    } else if (shippingDetails.pais.length > 30) {
+      newErrors.pais = 'Máximo 30 caracteres.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const fetchCart = async () => {
@@ -179,20 +249,105 @@ const ShoppingCart = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails(prev => ({ ...prev, [name]: value }));
+    
+    // Limpiar error cuando el usuario escribe
+    if (paymentErrors[name]) {
+      setPaymentErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const validateForm = () => {
-    if (!paymentMethod) return false;
+    const newErrors = {};
+    let isValid = true;
 
-    if (paymentMethod === 'paypal') {
-      return userDetails.email_paypal && userDetails.confirmacion_id;
-    } else if (paymentMethod === 'transferencia') {
-      return userDetails.nombre_titular && userDetails.banco_origen && userDetails.numero_cuenta && userDetails.comprobante_url;
-    } else if (paymentMethod === 'tarjeta') {
-      return userDetails.nombre_en_tarjeta && userDetails.numero_tarjeta && userDetails.cvv && userDetails.fecha_expiracion;
+    if (!paymentMethod) {
+      setPaymentError('Por favor seleccione un método de pago');
+      return false;
     }
 
-    return false;
+    if (paymentMethod === 'paypal') {
+      if (!userDetails.email_paypal) {
+        newErrors.email_paypal = 'El correo de PayPal es obligatorio';
+        isValid = false;
+      } else if (!validateEmail(userDetails.email_paypal)) {
+        newErrors.email_paypal = 'Por favor ingrese un correo electrónico válido';
+        isValid = false;
+      }
+
+      if (!userDetails.confirmacion_id) {
+        newErrors.confirmacion_id = 'El ID de confirmación es obligatorio';
+        isValid = false;
+      } else if (!/^\d+$/.test(userDetails.confirmacion_id)) {
+        newErrors.confirmacion_id = 'El ID debe contener solo números';
+        isValid = false;
+      }
+    } 
+    else if (paymentMethod === 'transferencia') {
+      if (!userDetails.nombre_titular) {
+        newErrors.nombre_titular = 'El nombre del titular es obligatorio';
+        isValid = false;
+      } else if (!/^[a-zA-Z\s]+$/.test(userDetails.nombre_titular)) {
+        newErrors.nombre_titular = 'Solo se permiten letras y espacios';
+        isValid = false;
+      }
+
+      if (!userDetails.banco_origen) {
+        newErrors.banco_origen = 'El nombre del banco es obligatorio';
+        isValid = false;
+      } else if (!/^[a-zA-Z\s]+$/.test(userDetails.banco_origen)) {
+        newErrors.banco_origen = 'Solo se permiten letras y espacios';
+        isValid = false;
+      }
+
+      if (!userDetails.numero_cuenta) {
+        newErrors.numero_cuenta = 'El número de cuenta es obligatorio';
+        isValid = false;
+      } else if (!/^\d{1,16}$/.test(userDetails.numero_cuenta)) {
+        newErrors.numero_cuenta = 'Máximo 16 dígitos numéricos';
+        isValid = false;
+      }
+
+      if (userDetails.comprobante_url && !/^[a-zA-Z0-9]{1,30}$/.test(userDetails.comprobante_url)) {
+        newErrors.comprobante_url = 'Solo letras y números (máx 30 caracteres)';
+        isValid = false;
+      }
+    } 
+    else if (paymentMethod === 'tarjeta') {
+      if (!userDetails.nombre_en_tarjeta) {
+        newErrors.nombre_en_tarjeta = 'El nombre en la tarjeta es obligatorio';
+        isValid = false;
+      } else if (!/^[a-zA-Z\s]+$/.test(userDetails.nombre_en_tarjeta)) {
+        newErrors.nombre_en_tarjeta = 'Solo se permiten letras y espacios';
+        isValid = false;
+      }
+
+      if (!userDetails.numero_tarjeta) {
+        newErrors.numero_tarjeta = 'El número de tarjeta es obligatorio';
+        isValid = false;
+      } else if (!/^\d{16}$/.test(userDetails.numero_tarjeta)) {
+        newErrors.numero_tarjeta = 'Debe tener exactamente 16 dígitos';
+        isValid = false;
+      }
+
+      if (!userDetails.cvv) {
+        newErrors.cvv = 'El CVV es obligatorio';
+        isValid = false;
+      } else if (!/^\d{3}$/.test(userDetails.cvv)) {
+        newErrors.cvv = 'Debe tener exactamente 3 dígitos';
+        isValid = false;
+      }
+
+      if (!userDetails.fecha_expiracion) {
+        newErrors.fecha_expiracion = 'La fecha de expiración es obligatoria';
+        isValid = false;
+      } else if (!/^\d{4}$/.test(userDetails.fecha_expiracion)) {
+        newErrors.fecha_expiracion = 'Formato MMAA (4 dígitos)';
+        isValid = false;
+      }
+    }
+
+    setPaymentErrors(newErrors);
+    return isValid;
   };
 
   const handleShippingChange = (e) => {
@@ -201,8 +356,11 @@ const ShoppingCart = () => {
   };
   
   const proceedToPayment = async () => {
-    if (!validateForm()) return alert("Complete todos los campos del método de pago.");
+    setPaymentError('');
+    setPaymentSuccess('');
     
+    if (!validateForm()) return;
+
     let id_pago = null;
     
     try {
@@ -235,21 +393,32 @@ const ShoppingCart = () => {
       }
       const headers = getAuthHeaders();
       await axios.post('http://localhost:5000/factura', { id_pago }, { headers });
-      setPaymentSuccess(true);
+      setPaymentSuccess('¡Pago realizado con éxito!');
       setShowShippingForm(true);
       
     } catch (err) {
-      console.error('Error completo:', err);
-      console.log('err.response:', err.response);
-      console.log('err.response.data:', err.response?.data);
-      const msg = err.response?.data?.message || JSON.stringify(err.response?.data) || 'Error desconocido al procesar el pago.';
-      alert(msg);
+      console.error('Error en el pago:', err);
+      let errorMessage = 'Error al procesar el pago. Por favor intente nuevamente.';
+      
+      if (err.response) {
+        if (err.response.data && err.response.data.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.response.status === 400) {
+          errorMessage = "Datos de pago inválidos. Por favor verifique la información.";
+        } else if (err.response.status === 500) {
+          errorMessage = "Error en el servidor. Por favor intente más tarde.";
+        }
+      }
+      
+      setPaymentError(errorMessage);
     }
   };
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
     setUserDetails({});
+    setPaymentErrors({});
+    setPaymentError('');
   };
 
   const closeModal = () => {
@@ -379,6 +548,7 @@ const ShoppingCart = () => {
 
   return (
     <div className="container">
+      
       <div className="cart-list" ref={cartListRef}>
         <div className='titulopag'>
           <h2>Carrito de Compras</h2>
@@ -405,7 +575,14 @@ const ShoppingCart = () => {
 
       <div className="cart-summary">
         <h3>Total: ${new Intl.NumberFormat('es-CL').format(total)}</h3>
-        <button onClick={() => setShowModal(true)} className="btn-ir-modal">Ir a Pagar</button>
+        <button
+          onClick={() => setShowModal(true)}
+          className="btn-ir-modal"
+            disabled={cartItems.length === 0} title={cartItems.length === 0 ? 'Debes tener productos en el carrito para proceder al pago' : ''}
+        >
+          Ir a Pagar
+        </button>
+
 
         {recommendedProducts.length > 0 && (
           <div className="recommended-section">
@@ -445,8 +622,11 @@ const ShoppingCart = () => {
           <motion.div 
             className="modal-content"
             initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            animate={{ 
+              y: 0, 
+              opacity: 1,
+              transition: { type: 'spring', stiffness: 300, damping: 25 }
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <button className="modal-close" onClick={closeModal}>
@@ -459,13 +639,16 @@ const ShoppingCart = () => {
                 <select 
                   value={paymentMethod} 
                   onChange={handlePaymentMethodChange}
-                  className="modal-input"
+                  className={`modal-input ${paymentError && !paymentMethod ? 'input-error' : ''}`}
                 >
                   <option value="">Seleccione método de pago</option>
                   <option value="tarjeta">Tarjeta</option>
                   <option value="transferencia">Transferencia</option>
                   <option value="paypal">PayPal</option>
                 </select>
+                {!paymentMethod && paymentError && (
+                  <div className="field-error">{paymentError}</div>
+                )}
 
                 {paymentMethod === 'paypal' && (
                   <>
@@ -473,14 +656,20 @@ const ShoppingCart = () => {
                       name="email_paypal" 
                       placeholder="Correo PayPal" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.email_paypal ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.email_paypal && (
+                      <div className="field-error">{paymentErrors.email_paypal}</div>
+                    )}
                     <input 
                       name="confirmacion_id" 
                       placeholder="ID de Confirmación" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.confirmacion_id ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.confirmacion_id && (
+                      <div className="field-error">{paymentErrors.confirmacion_id}</div>
+                    )}
                   </>
                 )}
 
@@ -490,26 +679,38 @@ const ShoppingCart = () => {
                       name="nombre_titular" 
                       placeholder="Nombre del Titular" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.nombre_titular ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.nombre_titular && (
+                      <div className="field-error">{paymentErrors.nombre_titular}</div>
+                    )}
                     <input 
                       name="banco_origen" 
                       placeholder="Banco de Origen" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.banco_origen ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.banco_origen && (
+                      <div className="field-error">{paymentErrors.banco_origen}</div>
+                    )}
                     <input 
                       name="numero_cuenta" 
                       placeholder="Número de Cuenta" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.numero_cuenta ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.numero_cuenta && (
+                      <div className="field-error">{paymentErrors.numero_cuenta}</div>
+                    )}
                     <input 
                       name="comprobante_url" 
-                      placeholder="URL del Comprobante" 
+                      placeholder="URL del Comprobante (opcional)" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.comprobante_url ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.comprobante_url && (
+                      <div className="field-error">{paymentErrors.comprobante_url}</div>
+                    )}
                   </>
                 )}
 
@@ -517,30 +718,49 @@ const ShoppingCart = () => {
                   <>
                     <input 
                       name="numero_tarjeta" 
-                      placeholder="Número de Tarjeta" 
+                      placeholder="Número de Tarjeta (16 dígitos)" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.numero_tarjeta ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.numero_tarjeta && (
+                      <div className="field-error">{paymentErrors.numero_tarjeta}</div>
+                    )}
                     <input 
                       name="nombre_en_tarjeta" 
                       placeholder="Nombre en la Tarjeta" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.nombre_en_tarjeta ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.nombre_en_tarjeta && (
+                      <div className="field-error">{paymentErrors.nombre_en_tarjeta}</div>
+                    )}
                     <input 
                       name="cvv" 
-                      placeholder="CVV" 
+                      placeholder="CVV (3 dígitos)" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.cvv ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.cvv && (
+                      <div className="field-error">{paymentErrors.cvv}</div>
+                    )}
                     <input 
                       name="fecha_expiracion" 
-                      placeholder="Fecha de Expiración (MM/AA)" 
+                      placeholder="Fecha de Expiración (4 dígitos MMAA)" 
                       onChange={handleInputChange} 
-                      className="modal-input"
+                      className={`modal-input ${paymentErrors.fecha_expiracion ? 'input-error' : ''}`}
                     />
+                    {paymentErrors.fecha_expiracion && (
+                      <div className="field-error">{paymentErrors.fecha_expiracion}</div>
+                    )}
                   </>
                 )}
+
+                {paymentError && (
+                  <div className="alert alert-error">
+                    <span className="alert-icon">!</span> {paymentError}
+                  </div>
+                )}
+
                 <button onClick={proceedToPayment} className='btn-pago'>Confirmar Pago</button>
               </div>
             ) : (
@@ -549,55 +769,77 @@ const ShoppingCart = () => {
                   <h3>¡Pago Realizado con Éxito!</h3>
                   <h4>Ahora ingresa tus datos de envío</h4>
 
-                  <input
-                    name="direccion"
-                    placeholder="Dirección"
-                    value={shippingDetails.direccion}
-                    onChange={handleShippingChange}
-                    className="modal-input"
-                  />
-                  <input
-                    name="ciudad"
-                    placeholder="Ciudad"
-                    value={shippingDetails.ciudad}
-                    onChange={handleShippingChange}
-                    className="modal-input"
-                  />
-                  <input
-                    name="departamento"
-                    placeholder="Departamento"
-                    value={shippingDetails.departamento}
-                    onChange={handleShippingChange}
-                    className="modal-input"
-                  />
-                  <input
-                    name="codigo_postal"
-                    placeholder="Código Postal"
-                    value={shippingDetails.codigo_postal}
-                    onChange={handleShippingChange}
-                    className="modal-input"
-                  />
-                  <input
-                    name="pais"
-                    placeholder="País"
-                    value={shippingDetails.pais}
-                    onChange={handleShippingChange}
-                    className="modal-input"
-                  />
+                  <div className="input-group">
+                    <label htmlFor="direccion">Dirección</label>
+                    <input
+                      name="direccion"
+                      id="direccion"
+                      placeholder="Dirección"
+                      value={shippingDetails.direccion}
+                      onChange={handleShippingChange}
+                      className={`modal-input ${errors.direccion ? 'input-error' : ''}`}
+                    />
+                    {errors.direccion && <div className="field-error">{errors.direccion}</div>}
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="ciudad">Ciudad</label>
+                    <input
+                      name="ciudad"
+                      id="ciudad"
+                      placeholder="Ciudad"
+                      value={shippingDetails.ciudad}
+                      onChange={handleShippingChange}
+                      className={`modal-input ${errors.ciudad ? 'input-error' : ''}`}
+                    />
+                    {errors.ciudad && <div className="field-error">{errors.ciudad}</div>}
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="departamento">Departamento</label>
+                    <input
+                      name="departamento"
+                      id="departamento"
+                      placeholder="Departamento"
+                      value={shippingDetails.departamento}
+                      onChange={handleShippingChange}
+                      className={`modal-input ${errors.departamento ? 'input-error' : ''}`}
+                    />
+                    {errors.departamento && <div className="field-error">{errors.departamento}</div>}
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="codigo_postal">Código Postal</label>
+                    <input
+                      name="codigo_postal"
+                      id="codigo_postal"
+                      placeholder="Código Postal"
+                      value={shippingDetails.codigo_postal}
+                      onChange={handleShippingChange}
+                      className={`modal-input ${errors.codigo_postal ? 'input-error' : ''}`}
+                    />
+                    {errors.codigo_postal && <div className="field-error">{errors.codigo_postal}</div>}
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="pais">País</label>
+                    <input
+                      name="pais"
+                      id="pais"
+                      placeholder="País"
+                      value={shippingDetails.pais}
+                      onChange={handleShippingChange}
+                      className={`modal-input ${errors.pais ? 'input-error' : ''}`}
+                    />
+                    {errors.pais && <div className="field-error">{errors.pais}</div>}
+                  </div>
 
                   <button
                     className="btn-pago"
                     onClick={() => {
-                      if (
-                        !shippingDetails.direccion ||
-                        !shippingDetails.ciudad ||
-                        !shippingDetails.departamento ||
-                        !shippingDetails.codigo_postal ||
-                        !shippingDetails.pais
-                      ) {
-                        return alert("Por favor completa todos los campos de envío.");
+                      if (validateShipping()) {
+                        submitShippingInfo();
                       }
-                      submitShippingInfo();
                     }}
                   >
                     Enviar Datos de Envío

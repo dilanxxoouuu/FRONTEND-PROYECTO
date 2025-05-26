@@ -81,21 +81,24 @@ const Home = () => {
             {productosBajoPrecio.length > 0 ? (
               visibleProducts.map((producto) => (
                 <div key={producto.producto_nombre} className="product-card">
-                  <img
-                    src={
-                      producto.producto_foto.startsWith("http")
-                        ? producto.producto_foto
-                        : `http://localhost:5000/static/uploads/${producto.producto_foto}`
-                    }
-                    alt={producto.producto_nombre}
-                    className="product-image"
-                  />
+                <img
+                  src={
+                    producto.producto_foto.startsWith("http")
+                      ? producto.producto_foto
+                      : `http://localhost:5000/static/uploads/${producto.producto_foto}`
+                  }
+                  alt={producto.producto_nombre}
+                  className="product-image"
+                />
+                <div className="product-info">
                   <h3 className="product-title">{producto.producto_nombre}</h3>
-                  <p className="product-price">Precio: ${producto.producto_precio.toLocaleString()}</p>
+                  <p className="product-description">{producto.descripcion}</p>
+                  <p className="product-price">${producto.producto_precio.toLocaleString()}</p>
                   <button className="product-button" onClick={handleVerMas}>
                     Ver más
                   </button>
                 </div>
+              </div>
               ))
             ) : (
               <p>Cargando productos...</p>

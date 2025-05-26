@@ -5,9 +5,16 @@ import './GestionUsuarios.css';
 
 const GestionUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
-    const [newUser, setNewUser] = useState({ nombre: '', correo: '', numerodoc: '', contrasena: '' });
+    const [newUser, setNewUser] = useState({ 
+        nombre: '', 
+        numerodoc: '', 
+        correo: '', 
+        contrasena: '' 
+    });
     const [editUser, setEditUser] = useState(null);
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -18,13 +25,50 @@ const GestionUsuarios = () => {
         },
     });
 
+    // Función para validar los campos
+    const validateFields = (data, isEditing = false) => {
+        const newErrors = {};
+        
+        // Validación Nombre (solo letras)
+        if (!data.nombre.trim()) {
+            newErrors.nombre = 'El nombre es obligatorio.';
+        } else if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(data.nombre)) {
+            newErrors.nombre = 'Solo se permiten letras y espacios.';
+        }
+
+        // Validación Número de documento (solo números, máximo 15)
+        if (!data.numerodoc.trim()) {
+            newErrors.numerodoc = 'El documento es obligatorio.';
+        } else if (!/^\d{1,15}$/.test(data.numerodoc)) {
+            newErrors.numerodoc = 'Máximo 15 dígitos numéricos.';
+        }
+
+        // Validación Correo (formato válido)
+        if (!data.correo.trim()) {
+            newErrors.correo = 'El correo es obligatorio.';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.correo)) {
+            newErrors.correo = 'Formato inválido (ejemplo@dominio.com).';
+        }
+
+        // Validación Contraseña (solo para creación, no para edición)
+        if (!isEditing) {
+            if (!data.contrasena.trim()) {
+                newErrors.contrasena = 'La contraseña es obligatoria.';
+            } else if (!/^[A-Za-z0-9]{8,16}$/.test(data.contrasena)) {
+                newErrors.contrasena = '8-16 caracteres alfanuméricos.';
+            }
+        }
+
+        return newErrors;
+    };
+
     const refreshUsers = () => {
         axiosInstance
             .get("/usuarios")
             .then((response) => setUsuarios(response.data))
             .catch((error) => {
                 console.error("Error al obtener los usuarios:", error);
-                setError("Error al cargar los usuarios.");
+                setErrorMessage("Error al cargar los usuarios.");
             });
     };
 
@@ -34,43 +78,49 @@ const GestionUsuarios = () => {
 
     const handleAddUser = (e) => {
         e.preventDefault();
-        if (!newUser.nombre || !newUser.correo || !newUser.numerodoc || !newUser.contrasena) {
-            setError('Por favor, complete todos los campos.');
-            return;
+        const validationErrors = validateFields(newUser);
+        setErrors(validationErrors);
+        
+        if (Object.keys(validationErrors).length === 0) {
+            axiosInstance
+                .post("/usuarios", newUser)
+                .then((response) => {
+                    setUsuarios([...usuarios, response.data]);
+                    setNewUser({ nombre: '', correo: '', numerodoc: '', contrasena: '' });
+                    setErrors({});
+                    setSuccessMessage('Usuario creado exitosamente.');
+                    setTimeout(() => setSuccessMessage(''), 3000);
+                })
+                .catch((error) => {
+                    console.error("Error al agregar usuario:", error);
+                    setErrorMessage(error.response?.data?.message || "Error al agregar el usuario.");
+                });
         }
-        axiosInstance
-            .post("/usuarios", newUser)
-            .then((response) => {
-                setUsuarios([...usuarios, response.data]);
-                setNewUser({ nombre: '', correo: '', numerodoc: '', contrasena: '' });
-                setError('');
-            })
-            .catch((error) => {
-                console.error("Error al agregar usuario:", error);
-                setError("Error al agregar el usuario. Verifica los datos ingresados.");
-            });
     };
 
     const handleEditUser = (e) => {
         e.preventDefault();
-        if (!editUser.nombre || !editUser.correo || !editUser.numerodoc) {
-            setError('Por favor, complete todos los campos.');
-            return;
+        const validationErrors = validateFields(editUser, true);
+        setErrors(validationErrors);
+        
+        if (Object.keys(validationErrors).length === 0) {
+            axiosInstance
+                .put(`/usuario/${editUser.id_usuario}`, editUser)
+                .then((response) => {
+                    const updatedUsers = usuarios.map(user =>
+                        user.id_usuario === editUser.id_usuario ? response.data : user
+                    );
+                    setUsuarios(updatedUsers);
+                    setEditUser(null);
+                    setErrors({});
+                    setSuccessMessage('Usuario actualizado exitosamente.');
+                    setTimeout(() => setSuccessMessage(''), 3000);
+                })
+                .catch((error) => {
+                    console.error("Error al editar usuario:", error);
+                    setErrorMessage(error.response?.data?.message || "Error al editar el usuario.");
+                });
         }
-        axiosInstance
-            .put(`/usuario/${editUser.id_usuario}`, editUser)
-            .then((response) => {
-                const updatedUsers = usuarios.map(user =>
-                    user.id_usuario === editUser.id_usuario ? response.data : user
-                );
-                setUsuarios(updatedUsers);
-                setEditUser(null);
-                setError('');
-            })
-            .catch((error) => {
-                console.error("Error al editar usuario:", error);
-                setError("Error al editar el usuario. Verifica los datos ingresados.");
-            });
     };
 
     const handleChange = (e) => {
@@ -80,20 +130,34 @@ const GestionUsuarios = () => {
         } else {
             setNewUser(prev => ({ ...prev, [name]: value }));
         }
+        
+        // Limpiar errores al escribir
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: '' }));
+        }
+        
+        // Limpiar mensajes al escribir
+        if (successMessage || errorMessage) {
+            setSuccessMessage('');
+            setErrorMessage('');
+        }
     };
 
     const startEditUser = (user) => {
         if (user.rol_id === 1) {
-            setError("No puedes editar los datos del superadmin.");
+            setErrorMessage("No puedes editar los datos del superadmin.");
             return;
         }
         setEditUser(user);
+        setErrors({});
+        setSuccessMessage('');
+        setErrorMessage('');
     };
 
     const handleDeleteUser = (id_usuario) => {
         const userToDelete = usuarios.find(user => user.id_usuario === id_usuario);
         if (userToDelete && userToDelete.rol_id === 1) {
-            setError("No puedes eliminar al superadmin.");
+            setErrorMessage("No puedes eliminar al superadmin.");
             return;
         }
 
@@ -101,10 +165,12 @@ const GestionUsuarios = () => {
             .delete(`/usuario/${id_usuario}`)
             .then(() => {
                 setUsuarios(usuarios.filter(user => user.id_usuario !== id_usuario));
+                setSuccessMessage('Usuario eliminado exitosamente.');
+                setTimeout(() => setSuccessMessage(''), 3000);
             })
             .catch((error) => {
                 console.error("Error al eliminar usuario:", error);
-                setError("Error al eliminar el usuario.");
+                setErrorMessage("Error al eliminar el usuario.");
             });
     };
 
@@ -121,53 +187,75 @@ const GestionUsuarios = () => {
                 </button>
             </div>
 
-            {error && <p className="error-message">{error}</p>}
+            {successMessage && (
+                <div className="alert alert-success">
+                    <span className="alert-icon">✓</span> {successMessage}
+                </div>
+            )}
+            {errorMessage && (
+                <div className="alert alert-error">
+                    <span className="alert-icon">!</span> {errorMessage}
+                </div>
+            )}
 
             <div className="form-container">
                 <form onSubmit={editUser ? handleEditUser : handleAddUser} className="user-form">
                     <h2>{editUser ? 'Editar Usuario' : 'Agregar Usuario'}</h2>
-                    <div className="form-group">
+                    
+                    <div className="input-group">
                         <input
                             type="text"
                             name="nombre"
                             value={editUser ? editUser.nombre : newUser.nombre}
                             onChange={handleChange}
                             placeholder="Nombre"
+                            className={errors.nombre ? 'input-error' : ''}
                             required
                         />
+                        {errors.nombre && <div className="field-error">{errors.nombre}</div>}
                     </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            name="correo"
-                            value={editUser ? editUser.correo : newUser.correo}
-                            onChange={handleChange}
-                            placeholder="Correo Electrónico"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
+                    
+                    <div className="input-group">
                         <input
                             type="text"
                             name="numerodoc"
                             value={editUser ? editUser.numerodoc : newUser.numerodoc}
                             onChange={handleChange}
                             placeholder="Número de Documento"
+                            className={errors.numerodoc ? 'input-error' : ''}
                             required
                         />
+                        {errors.numerodoc && <div className="field-error">{errors.numerodoc}</div>}
                     </div>
+                    
+                    <div className="input-group">
+                        <input
+                            type="email"
+                            name="correo"
+                            value={editUser ? editUser.correo : newUser.correo}
+                            onChange={handleChange}
+                            placeholder="Correo Electrónico"
+                            className={errors.correo ? 'input-error' : ''}
+                            required
+                        />
+                        {errors.correo && <div className="field-error">{errors.correo}</div>}
+                    </div>
+                    
                     {!editUser && (
-                        <div className="form-group">
+                        <div className="input-group">
                             <input
                                 type="password"
                                 name="contrasena"
                                 value={newUser.contrasena}
                                 onChange={handleChange}
-                                placeholder="Contraseña"
+                                placeholder="Contraseña (8-16 caracteres alfanuméricos)"
+                                className={errors.contrasena ? 'input-error' : ''}
                                 required
                             />
+                            {errors.contrasena && <div className="field-error">{errors.contrasena}</div>}
                         </div>
                     )}
+                    
                     <div className="form-actions">
                         <button type="submit" className="submit-btn">
                             {editUser ? 'Actualizar Usuario' : 'Agregar Usuario'}

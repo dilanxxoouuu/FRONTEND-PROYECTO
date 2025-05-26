@@ -112,12 +112,7 @@ const Login = () => {
             />
             {errors.contrasena && <small className="error">{errors.contrasena}</small>}
             
-            {/* Mensaje de éxito movido aquí */}
-            {showToast && (
-              <div className="success-message">
-                <span className="success-icon">✓</span> Inicio de sesión exitoso
-              </div>
-            )}
+
           </div>
 
           {loginError && <p className="login-error">{loginError}</p>}
@@ -127,6 +122,11 @@ const Login = () => {
               {loading ? "Cargando..." : "Iniciar sesión"}
             </button>
           </div>
+          {showToast && (
+            <div className="success-message">
+              <span className="success-icon">✓</span> Inicio de sesión exitoso
+            </div>
+          )}
         </form>
 
         <p className="register-link">
