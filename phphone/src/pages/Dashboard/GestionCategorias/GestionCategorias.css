@@ -207,7 +207,7 @@ h1::after {
     font-size: 1.2rem;
 }
 
-.category-footer {
+.category-pie {
     padding: 15px;
     background-color: var(--gris-claro);
     display: flex;
@@ -296,3 +296,4 @@ h1::after {
     background-color: var(--gris-claro-alt);
     transform: none;
 }
+

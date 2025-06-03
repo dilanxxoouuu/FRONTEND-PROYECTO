@@ -124,7 +124,7 @@ const Login = () => {
           </div>
           {showToast && (
             <div className="success-message">
-              <span className="success-icon">✓</span> Inicio de sesión exitoso
+              <span className="success-icon"></span>Inicio de sesión exitoso
             </div>
           )}
         </form>

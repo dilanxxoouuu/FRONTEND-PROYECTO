@@ -114,7 +114,7 @@ const GestionFacturas = () => {
                                     <p><strong>Total:</strong> ${formatNumber(factura.total)}</p>
                                     <p><strong>Fecha:</strong> {new Date(factura.factura_fecha).toLocaleDateString()}</p>
                                 </div>
-                                <div className="factura-footer">
+                                <div className="factura-pie">
                                     <button
                                         className="details-btn"
                                         onClick={() => obtenerDetallesFactura(factura.id_factura)}

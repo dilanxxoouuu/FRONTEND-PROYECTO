@@ -7,54 +7,54 @@
   --azul-brillante: #2962FF;
 }
 
-/* Estilos generales del footer - Versión compacta */
+/* Estilos generales del footer */
 .footer {
   background-color: var(--gris-oscuro);
   color: var(--blanco);
-  padding: 30px 0 15px; /* Reducido el padding vertical */
   width: 100%;
+  padding: 20px 0;
   margin-top: auto;
 }
 
-/* Contenedor principal más compacto */
+/* Contenedor principal */
 .footer-container {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Cambiado a center para más compacto */
+  align-items: center;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 30px;
   flex-wrap: wrap;
 }
 
-/* Logo más pequeño */
+/* Logo */
 .footer-logo h3 {
   margin: 0;
-  font-size: 1.2rem; /* Reducido de 1.5rem */
+  font-size: 1.2rem;
   font-weight: 600;
-  letter-spacing: 0.3px; /* Reducido el letter-spacing */
+  letter-spacing: 0.3px;
 }
 
 .footer-logo p {
-  margin-top: 5px; /* Reducido de 8px */
-  font-size: 0.8rem; /* Reducido de 0.9rem */
+  margin-top: 5px;
+  font-size: 0.8rem;
   color: var(--gris-claro-alt);
 }
 
-/* Links más compactos */
+/* Links */
 .footer-links ul,
 .footer-socials ul {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 20px; /* Reducido de 25px */
+  gap: 20px;
 }
 
 .footer-links a {
   color: var(--blanco);
   text-decoration: none;
-  font-size: 0.85rem; /* Ligera reducción */
+  font-size: 0.85rem;
   transition: color 0.3s ease;
 }
 
@@ -62,41 +62,42 @@
   color: var(--azul-brillante);
 }
 
-/* Iconos sociales más pequeños */
+/* Iconos sociales */
 .footer-socials a {
   color: var(--blanco);
   transition: color 0.3s ease;
-  font-size: 1.1rem; /* Tamaño para iconos */
+  font-size: 1.1rem;
 }
 
 .footer-socials a:hover {
   color: var(--azul-brillante);
 }
 
-/* Sección inferior más compacta */
+/* Sección inferior */
 .footer-bottom {
-  margin-top: 25px; /* Reducido de 40px */
-  padding-top: 15px; /* Reducido de 20px */
+  margin-top: 15px;
+  padding-top: 15px;
   border-top: 1px solid var(--gris-claro-alt);
-  font-size: 0.65rem; /* Reducido de 0.7rem */
+  font-size: 0.65rem;
   color: var(--gris-claro-alt);
   width: 100%;
+  text-align: center;
 }
 
 .footer-bottom p {
   margin: 0;
 }
 
-/* Estilos responsivos - Versión compacta */
+/* Estilos responsivos */
 @media (max-width: 768px) {
   .footer {
-    padding: 20px 0 10px; /* Más compacto en móvil */
+    padding: 15px 0;
   }
   
   .footer-container {
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Reducido de 25px */
+    gap: 15px;
   }
 
   .footer-logo h3 {
@@ -109,11 +110,11 @@
 
   .footer-links ul,
   .footer-socials ul {
-    gap: 12px; /* Reducido de 15px */
+    gap: 12px;
   }
 
   .footer-bottom {
-    margin-top: 15px;
+    margin-top: 10px;
     padding-top: 10px;
     font-size: 0.6rem;
   }

@@ -17,9 +17,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ minHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <main className="main-content">
+      <main className="main-content" style={{ flex: 1 }}>
         <AppRoutes />
       </main>
       <Footer />

@@ -169,7 +169,7 @@ const GestionPagos = () => {
                                     <p><strong>Método:</strong> {pago.metodo_pago}</p>
                                     <p><strong>Fecha:</strong> {formatDate(pago.fecha_pago)}</p>
                                 </div>
-                                <div className="pago-footer">
+                                <div className="pago-pie">
                                     <button
                                         className="details-btn"
                                         onClick={() => obtenerDetallesPago(pago)}

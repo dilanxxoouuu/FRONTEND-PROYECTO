@@ -23,17 +23,19 @@ const Reportes = () => {
     const obtenerReporte = async () => {
         try {
             setLoading(true);
-            setError(null);
+            setError(null); // Limpiamos cualquier error previo
             const response = await axiosInstance.get(`/reportes/productos-mas-vendidos?periodo=${periodo}`);
-            setReporte(response.data);
+            
+            // Si no hay datos, simplemente establecemos un array vacío
+            setReporte(response.data || []);
+            
         } catch (error) {
-            console.error("Error completo:", error);
-            if (error.response) {
-                setError(error.response.data.message || 'Error al obtener el reporte');
-            } else if (error.request) {
-                setError('No se recibió respuesta del servidor');
+            // Solo mostramos errores que no sean 404 (no encontrado)
+            if (error.response && error.response.status === 404) {
+                setReporte([]); // Establecemos array vacío para 404
             } else {
-                setError('Error al configurar la solicitud');
+                console.error("Error:", error);
+                setError('Error al obtener los reportes');
             }
         } finally {
             setLoading(false);

@@ -29,7 +29,6 @@ const VistaPerfilUsuario = () => {
   
   const navigate = useNavigate();
 
-  // Obtener datos del usuario y pedidos
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,10 +49,11 @@ const VistaPerfilUsuario = () => {
         const ordersResponse = await axios.get('http://localhost:5000/api/mis-pedidos', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setPedidos(ordersResponse.data.pedidos || []);
-        setLoadingPedidos(false);
+        setPedidos(ordersResponse.data?.pedidos || []);
+        
       } catch (error) {
-        setErrorMsg('Error al cargar datos');
+        setPedidos([]);
+      } finally {
         setLoadingPedidos(false);
       }
     };
@@ -61,7 +61,6 @@ const VistaPerfilUsuario = () => {
     fetchData();
   }, []);
 
-  // Manejadores para el perfil (igual que antes)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUsuario({
@@ -79,27 +78,29 @@ const VistaPerfilUsuario = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!usuario.contrasena_actual) {
-      newErrors.contrasena_actual = 'Debes ingresar tu contraseña actual';
+    // Validar contraseña actual solo si se está cambiando algo
+    if ((usuario.nueva_contrasena || editMode) && !usuario.contrasena_actual) {
+      newErrors.contrasena_actual = 'Debes ingresar tu contraseña actual para hacer cambios';
     }
 
-    if (usuario.nueva_contrasena && !/^[A-Za-z0-9]{8,16}$/.test(usuario.nueva_contrasena)) {
-      newErrors.nueva_contrasena = '8-16 caracteres alfanuméricos';
+    if (usuario.nueva_contrasena) {
+      if (!/^[A-Za-z0-9]{8,16}$/.test(usuario.nueva_contrasena)) {
+        newErrors.nueva_contrasena = '8-16 caracteres alfanuméricos';
+      }
+      if (usuario.nueva_contrasena !== usuario.confirmar_contrasena) {
+        newErrors.confirmar_contrasena = 'Las contraseñas no coinciden';
+      }
     }
 
-    if (usuario.nueva_contrasena !== usuario.confirmar_contrasena) {
-      newErrors.confirmar_contrasena = 'Las contraseñas no coinciden';
-    }
-
-    if (usuario.nombre && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(usuario.nombre)) {
+    if (editMode && usuario.nombre && !/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(usuario.nombre)) {
       newErrors.nombre = 'Solo letras y espacios';
     }
 
-    if (usuario.numerodoc && !/^\d{1,15}$/.test(usuario.numerodoc)) {
+    if (editMode && usuario.numerodoc && !/^\d{1,15}$/.test(usuario.numerodoc)) {
       newErrors.numerodoc = 'Máx. 15 dígitos';
     }
 
-    if (usuario.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usuario.correo)) {
+    if (editMode && usuario.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usuario.correo)) {
       newErrors.correo = 'Correo inválido';
     }
 
@@ -113,16 +114,24 @@ const VistaPerfilUsuario = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const payload = {
-        nombre: usuario.nombre,
-        numerodoc: usuario.numerodoc,
-        correo: usuario.correo,
-        contrasena_actual: usuario.contrasena_actual,
-        ...(usuario.nueva_contrasena && {
-          nueva_contrasena: usuario.nueva_contrasena,
-          confirmar_contrasena: usuario.confirmar_contrasena
-        })
-      };
+      const payload = {};
+      
+      // Solo incluir campos que han cambiado
+      if (editMode) {
+        if (usuario.nombre) payload.nombre = usuario.nombre;
+        if (usuario.numerodoc) payload.numerodoc = usuario.numerodoc;
+        if (usuario.correo) payload.correo = usuario.correo;
+      }
+      
+      // Solo incluir contraseña si se está cambiando
+      if (usuario.nueva_contrasena) {
+        payload.contrasena_actual = usuario.contrasena_actual;
+        payload.nueva_contrasena = usuario.nueva_contrasena;
+        payload.confirmar_contrasena = usuario.confirmar_contrasena;
+      } else if (editMode) {
+        // Si se están editando otros datos pero no la contraseña
+        payload.contrasena_actual = usuario.contrasena_actual;
+      }
 
       const response = await axios.put('http://localhost:5000/perfil', payload, {
         headers: { Authorization: `Bearer ${token}` }
@@ -130,7 +139,6 @@ const VistaPerfilUsuario = () => {
 
       setSuccessMsg('¡Perfil actualizado!');
       setEditMode(false);
-      // Actualizar solo datos del usuario
       setUsuario(prev => ({
         ...response.data.usuario,
         contrasena_actual: '',
@@ -142,7 +150,6 @@ const VistaPerfilUsuario = () => {
     }
   };
 
-  // Funciones para pedidos (igual que antes)
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
@@ -190,6 +197,7 @@ const VistaPerfilUsuario = () => {
                   name="nombre"
                   value={usuario.nombre}
                   onChange={handleChange}
+                  placeholder={usuario.nombre}
                   className={errors.nombre ? 'input-error' : ''}
                 />
                 {errors.nombre && <span className="field-error">{errors.nombre}</span>}
@@ -202,6 +210,7 @@ const VistaPerfilUsuario = () => {
                   name="numerodoc"
                   value={usuario.numerodoc}
                   onChange={handleChange}
+                  placeholder={usuario.numerodoc}
                   className={errors.numerodoc ? 'input-error' : ''}
                 />
                 {errors.numerodoc && <span className="field-error">{errors.numerodoc}</span>}
@@ -214,13 +223,14 @@ const VistaPerfilUsuario = () => {
                   name="correo"
                   value={usuario.correo}
                   onChange={handleChange}
+                  placeholder={usuario.correo}
                   className={errors.correo ? 'input-error' : ''}
                 />
                 {errors.correo && <span className="field-error">{errors.correo}</span>}
               </div>
 
               <div className="password-section">
-                <h3><FaLock /> Cambiar Contraseña</h3>
+                <h3><FaLock /> Cambiar Contraseña (Opcional)</h3>
                 <div className="form-group">
                   <label>Nueva Contraseña</label>
                   <input
@@ -228,7 +238,7 @@ const VistaPerfilUsuario = () => {
                     name="nueva_contrasena"
                     value={usuario.nueva_contrasena}
                     onChange={handleChange}
-                    placeholder="Opcional"
+                    placeholder="Dejar en blanco para no cambiar"
                     className={errors.nueva_contrasena ? 'input-error' : ''}
                   />
                   {errors.nueva_contrasena && (
@@ -243,7 +253,7 @@ const VistaPerfilUsuario = () => {
                     name="confirmar_contrasena"
                     value={usuario.confirmar_contrasena}
                     onChange={handleChange}
-                    placeholder="Opcional"
+                    placeholder="Confirmar nueva contraseña"
                     className={errors.confirmar_contrasena ? 'input-error' : ''}
                   />
                   {errors.confirmar_contrasena && (
@@ -299,7 +309,7 @@ const VistaPerfilUsuario = () => {
         </div>
       </motion.div>
 
-      {/* Sección de Pedidos (igual que antes) */}
+      {/* Sección de Pedidos */}
       <div className="orders-section">
         <div className="orders-card">
           <h2><FaBox /> Mis Pedidos</h2>
@@ -348,23 +358,6 @@ const VistaPerfilUsuario = () => {
                       <FaBox className="detail-icon" />
                       <span>{pedido.productos.length} producto(s)</span>
                     </div>
-                  </div>
-                  
-                  <div className="order-products">
-                    {pedido.productos.map((producto, index) => (
-                      <div key={index} className="product-item">
-                        <img 
-                          src={`http://localhost:5000/static/uploads/${producto.imagen}`} 
-                          alt={producto.nombre} 
-                          className="product-image" 
-                        />
-                        <div className="product-info">
-                          <div className="product-name">{producto.nombre}</div>
-                          <div className="product-quantity">Cantidad: {producto.cantidad}</div>
-                          <div className="product-price">${producto.precio_unitario.toLocaleString()} c/u</div>
-                        </div>
-                      </div>
-                    ))}
                   </div>
                   
                   <button

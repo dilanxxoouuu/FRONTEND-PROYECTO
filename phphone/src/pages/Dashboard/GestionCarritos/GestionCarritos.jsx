@@ -95,7 +95,7 @@ const GestionCarritos = () => {
                                     <p><strong>Fecha:</strong> {carrito.fecha}</p>
                                     <p><strong>Total:</strong> ${formatNumber(carrito.total)}</p>
                                 </div>
-                                <div className="carrito-footer">
+                                <div className="carrito-pie">
                                     <button
                                         className="details-btn"
                                         onClick={() => toggleDetalles(carrito.id_carrito)}

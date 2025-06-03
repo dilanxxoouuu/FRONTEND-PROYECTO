@@ -46,6 +46,7 @@ h1::after {
   justify-content: center;
   gap: 15px;
   margin-bottom: 25px;
+  margin-top: 25px;
 }
 
 .back-btn, 
@@ -238,41 +239,6 @@ h1::after {
   color: var(--gris-oscuro);
 }
 
-.user-footer {
-  padding: 15px;
-  background-color: var(--gris-claro);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.edit-btn, 
-.delete-btn {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.edit-btn {
-  background-color: var(--azul-brillante);
-  color: var(--blanco);
-}
-
-.edit-btn:hover {
-  background-color: var(--gris-oscuro);
-}
-
-.delete-btn {
-  background-color: var(--rojo-error);
-  color: var(--blanco);
-}
-
-.delete-btn:hover {
-  background-color: #E53935;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
