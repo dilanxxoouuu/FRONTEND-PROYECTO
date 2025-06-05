@@ -155,8 +155,8 @@ const Products = ({ addToCart }) => {
                             <div className="product-info">
                                 <h2 className="product-title">{product.producto_nombre}</h2>
                                 <p className="product-description" title={product.descripcion}>
-                                    {product.descripcion.length > 120
-                                        ? `${product.descripcion.slice(0, 120)}...`
+                                    {product.descripcion.length > 100
+                                        ? `${product.descripcion.slice(0, 100)}...`
                                         : product.descripcion}
                                 </p>
                                 <div className="product-price-container">

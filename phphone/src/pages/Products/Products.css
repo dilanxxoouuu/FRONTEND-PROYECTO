@@ -143,11 +143,10 @@
   
   /* Limitar a 3 líneas */
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 4.5em; /* 3 líneas * 1.5 line-height */
+  min-height: 2.5em; /* 3 líneas * 1.5 line-height */
 }
 
 .product-card:hover .product-description {

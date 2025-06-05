@@ -66,15 +66,7 @@
     transition: all 0.3s ease;
 }
 
-.gestion-productos .back-btn {
-    background-color: var(--gris-claro-alt);
-    color: var(--gris-oscuro);
-}
 
-.gestion-productos .back-btn:hover {
-    background-color: var(--gris-oscuro);
-    color: var(--blanco);
-}
 
 .gestion-productos .refresh-btn {
     background-color: var(--azul-brillante);

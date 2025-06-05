@@ -27,12 +27,26 @@ const ShoppingCart = () => {
   });  
   const [shippingSubmitted, setShippingSubmitted] = useState(false);
   const [errors, setErrors] = useState({
-  direccion: '',
-  ciudad: '',
-  departamento: '',
-  codigo_postal: '',
-  pais: ''
+    direccion: '',
+    ciudad: '',
+    departamento: '',
+    codigo_postal: '',
+    pais: ''
   });
+
+  // Prevenir cierre con tecla ESC
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showModal) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showModal]);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -43,6 +57,7 @@ const ShoppingCart = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
+
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
   
@@ -250,7 +265,6 @@ const ShoppingCart = () => {
     const { name, value } = e.target;
     setUserDetails(prev => ({ ...prev, [name]: value }));
     
-    // Limpiar error cuando el usuario escribe
     if (paymentErrors[name]) {
       setPaymentErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -548,7 +562,6 @@ const ShoppingCart = () => {
 
   return (
     <div className="container">
-      
       <div className="cart-list" ref={cartListRef}>
         <div className='titulopag'>
           <h2>Carrito de Compras</h2>
@@ -578,11 +591,11 @@ const ShoppingCart = () => {
         <button
           onClick={() => setShowModal(true)}
           className="btn-ir-modal"
-            disabled={cartItems.length === 0} title={cartItems.length === 0 ? 'Debes tener productos en el carrito para proceder al pago' : ''}
+          disabled={cartItems.length === 0} 
+          title={cartItems.length === 0 ? 'Debes tener productos en el carrito para proceder al pago' : ''}
         >
           Ir a Pagar
         </button>
-
 
         {recommendedProducts.length > 0 && (
           <div className="recommended-section">
@@ -617,7 +630,6 @@ const ShoppingCart = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={closeModal}
         >
           <motion.div 
             className="modal-content"
@@ -629,9 +641,12 @@ const ShoppingCart = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="modal-close" onClick={closeModal}>
-              &times;
-            </button>
+            {/* Solo muestra el botón de cerrar cuando el proceso esté completo */}
+            {shippingSubmitted && (
+              <button className="modal-close" onClick={closeModal}>
+                &times;
+              </button>
+            )}
             
             {!paymentSuccess ? (
               <div>
