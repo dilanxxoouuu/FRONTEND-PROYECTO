@@ -7,9 +7,37 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Home = () => {
   const [productosBajoPrecio, setProductosBajoPrecio] = useState([]);
-  const [showLoginMessage, setShowLoginMessage] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationPosition, setNotificationPosition] = useState({ 
+    top: 0, 
+    left: 0, 
+    visible: false 
+  });
   const navigate = useNavigate();
+
+  const addNotification = (message, type = 'success', event = null) => {
+    const id = Date.now();
+    
+    if (event) {
+      const buttonRect = event.currentTarget.getBoundingClientRect();
+      setNotificationPosition({
+        top: buttonRect.top - 50,
+        left: buttonRect.left + buttonRect.width / 2 - 150,
+        visible: true
+      });
+    }
+
+    setNotifications(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      removeNotification(id);
+      setNotificationPosition(prev => ({ ...prev, visible: false }));
+    }, 5000);
+  };
+
+  const removeNotification = (id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  };
 
   useEffect(() => {
     axios.get('http://localhost:5000/productos')
@@ -19,16 +47,16 @@ const Home = () => {
       })
       .catch((error) => {
         console.error('Error al obtener productos:', error);
+        addNotification('Error al cargar productos', 'error');
       });
   }, []);
 
-  const handleVerMas = () => {
+  const handleVerMas = (e) => {
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/products');
     } else {
-      setShowLoginMessage(true);
-      setTimeout(() => setShowLoginMessage(false), 3000);
+      addNotification('¡Debes iniciar sesión para continuar!', 'warning', e);
     }
   };
 
@@ -48,6 +76,22 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      {/* Notificación contextual */}
+      {notificationPosition.visible && (
+        <div 
+          className="notification contextual-notification warning"
+          style={{
+            position: 'fixed',
+            top: `${notificationPosition.top}px`,
+            left: `${notificationPosition.left}px`,
+            zIndex: 9999
+          }}
+        >
+          ¡Debes iniciar sesión para continuar!
+        </div>
+      )}
+
+
       {/* Sección de bienvenida con efecto parallax */}
       <Parallax
         bgImage="src/assets/images/cumnigg.jpeg"
@@ -59,12 +103,6 @@ const Home = () => {
           <p>Explora nuestros productos a bajo precio y encuentra lo que más se ajusta a tus necesidades.</p>
         </div>
       </Parallax>
-
-      {showLoginMessage && (
-        <div className="login-toast">
-          ¡Debes de iniciar sesión para continuar!
-        </div>
-      )}
 
       {/* Sección de productos a bajo precio */}
       <section className="productos-bajo-precio-container">
@@ -81,24 +119,24 @@ const Home = () => {
             {productosBajoPrecio.length > 0 ? (
               visibleProducts.map((producto) => (
                 <div key={producto.producto_nombre} className="product-card">
-                <img
-                  src={
-                    producto.producto_foto.startsWith("http")
-                      ? producto.producto_foto
-                      : `http://localhost:5000/static/uploads/${producto.producto_foto}`
-                  }
-                  alt={producto.producto_nombre}
-                  className="product-image"
-                />
-                <div className="product-info">
-                  <h3 className="product-title">{producto.producto_nombre}</h3>
-                  <p className="product-description">{producto.descripcion}</p>
-                  <p className="product-price">${producto.producto_precio.toLocaleString()}</p>
-                  <button className="product-button" onClick={handleVerMas}>
-                    Ver más
-                  </button>
+                  <img
+                    src={
+                      producto.producto_foto.startsWith("http")
+                        ? producto.producto_foto
+                        : `http://localhost:5000/static/uploads/${producto.producto_foto}`
+                    }
+                    alt={producto.producto_nombre}
+                    className="product-image"
+                  />
+                  <div className="product-info">
+                    <h3 className="product-title">{producto.producto_nombre}</h3>
+                    <p className="product-description">{producto.descripcion}</p>
+                    <p className="product-price">${producto.producto_precio.toLocaleString()}</p>
+                    <button className="product-button" onClick={(e) => handleVerMas(e)}>
+                      Ver más
+                    </button>
+                  </div>
                 </div>
-              </div>
               ))
             ) : (
               <p>Cargando productos...</p>

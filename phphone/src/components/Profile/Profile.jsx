@@ -119,7 +119,7 @@ const VistaPerfilUsuario = () => {
       // Solo incluir campos que han cambiado
       if (editMode) {
         if (usuario.nombre) payload.nombre = usuario.nombre;
-        if (usuario.numerodoc) payload.numerodoc = usuario.numerodoc;
+        if (usuario.numerodoc) payload.numerodoc = String(usuario.numerodoc);
         if (usuario.correo) payload.correo = usuario.correo;
       }
       
@@ -358,6 +358,23 @@ const VistaPerfilUsuario = () => {
                       <FaBox className="detail-icon" />
                       <span>{pedido.productos.length} producto(s)</span>
                     </div>
+                  </div>
+
+                  <div className="order-products">
+                    {pedido.productos.map((producto, index) => (
+                      <div key={index} className="product-item">
+                        <img 
+                          src={`http://localhost:5000/static/uploads/${producto.imagen}`} 
+                          alt={producto.nombre} 
+                          className="product-image" 
+                        />
+                        <div className="product-info">
+                          <div className="product-name">{producto.nombre}</div>
+                          <div className="product-quantity">Cantidad: {producto.cantidad}</div>
+                          <div className="product-price">${producto.precio_unitario.toLocaleString()} c/u</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   
                   <button

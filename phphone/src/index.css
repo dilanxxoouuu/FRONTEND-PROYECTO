@@ -211,3 +211,37 @@ section {
     font-size: 1rem;
   }
 }
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 20px;
+  padding-bottom: 0;
+  background: linear-gradient(to right, #bebebe, #e3e3e3, #bebebe);
+}

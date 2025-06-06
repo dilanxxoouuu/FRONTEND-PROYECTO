@@ -19,7 +19,7 @@
 }
 
 body {
-  background-color: var(--bg-light);
+  background: linear-gradient(to right, #bebebe, #e3e3e3, #bebebe);
 }
 
 /* Contenedor principal */
@@ -179,7 +179,7 @@ body {
   .register-container {
     padding: 30px 20px;
   }
-  
+
   .register-container h2 {
     font-size: 24px;
   }

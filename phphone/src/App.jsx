@@ -6,10 +6,8 @@ import './index.css';
 
 const App = () => {
   useEffect(() => {
-    // Cambiar el título de la página
     document.title = "PHPHONE";
 
-    // Cambiar el favicon
     const link = document.querySelector("link[rel='icon']");
     if (link) {
       link.href = "./src/assets/images/idroide-removebg-preview.png";
@@ -17,9 +15,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-container" style={{ minHeight: '88vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="app-container">
       <Navbar />
-      <main className="main-content" style={{ flex: 1 }}>
+      <main className="main-content">
         <AppRoutes />
       </main>
       <Footer />

@@ -81,18 +81,23 @@ const Register = () => {
             setRegisterError('');
 
             try {
-                const response = await axios.post('http://127.0.0.1:5000/signin', formData);
+                const response = await axios.post('http://127.0.0.1:5000/signin', {
+                    ...formData,
+                    numerodoc: parseInt(formData.numerodoc) // 👈 convertir aquí
+                });
+
                 if (response.status === 201) {
                     setRegisterSuccess('¡Registro exitoso! Redirigiendo...');
                     setTimeout(() => navigate('/login'), 2000);
                 }
             } catch (error) {
-                setRegisterError(error.response?.data?.message || 'Error al registrar. Intente nuevamente.');
+                setRegisterError(error.response?.data?.mensaje || 'Error al registrar. Intente nuevamente.');
             } finally {
                 setLoading(false);
             }
         }
     };
+
 
     return (
         <div className="register-wrapper">

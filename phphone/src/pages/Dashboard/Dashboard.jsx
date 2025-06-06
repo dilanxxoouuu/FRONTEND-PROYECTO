@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { 
   FaUsers, 
   FaBoxOpen, 
@@ -10,25 +10,51 @@ import {
   FaWarehouse,
   FaChartBar,
   FaTruck,
-  FaClipboardList,
-  FaCog
+  FaClipboardList
 } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
 import "./Dashboard.css";
 
 const Dashboard = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkAdminStatus = () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setIsAdmin(false);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const decoded = jwtDecode(token);
+                setIsAdmin(decoded.sub === "1"); // Asumiendo que sub: "1" es admin
+            } catch (error) {
+                console.error('Error decoding token:', error);
+                setIsAdmin(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAdminStatus();
+    }, []);
+
     const adminModules = [
         {
-            path: "/GestionUsuarios",
+            path: "/gestionUsuarios",
             icon: <FaUsers className="btn-icon" />,
             title: "Gestión de Usuarios"
         },
         {
-            path: "/GestionProductos",
+            path: "/gestionProductos",
             icon: <FaBoxOpen className="btn-icon" />,
             title: "Gestión de Productos"
         },
         {
-            path: "/GestionCategorias",
+            path: "/gestionCategorias",
             icon: <FaThLarge className="btn-icon" />,
             title: "Gestión de Categorías"
         },
@@ -63,6 +89,14 @@ const Dashboard = () => {
             title: "Administración de Envíos"
         },
     ];
+
+    if (loading) {
+        return <div className="dashboard-loading">Cargando...</div>;
+    }
+
+    if (!isAdmin) {
+        return <Navigate to="/products" replace />;
+    }
 
     return (
         <div className="dashboard">
