@@ -17,6 +17,23 @@ const Home = () => {
   const [itemsPerSlide, setItemsPerSlide] = useState(4);
   const navigate = useNavigate();
 
+  const truncateDescription = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    
+    // Cortar hasta el máximo permitido
+    let truncated = text.substr(0, maxLength);
+    
+    // Encontrar el último espacio en blanco para no cortar palabras
+    const lastSpace = truncated.lastIndexOf(' ');
+    
+    // Si encontramos un espacio y no es muy al principio
+    if (lastSpace > 0 && lastSpace > maxLength - 15) {
+      truncated = truncated.substr(0, lastSpace);
+    }
+    
+    return truncated;
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -151,7 +168,7 @@ const Home = () => {
                     <h3 className="product-title">{producto.producto_nombre}</h3>
                     <p className="product-description" title={producto.descripcion}>
                       {producto.descripcion.length > 100
-                        ? `${producto.descripcion.slice(0, 100)}...`
+                        ? `${truncateDescription(producto.descripcion, 100)}...`
                         : producto.descripcion}
                     </p>
                     <p className="product-price">${producto.producto_precio.toLocaleString()}</p>
