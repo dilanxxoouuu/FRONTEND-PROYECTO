@@ -185,7 +185,7 @@ const Products = ({ addToCart }) => {
                             )}
                             <div className="product-image-container">
                                 <img
-                                    src={product.producto_foto}
+                                    src={product.producto_foto}  // Ahora usa directamente la URL de Cloudinary
                                     alt={product.producto_nombre}
                                     className="product-image"
                                     onError={(e) => {
