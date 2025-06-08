@@ -35,7 +35,7 @@ const VistaPerfilUsuario = () => {
         const token = localStorage.getItem('token');
         
         // Datos del usuario
-        const userResponse = await axios.get('http://localhost:5000/perfil', {
+        const userResponse = await axios.get('https://backenddespliegue-production.up.railway.app/perfil', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUsuario({
@@ -46,7 +46,7 @@ const VistaPerfilUsuario = () => {
         });
 
         // Datos de pedidos
-        const ordersResponse = await axios.get('http://localhost:5000/api/mis-pedidos', {
+        const ordersResponse = await axios.get('https://backenddespliegue-production.up.railway.app/api/mis-pedidos', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPedidos(ordersResponse.data?.pedidos || []);
@@ -133,7 +133,7 @@ const VistaPerfilUsuario = () => {
         payload.contrasena_actual = usuario.contrasena_actual;
       }
 
-      const response = await axios.put('http://localhost:5000/perfil', payload, {
+      const response = await axios.put('https://backenddespliegue-production.up.railway.app/perfil', payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -364,9 +364,12 @@ const VistaPerfilUsuario = () => {
                     {pedido.productos.map((producto, index) => (
                       <div key={index} className="product-item">
                         <img 
-                          src={`http://localhost:5000/static/uploads/${producto.imagen}`} 
+                          src={producto.imagen.includes('cloudinary') ? producto.imagen : `https://res.cloudinary.com/dgshedbuj/image/upload/${producto.imagen}`} 
                           alt={producto.nombre} 
                           className="product-image" 
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+                          }}
                         />
                         <div className="product-info">
                           <div className="product-name">{producto.nombre}</div>

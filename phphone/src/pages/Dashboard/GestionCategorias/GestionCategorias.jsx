@@ -28,8 +28,8 @@ const GestionCategorias = () => {
     const fetchData = async () => {
         try {
             const [categoriasRes, productosRes] = await Promise.all([
-                axios.get("http://127.0.0.1:5000/categorias", { headers: getAuthHeaders() }),
-                axios.get("http://127.0.0.1:5000/productos", { headers: getAuthHeaders() })
+                axios.get("https://backenddespliegue-production.up.railway.app/categorias", { headers: getAuthHeaders() }),
+                axios.get("https://backenddespliegue-production.up.railway.app/productos", { headers: getAuthHeaders() })
             ]);
             setCategorias(categoriasRes.data);
             setProductos(productosRes.data);
@@ -74,7 +74,7 @@ const GestionCategorias = () => {
         e.preventDefault();
         if (!validateCategory(newCategory.nombre)) return;
         
-        axios.post("http://127.0.0.1:5000/categorias", { nombre: newCategory.nombre.trim() }, { headers: getAuthHeaders() })
+        axios.post("https://backenddespliegue-production.up.railway.app/categorias", { nombre: newCategory.nombre.trim() }, { headers: getAuthHeaders() })
             .then((response) => {
                 addNotification(response.data.mensaje);
                 setNewCategory({ nombre: '' });
@@ -90,7 +90,7 @@ const GestionCategorias = () => {
         e.preventDefault();
         if (!editCategory || !validateCategory(editCategory.nombre)) return;
         
-        axios.put(`http://127.0.0.1:5000/categoria/${editCategory.id_categoria}`, 
+        axios.put(`https://backenddespliegue-production.up.railway.app/categoria/${editCategory.id_categoria}`, 
                  { nombre: editCategory.nombre.trim() }, 
                  { headers: getAuthHeaders() })
             .then(() => {
@@ -122,7 +122,7 @@ const GestionCategorias = () => {
         }
 
         if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
-            axios.delete(`http://127.0.0.1:5000/categoria/${id}`, { headers: getAuthHeaders() })
+            axios.delete(`https://backenddespliegue-production.up.railway.app/categoria/${id}`, { headers: getAuthHeaders() })
                 .then(() => {
                     addNotification("Categoría eliminada correctamente");
                     setCategorias(categorias.filter(c => c.id_categoria !== id));

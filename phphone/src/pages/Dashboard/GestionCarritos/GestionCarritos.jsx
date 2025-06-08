@@ -16,7 +16,7 @@ const GestionCarritos = () => {
     };
 
     const axiosInstance = axios.create({
-        baseURL: "http://127.0.0.1:5000",
+        baseURL: "https://backenddespliegue-production.up.railway.app",
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -97,10 +97,11 @@ const GestionCarritos = () => {
                                 </div>
                                 <div className="carrito-pie">
                                     <button
-                                        className="details-btn"
-                                        onClick={() => toggleDetalles(carrito.id_carrito)}
+                                    className={`details-btn ${!carrito.procesado ? 'disabled-btn' : ''}`}
+                                    onClick={() => toggleDetalles(carrito.id_carrito)}
+                                    disabled={!carrito.procesado}
                                     >
-                                        {carritoExpandido === carrito.id_carrito ? "Ocultar Detalles" : "Ver Detalles"}
+                                    {carritoExpandido === carrito.id_carrito ? "Ocultar Detalles" : "Ver Detalles"}
                                     </button>
                                 </div>
 

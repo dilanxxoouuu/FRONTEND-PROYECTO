@@ -67,7 +67,7 @@ const ShoppingCart = () => {
     }
   
     try {
-      const carritoResponse = await axios.get('http://localhost:5000/carrito/activo', {
+      const carritoResponse = await axios.get('https://backenddespliegue-production.up.railway.app/carrito/activo', {
         headers: { Authorization: `Bearer ${token}` },
       });
   
@@ -81,7 +81,7 @@ const ShoppingCart = () => {
         const updatedQuantity = existingProduct.cantidad + 1;
   
         await axios.put(
-          `http://localhost:5000/carrito/${carritoId}/producto`,
+          `https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`,
           {
             id_producto: product.id_producto,
             cantidad: updatedQuantity,
@@ -98,7 +98,7 @@ const ShoppingCart = () => {
         );
       } else {
         const agregarProductoResponse = await axios.put(
-          `http://localhost:5000/carrito/${carritoId}/producto`,
+          `https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`,
           {
             id_producto: product.id_producto,
             cantidad: 1,
@@ -186,7 +186,7 @@ const ShoppingCart = () => {
       const headers = getAuthHeaders();
       if (!headers) return;
 
-      const response = await axios.get('http://localhost:5000/carrito/activo', { headers });
+      const response = await axios.get('https://backenddespliegue-production.up.railway.app/carrito/activo', { headers });
       const carrito = response.data;
       setCarritoId(carrito.id_carrito);
       setCartItems(carrito.productos || []);
@@ -210,7 +210,7 @@ const ShoppingCart = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/carrito/${carritoId}/producto`, {
+      await axios.put(`https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`, {
         id_producto: productId,
         cantidad: newQuantity
       }, { headers });
@@ -229,7 +229,7 @@ const ShoppingCart = () => {
     if (!carritoId) return;
     try {
       const headers = getAuthHeaders();
-      await axios.delete(`http://localhost:5000/carrito/${carritoId}/producto`, {
+      await axios.delete(`https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`, {
         headers,
         data: { id_producto: productId }
       });
@@ -245,7 +245,7 @@ const ShoppingCart = () => {
   const fetchRecommendedProducts = async () => {
     try {
       const headers = getAuthHeaders();
-      const response = await axios.get("http://localhost:5000/productos/recomendados", { headers });
+      const response = await axios.get("https://backenddespliegue-production.up.railway.app/productos/recomendados", { headers });
       setRecommendedProducts(response.data);
     } catch (err) {
       console.error("Error al obtener productos recomendados", err);
@@ -406,7 +406,7 @@ const ShoppingCart = () => {
         return;
       }
       const headers = getAuthHeaders();
-      await axios.post('http://localhost:5000/factura', { id_pago }, { headers });
+      await axios.post('https://backenddespliegue-production.up.railway.app/factura', { id_pago }, { headers });
       setPaymentSuccess('¡Pago realizado con éxito!');
       setShowShippingForm(true);
       
@@ -453,14 +453,14 @@ const ShoppingCart = () => {
   const handlePaypalPayment = async () => {
     try {
       const headers = getAuthHeaders();
-      const pagoRes = await axios.post('http://localhost:5000/pago', {
+      const pagoRes = await axios.post('https://backenddespliegue-production.up.railway.app/pago', {
         monto: total,
         metodo_pago: 'paypal'
       }, { headers });
   
       const id_pago = pagoRes.data.id_pago;
   
-      await axios.post('http://localhost:5000/pago/paypal', {
+      await axios.post('https://backenddespliegue-production.up.railway.app/pago/paypal', {
         id_pago,
         email_paypal: userDetails.email_paypal,
         confirmacion_id: userDetails.confirmacion_id
@@ -476,14 +476,14 @@ const ShoppingCart = () => {
   const handleTransferPayment = async () => {
     try {
       const headers = getAuthHeaders();
-      const pagoRes = await axios.post('http://localhost:5000/pago', {
+      const pagoRes = await axios.post('https://backenddespliegue-production.up.railway.app/pago', {
         monto: total,
         metodo_pago: 'transferencia'
       }, { headers });
   
       const id_pago = pagoRes.data.id_pago;
   
-      await axios.post('http://localhost:5000/pago/transferencia', {
+      await axios.post('https://backenddespliegue-production.up.railway.app/pago/transferencia', {
         id_pago,
         nombre_titular: userDetails.nombre_titular,
         banco_origen: userDetails.banco_origen,
@@ -501,14 +501,14 @@ const ShoppingCart = () => {
   const handleCardPayment = async () => {
     try {
       const headers = getAuthHeaders();
-      const pagoRes = await axios.post('http://localhost:5000/pago', {
+      const pagoRes = await axios.post('https://backenddespliegue-production.up.railway.app/pago', {
         monto: total,
         metodo_pago: 'tarjeta'
       }, { headers });
   
       const id_pago = pagoRes.data.id_pago;
   
-      await axios.post('http://localhost:5000/pago/tarjeta', {
+      await axios.post('https://backenddespliegue-production.up.railway.app/pago/tarjeta', {
         id_pago,
         numero_tarjeta: userDetails.numero_tarjeta,
         nombre_en_tarjeta: userDetails.nombre_en_tarjeta,
@@ -527,14 +527,14 @@ const ShoppingCart = () => {
     try {
       const headers = getAuthHeaders();
       
-      const facturaResponse = await axios.get('http://localhost:5000/factura/ultima', { headers });
+      const facturaResponse = await axios.get('https://backenddespliegue-production.up.railway.app/factura/ultima', { headers });
       const id_factura = facturaResponse.data.id_factura;
 
       if (!id_factura) {
         throw new Error("No se encontró una factura válida");
       }
 
-      const response = await axios.post('http://localhost:5000/envio', {
+      const response = await axios.post('https://backenddespliegue-production.up.railway.app/envio', {
         direccion: shippingDetails.direccion,
         ciudad: shippingDetails.ciudad,
         departamento: shippingDetails.departamento,
@@ -568,7 +568,13 @@ const ShoppingCart = () => {
         </div>
         {cartItems.map((product) => (
           <div className="cart-item" key={product.id_producto}>
-            <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
+            <img 
+              src={product.producto_foto} 
+              alt={product.producto_nombre} 
+              onError={(e) => {
+                e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+              }}
+            />
             <div className="cart-info">
               <h4>{product.producto_nombre}</h4>
               <p className="description">{product.descripcion}</p>
@@ -604,7 +610,13 @@ const ShoppingCart = () => {
               <div className="recommended-products">
                 {recommendedProducts.map((product) => (
                   <div className="recommended-card" key={product.id_producto}>
-                    <img src={`http://localhost:5000/static/uploads/${product.producto_foto}`} alt={product.producto_nombre} />
+                    <img 
+                      src={product.producto_foto} 
+                      alt={product.producto_nombre} 
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+                      }}
+                    />
                     <div className="recommended-info">
                       <p>{product.producto_nombre}</p>
                       <p>${new Intl.NumberFormat('es-CL').format(product.producto_precio)}</p>

@@ -25,7 +25,7 @@ const AdminEnvios = () => {
   const cargarEnvios = async () => {
     try {
       const token = getToken();
-      const response = await axios.get('http://localhost:5000/api/admin/envios', {
+      const response = await axios.get('https://backenddespliegue-production.up.railway.app/api/admin/envios', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEnvios(response.data.envios);
@@ -42,7 +42,7 @@ const AdminEnvios = () => {
     try {
       const token = getToken();
       await axios.patch(
-        `http://localhost:5000/api/admin/envios/${selectedEnvio.id_envio}/estado`,
+        `https://backenddespliegue-production.up.railway.app/api/admin/envios/${selectedEnvio.id_envio}/estado`,
         { nuevo_estado: nuevoEstado },
         { headers: { Authorization: `Bearer ${token}` } }
       );

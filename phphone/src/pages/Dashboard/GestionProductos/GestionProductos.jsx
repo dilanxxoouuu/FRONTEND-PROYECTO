@@ -11,7 +11,7 @@ const GestionProductos = () => {
         producto_precio: '',
         producto_stock: '',
         descripcion: '',
-        producto_foto: null,
+        producto_foto: '',  // Ahora es URL string
         categoria_id: ''
     });
     const [errors, setErrors] = useState({});
@@ -20,11 +20,15 @@ const GestionProductos = () => {
     const token = localStorage.getItem("token");
 
     const axiosInstance = axios.create({
-        baseURL: "http://127.0.0.1:5000",
+        baseURL: "https://backenddespliegue-production.up.railway.app",
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+
+    // Configura tus datos de Cloudinary aquí:
+    const cloudName = 'dgshedbuj';         // <- Reemplaza con tu cloud name
+    const uploadPreset = 'unsigned_preset'; 
 
     // Validation functions
     const validateNombre = (nombre) => {
@@ -64,10 +68,12 @@ const GestionProductos = () => {
 
     const refreshProducts = async () => {
         try {
-            const productosResponse = await axiosInstance.get("/productos");
+            const [productosResponse, categoriasResponse] = await Promise.all([
+                axiosInstance.get("/productos"),
+                axiosInstance.get("/categorias")
+            ]);
+            
             setProductos(productosResponse.data);
-
-            const categoriasResponse = await axiosInstance.get("/categorias");
             setCategorias(categoriasResponse.data);
         } catch (error) {
             console.error("Error al obtener los productos o categorías:", error);
@@ -111,7 +117,6 @@ const GestionProductos = () => {
             [name]: value
         }));
         
-        // Clear error when user types
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -120,17 +125,34 @@ const GestionProductos = () => {
         }
     };
 
-    const handleFileChange = (e) => {
-        setNewProduct(prev => ({
-            ...prev,
-            producto_foto: e.target.files[0]
-        }));
-        
-        if (errors.producto_foto) {
-            setErrors(prev => ({
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', uploadPreset);
+
+        try {
+            const res = await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                formData
+            );
+            
+            setNewProduct(prev => ({
                 ...prev,
-                producto_foto: ""
+                producto_foto: res.data.secure_url
             }));
+
+            if (errors.producto_foto) {
+                setErrors(prev => ({
+                    ...prev,
+                    producto_foto: ""
+                }));
+            }
+        } catch (error) {
+            console.error("Error subiendo imagen a Cloudinary", error);
+            alert("Error subiendo imagen. Intenta de nuevo.");
         }
     };
 
@@ -139,28 +161,21 @@ const GestionProductos = () => {
         
         if (!validateForm()) return;
         
-        const formData = new FormData();
-        formData.append('producto_nombre', newProduct.producto_nombre);
-        formData.append('producto_precio', newProduct.producto_precio);
-        formData.append('producto_stock', newProduct.producto_stock);
-        formData.append('descripcion', newProduct.descripcion);
-        formData.append('categoria_id', newProduct.categoria_id);
-        
-        // Only append file if it's a new file or new product
-        if (newProduct.producto_foto instanceof File) {
-            formData.append('producto_foto', newProduct.producto_foto);
-        }
+        const productData = {
+            producto_nombre: newProduct.producto_nombre,
+            producto_precio: newProduct.producto_precio,
+            producto_stock: newProduct.producto_stock,
+            descripcion: newProduct.descripcion,
+            producto_foto: newProduct.producto_foto,
+            categoria_id: newProduct.categoria_id
+        };
 
         try {
             if (editProduct) {
-                await axiosInstance.put(`/productos/${editProduct.id_producto}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                await axiosInstance.put(`/productos/${editProduct.id_producto}`, productData);
                 alert("Producto actualizado exitosamente");
             } else {
-                await axiosInstance.post("/productos", formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
+                await axiosInstance.post("/productos", productData);
                 alert("Producto agregado exitosamente");
             }
             
@@ -178,11 +193,16 @@ const GestionProductos = () => {
             producto_precio: '',
             producto_stock: '',
             descripcion: '',
-            producto_foto: null,
+            producto_foto: '',
             categoria_id: ''
         });
         setEditProduct(null);
         setErrors({});
+    };
+
+    const getCategoriaNombre = (id) => {
+        const categoria = categorias.find(c => c.id_categoria === id);
+        return categoria ? categoria.nombre : 'N/A';
     };
 
     return (
@@ -258,17 +278,14 @@ const GestionProductos = () => {
                 {/* Imagen del Producto */}
                 <div className="form-group">
                     <label className="file-upload-label">
-                        {newProduct.producto_foto instanceof File 
-                            ? newProduct.producto_foto.name 
-                            : editProduct 
-                                ? "Imagen actual seleccionada"
-                                : "Seleccionar Imagen"}
+                        {newProduct.producto_foto
+                            ? <img src={newProduct.producto_foto} alt="Preview" className="image-preview" />
+                            : "Seleccionar Imagen"}
                         <input
                             type="file"
-                            name="producto_foto"
-                            onChange={handleFileChange}
                             accept="image/*"
-                            className="file-upload-input"
+                            onChange={handleFileChange}
+                            style={{ display: 'none' }}
                         />
                     </label>
                     {errors.producto_foto && <span className="error-message">{errors.producto_foto}</span>}
@@ -282,16 +299,16 @@ const GestionProductos = () => {
                         onChange={handleChange}
                         className={errors.categoria_id ? "error" : ""}
                     >
-                        <option value="">Seleccionar Categoría</option>
-                        {categorias.map((categoria) => (
-                            <option key={categoria.id_categoria} value={categoria.id_categoria}>
-                                {categoria.nombre}
+                        <option value="">Selecciona una categoría</option>
+                        {categorias.map(cat => (
+                            <option key={cat.id_categoria} value={cat.id_categoria}>
+                                {cat.nombre}
                             </option>
                         ))}
                     </select>
                     {errors.categoria_id && <span className="error-message">{errors.categoria_id}</span>}
                 </div>
-                
+
                 <div className="form-actions">
                     <button type="submit" className="submit-btn">
                         {editProduct ? "Actualizar Producto" : "Agregar Producto"}
@@ -310,12 +327,12 @@ const GestionProductos = () => {
                     <p className="no-products">No hay productos registrados</p>
                 ) : (
                     <div className="products-grid">
-                        {productos.map((product) => (
-                            <div key={product.id_producto} className="product-card">
+                        {productos.map(producto => (
+                            <div key={producto.id_producto} className="product-card">
                                 <div className="product-image-container">
                                     <img
-                                        src={`http://localhost:5000/static/uploads/${product.producto_foto}`}
-                                        alt={product.producto_nombre}
+                                        src={producto.producto_foto}
+                                        alt={producto.producto_nombre}
                                         className="product-image"
                                         onError={(e) => {
                                             e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
@@ -323,27 +340,27 @@ const GestionProductos = () => {
                                     />
                                 </div>
                                 <div className="product-info">
-                                    <h3 className="product-title">{product.producto_nombre}</h3>
+                                    <h3 className="product-title">{producto.producto_nombre}</h3>
                                     <p className="product-description">
-                                        {product.descripcion.length > 100
-                                            ? `${product.descripcion.substring(0, 100)}...`
-                                            : product.descripcion}
+                                        {producto.descripcion.length > 100
+                                            ? `${producto.descripcion.substring(0, 100)}...`
+                                            : producto.descripcion}
                                     </p>
-                                    <p className="product-price">${product.producto_precio}</p>
+                                    <p className="product-price">${producto.producto_precio}</p>
                                     <p className="product-stock">
-                                        {product.producto_stock > 0 
-                                            ? `Stock: ${product.producto_stock}` 
+                                        {producto.producto_stock > 0 
+                                            ? `Stock: ${producto.producto_stock}` 
                                             : "Sin stock"}
                                     </p>
                                     <p className="product-category">
-                                        Categoría: {categorias.find(c => c.id_categoria === product.categoria_id)?.nombre || 'N/A'}
+                                        Categoría: {getCategoriaNombre(producto.categoria_id)}
                                     </p>
                                 </div>
                                 <div className="product-actions">
-                                    <button className="edit-btn" onClick={() => handleEditProduct(product)}>
+                                    <button className="edit-btn" onClick={() => handleEditProduct(producto)}>
                                         Editar
                                     </button>
-                                    <button className="delete-btn" onClick={() => handleDeleteProduct(product.id_producto)}>
+                                    <button className="delete-btn" onClick={() => handleDeleteProduct(producto.id_producto)}>
                                         Eliminar
                                     </button>
                                 </div>

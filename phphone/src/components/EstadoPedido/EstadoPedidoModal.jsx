@@ -24,7 +24,7 @@ const EstadoPedidoModal = ({ pedidoId, onClose }) => {
       if (!token) return;
 
       const response = await axios.get(
-        `http://localhost:5000/api/envios/${pedidoId}/estado`, 
+        `https://backenddespliegue-production.up.railway.app/api/envios/${pedidoId}/estado`, 
         {
           headers: { Authorization: `Bearer ${token}` }
         }

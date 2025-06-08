@@ -218,3 +218,11 @@ h1 {
         margin-top: 0.5rem;
     }
 }
+
+.details-btn.disabled-btn {
+  background-color: #ccc;   /* gris claro */
+  color: #666;              /* texto gris */
+  cursor: not-allowed;
+  pointer-events: none;     /* Previene clicks */
+  opacity: 0.7;
+}

@@ -24,7 +24,7 @@ const FiltroBusqueda = ({ showFilter, setShowFilter }) => {
             const token = getToken();
             if (!token) return;
 
-            const response = await axios.get("http://localhost:5000/categorias", {
+            const response = await axios.get("https://backenddespliegue-production.up.railway.app/categorias", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

@@ -64,7 +64,8 @@ const Products = ({ addToCart }) => {
                     return;
                 }
 
-                let apiUrl = "http://localhost:5000/productos";
+                // Cambiar la URL base a tu backend en producción
+                let apiUrl = "https://backenddespliegue-production.up.railway.app/productos";
                 const filterParams = [];
                 if (searchTerm) filterParams.push(`q=${searchTerm}`);
                 if (minPrice) filterParams.push(`min_price=${minPrice}`);
@@ -73,7 +74,9 @@ const Products = ({ addToCart }) => {
                 if (inStock) filterParams.push(`in_stock=${inStock}`);
                 if (filterParams.length > 0) apiUrl += `?${filterParams.join("&")}`;
 
-                const response = await axios.get(apiUrl, { headers: { Authorization: `Bearer ${token}` } });
+                const response = await axios.get(apiUrl, { 
+                    headers: { Authorization: `Bearer ${token}` } 
+                });
                 setProducts(response.data);
                 setHasSearched(filterParams.length > 0);
             } catch (error) {
@@ -98,7 +101,7 @@ const Products = ({ addToCart }) => {
         if (!token) return console.error("Token no disponible");
 
         try {
-            const carritoResponse = await axios.get('http://localhost:5000/carrito/activo', {
+            const carritoResponse = await axios.get('https://backenddespliegue-production.up.railway.app/carrito/activo', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -108,7 +111,7 @@ const Products = ({ addToCart }) => {
             if (existingProduct) {
                 const updatedQuantity = existingProduct.cantidad + 1;
                 const updateResponse = await axios.put(
-                    `http://localhost:5000/carrito/${carritoId}/producto`,
+                    `https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`,
                     { id_producto: product.id_producto, cantidad: updatedQuantity },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -116,7 +119,7 @@ const Products = ({ addToCart }) => {
                 addNotification(`${product.producto_nombre} cantidad aumentada al carrito 🛒`);
             } else {
                 const agregarProductoResponse = await axios.put(
-                    `http://localhost:5000/carrito/${carritoId}/producto`,
+                    `https://backenddespliegue-production.up.railway.app/carrito/${carritoId}/producto`,
                     { id_producto: product.id_producto, cantidad: 1 },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -183,9 +186,12 @@ const Products = ({ addToCart }) => {
                             )}
                             <div className="product-image-container">
                                 <img
-                                    src={`http://localhost:5000/static/uploads/${product.producto_foto}`}
+                                    src={product.producto_foto}  // Ahora usa directamente la URL de Cloudinary
                                     alt={product.producto_nombre}
                                     className="product-image"
+                                    onError={(e) => {
+                                        e.target.src = 'https://via.placeholder.com/300x200?text=Imagen+no+disponible';
+                                    }}
                                 />
                             </div>
                             <div className="product-info">
