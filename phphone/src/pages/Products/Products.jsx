@@ -64,7 +64,6 @@ const Products = ({ addToCart }) => {
                     return;
                 }
 
-                // Cambiar la URL base a tu backend en producción
                 let apiUrl = "https://backenddespliegue-production.up.railway.app/productos";
                 const filterParams = [];
                 if (searchTerm) filterParams.push(`q=${searchTerm}`);
@@ -186,7 +185,7 @@ const Products = ({ addToCart }) => {
                             )}
                             <div className="product-image-container">
                                 <img
-                                    src={product.producto_foto}  // Ahora usa directamente la URL de Cloudinary
+                                    src={product.producto_foto}
                                     alt={product.producto_nombre}
                                     className="product-image"
                                     onError={(e) => {
