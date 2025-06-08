@@ -192,15 +192,16 @@
   padding: 0 40px;
 }
 
-.slider-arrow {
+/* Reemplaza las clases .slider-arrow, .left-arrow y .right-arrow con estas nuevas clases */
+
+.slider-button {
   background: var(--azul-brillante);
   border: none;
-  border-radius: 50%;
   color: white;
   cursor: pointer;
   font-size: 1.5rem;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,20 +210,24 @@
   transform: translateY(-50%);
   transition: all 0.3s ease;
   z-index: 10;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.slider-arrow:hover {
+.slider-button:hover {
   background: var(--gris-oscuro);
+  transform: translateY(-50%) scale(1.1);
 }
 
-.left-arrow {
+.left-button {
   left: 0;
 }
 
-.right-arrow {
+.right-button {
   right: 0;
 }
 
+/* El resto del CSS permanece igual */ 
 .product-cards-container {
   display: flex;
   gap: 25px;

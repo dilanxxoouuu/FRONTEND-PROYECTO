@@ -11,6 +11,8 @@ const Products = ({ addToCart }) => {
     const [productsPerPage, setProductsPerPage] = useState(10);
     const [isChrome, setIsChrome] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasSearched, setHasSearched] = useState(false);
     const location = useLocation();
 
     const addNotification = (message, type = 'success') => {
@@ -53,9 +55,14 @@ const Products = ({ addToCart }) => {
     useEffect(() => {
         const fetchFilteredProducts = async () => {
             try {
+                setIsLoading(true);
                 const { searchTerm, minPrice, maxPrice, categoryId, inStock } = getQueryParams();
                 const token = localStorage.getItem("token");
-                if (!token) return console.error("Token no disponible");
+                
+                if (!token) {
+                    setIsLoading(false);
+                    return;
+                }
 
                 let apiUrl = "http://localhost:5000/productos";
                 const filterParams = [];
@@ -68,9 +75,12 @@ const Products = ({ addToCart }) => {
 
                 const response = await axios.get(apiUrl, { headers: { Authorization: `Bearer ${token}` } });
                 setProducts(response.data);
+                setHasSearched(filterParams.length > 0);
             } catch (error) {
                 console.error("Error al obtener los productos filtrados:", error);
                 addNotification("Error al cargar los productos", "error");
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchFilteredProducts();
@@ -117,6 +127,32 @@ const Products = ({ addToCart }) => {
             console.error("Error al agregar producto al carrito:", error.response ? error.response.data : error.message);
             addNotification("Error al agregar producto al carrito", "error");
         }
+    };
+
+    const renderNoProductsMessage = () => {
+        const token = localStorage.getItem("token");
+        const { categoryId } = getQueryParams();
+
+        if (!token) {
+            return <p className="no-products">Debes de iniciar sesión para ver todos los productos.</p>;
+        }
+
+        if (isLoading) {
+            return <p className="no-products">Cargando productos...</p>;
+        }
+
+        if (hasSearched && products.length === 0) {
+            if (categoryId) {
+                return <p className="no-products">No hay productos disponibles para la categoría seleccionada.</p>;
+            }
+            return <p className="no-products">No se encontraron productos con los filtros aplicados.</p>;
+        }
+
+        if (products.length === 0) {
+            return <p className="no-products">No hay productos disponibles.</p>;
+        }
+
+        return null;
     };
 
     return (
@@ -194,7 +230,7 @@ const Products = ({ addToCart }) => {
                         </div>
                     ))
                 ) : (
-                    <p className="no-products">Debes de iniciar sesión para ver todos los productos.</p>
+                    renderNoProductsMessage()
                 )}
             </div>
 

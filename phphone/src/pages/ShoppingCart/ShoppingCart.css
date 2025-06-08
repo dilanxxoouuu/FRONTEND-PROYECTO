@@ -183,9 +183,9 @@
   border-radius: var(--borde-radius);
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transicion-rapida);
   margin-bottom: 25px;
 }
+
 
 /* Agregar al archivo CSS existente */
 .modal-input:invalid {
@@ -206,8 +206,6 @@
 
 .btn-ir-modal:hover {
   background-color: var(--verde-esmeralda);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Productos recomendados */
@@ -295,7 +293,6 @@
 
 .btn-add-to-cart:hover {
   background-color: var(--verde-esmeralda);
-  transform: scale(1.1);
 }
 
 /* Estilos del modal mejorados */
@@ -376,14 +373,12 @@
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
   margin-top: 1rem;
   font-size: 1rem;
 }
 
 .btn-pago:hover {
   background-color: var(--verde-esmeralda);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .payment-success {

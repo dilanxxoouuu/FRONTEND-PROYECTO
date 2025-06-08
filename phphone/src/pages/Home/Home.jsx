@@ -14,7 +14,26 @@ const Home = () => {
     left: 0, 
     visible: false 
   });
+  const [itemsPerSlide, setItemsPerSlide] = useState(4);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerSlide(1);
+      } else if (window.innerWidth < 992) {
+        setItemsPerSlide(2);
+      } else if (window.innerWidth < 1200) {
+        setItemsPerSlide(3);
+      } else {
+        setItemsPerSlide(4);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const addNotification = (message, type = 'success', event = null) => {
     const id = Date.now();
@@ -62,17 +81,17 @@ const Home = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) => 
-      prev + 4 >= productosBajoPrecio.length ? 0 : prev + 4
+      prev + itemsPerSlide >= productosBajoPrecio.length ? 0 : prev + itemsPerSlide
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) => 
-      prev - 4 < 0 ? Math.max(0, productosBajoPrecio.length - 4) : prev - 4
+      prev - itemsPerSlide < 0 ? Math.max(0, productosBajoPrecio.length - itemsPerSlide) : prev - itemsPerSlide
     );
   };
 
-  const visibleProducts = productosBajoPrecio.slice(currentSlide, currentSlide + 4);
+  const visibleProducts = productosBajoPrecio.slice(currentSlide, currentSlide + itemsPerSlide);
 
   return (
     <div className="home-container">
@@ -90,7 +109,6 @@ const Home = () => {
           ¡Debes iniciar sesión para continuar!
         </div>
       )}
-
 
       {/* Sección de bienvenida con efecto parallax */}
       <Parallax
@@ -111,7 +129,7 @@ const Home = () => {
         </div>
         
         <div className="slider-container">
-          <button className="slider-arrow left-arrow" onClick={prevSlide}>
+          <button className="slider-button left-button" onClick={prevSlide}>
             <FaChevronLeft />
           </button>
           
@@ -143,7 +161,7 @@ const Home = () => {
             )}
           </div>
           
-          <button className="slider-arrow right-arrow" onClick={nextSlide}>
+          <button className="slider-button right-button" onClick={nextSlide}>
             <FaChevronRight />
           </button>
         </div>
