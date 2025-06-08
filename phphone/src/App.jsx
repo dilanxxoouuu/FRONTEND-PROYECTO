@@ -10,7 +10,7 @@ const App = () => {
 
     const link = document.querySelector("link[rel='icon']");
     if (link) {
-      link.href = "./src/assets/images/idroide-removebg-preview.png";
+      link.href = "/images/idroide-removebg-preview.png";
     }
   }, []);
 
