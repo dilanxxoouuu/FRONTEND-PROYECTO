@@ -112,7 +112,7 @@ const Home = () => {
 
       {/* Sección de bienvenida con efecto parallax */}
       <Parallax
-        bgImage="src/assets/images/cumnigg.jpeg"
+        bgImage="assets/images/cumnigg.jpeg"
         strength={300}
         className="welcome-section"
       >
