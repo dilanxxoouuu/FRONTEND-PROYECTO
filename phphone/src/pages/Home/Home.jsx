@@ -149,7 +149,11 @@ const Home = () => {
                   </div>
                   <div className="product-info">
                     <h3 className="product-title">{producto.producto_nombre}</h3>
-                    <p className="product-description">{producto.descripcion}</p>
+                    <p className="product-description" title={producto.descripcion}>
+                      {producto.descripcion.length > 100
+                        ? `${producto.descripcion.slice(0, 100)}...`
+                        : producto.descripcion}
+                    </p>
                     <p className="product-price">${producto.producto_precio.toLocaleString()}</p>
                     <button className="product-button" onClick={(e) => handleVerMas(e)}>
                       Ver más
