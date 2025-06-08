@@ -4,6 +4,7 @@ import { Parallax } from 'react-parallax';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import bgImage from '../../assets/images/cumningg.jpeg';
 
 const Home = () => {
   const [productosBajoPrecio, setProductosBajoPrecio] = useState([]);
@@ -112,7 +113,7 @@ const Home = () => {
 
       {/* Sección de bienvenida con efecto parallax */}
       <Parallax
-        bgImage="assets/images/cumnigg.jpeg"
+        bgImage={bgImage}
         strength={300}
         className="welcome-section"
       >
