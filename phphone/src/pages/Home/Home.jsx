@@ -4,7 +4,7 @@ import { Parallax } from 'react-parallax';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import bgImage from '../../assets/images/cumningg.jpeg';
+import bgImage from '../../assets/images';
 
 const Home = () => {
   const [productosBajoPrecio, setProductosBajoPrecio] = useState([]);
