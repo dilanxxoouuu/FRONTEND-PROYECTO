@@ -158,6 +158,7 @@ const Products = ({ addToCart }) => {
     };
 
     return (
+        <div className="products-page">
         <div className="products-container">
             <div className="notifications-container">
                 {notifications.map((notification) => (
@@ -252,6 +253,7 @@ const Products = ({ addToCart }) => {
                     ))}
                 </div>
             )}
+        </div>
         </div>
     );
 };
