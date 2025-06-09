@@ -321,7 +321,7 @@ const VistaPerfilUsuario = () => {
               <p>No has realizado ningún pedido aún.</p>
               <button 
                 className="shop-btn" 
-                onClick={() => navigate('/productos')}
+                onClick={() => navigate('/products')}
               >
                 Ir a la tienda
               </button>
