@@ -731,7 +731,7 @@ const ShoppingCart = () => {
                     )}
                     <input 
                       name="comprobante_url" 
-                      placeholder="URL del Comprobante (opcional)" 
+                      placeholder="URL del Comprobante" 
                       onChange={handleInputChange} 
                       className={`modal-input ${paymentErrors.comprobante_url ? 'input-error' : ''}`}
                     />
